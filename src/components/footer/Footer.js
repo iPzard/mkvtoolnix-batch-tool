@@ -12,15 +12,20 @@ import styles from 'components/footer/assets/styles/Footer.module.scss';
  const Footer = (props) => {
 
   const {
+    buttonClassName,
     buttonIcon = null,
     buttonText,
     disabled = false
   } = props;
 
+  const className = buttonClassName
+    ? `${styles['continue-button']} ${styles[buttonClassName]}`
+    : styles['continue-button'];
+
   return (
     <footer className={ styles.footer } >
       <PrimaryButton
-        className={ styles['continue-button'] }
+        className={ className }
         disabled={ disabled }
         iconProps={{ iconName: buttonIcon }}
         text={ buttonText }

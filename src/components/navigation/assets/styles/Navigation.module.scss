@@ -1,0 +1,34 @@
+@import 'theme/variables.scss';
+
+.aside {
+  display: grid;
+  border-right: $border;
+  margin-top: -10px;
+}
+
+.svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    color: $white;
+    width: 60px;
+  }
+
+  &:first-child {
+    border-bottom: $border;
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    &:not(.active) {
+      background-color: $hover-state;
+    }
+  }
+
+  &.active{
+    background-color: $active-state;
+  }
+}

@@ -21,8 +21,6 @@ export const app = {
 * also returns the folder path and name the user has selected.
 * @return - User selected folder path.
 * @memberof Services
-*
-* @todo - Should only accept video files
 */
 export const getDirectory = async (callback) => {
   dialog.showOpenDialog({ properties: ['openDirectory'] })
@@ -31,3 +29,42 @@ export const getDirectory = async (callback) => {
 
     .catch((error) => console.error(error));
 };
+
+/**
+* @description - Class to manage user settings in localStorage so they persist after
+* the application has closed.
+* @memberof Services
+*/
+class Settings{
+
+  hasItem = (item) => {
+    if(window.localStorage.getItem('settings') === null)
+      return false;
+
+    return this.getItem(item) !== null;
+  };
+
+  setItem = (item, setting) => {
+    const settings = this.settings() || {};
+    settings[item] = setting;
+    this.saveSettings(settings);
+  };
+
+  getItem = (item) => {
+    return this.settings() ? this.settings()[item] : false;
+  };
+
+  removeItem = (item) => {
+    const settings = this.settings() || {};
+    delete settings[item];
+    this.saveSettings(settings);
+  };
+
+  settings = () => JSON.parse(window.localStorage.getItem('settings'));
+
+  saveSettings = (settings) => {
+    window.localStorage.setItem('settings', JSON.stringify(settings));
+  };
+};
+
+export const settings = new Settings();

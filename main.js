@@ -23,11 +23,12 @@ function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     frame: false,
-    height: 300,
-    maxHeight: 300,
-    minHeight: 300,
-    minWidth: 800,
-    maxWidth: 800,
+    height: 288,
+    maxHeight: 288,
+    minHeight: 288,
+    width: 675,
+    minWidth: 675,
+    maxWidth: 675,
     webPreferences: {
       enableRemoteModule: true,
       nodeIntegration: true,

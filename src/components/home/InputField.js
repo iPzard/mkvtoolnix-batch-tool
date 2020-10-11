@@ -18,6 +18,7 @@ import styles from 'components/home/assets/styles/InputField.module.scss';
 
 const InputField = (props) => {
   const {
+    disabled,
     label,
     placeholder,
     setValue,
@@ -29,6 +30,7 @@ const InputField = (props) => {
     <article className={ styles['input-block'] }>
       <TextField
         className={ styles['input-field'] }
+        disabled={ disabled }
         label={ label }
         placeholder={ placeholder }
         onClick={ setValue }
@@ -38,6 +40,7 @@ const InputField = (props) => {
 
       <DefaultButton
         className={ styles['browse-button'] }
+        disabled={ disabled }
         iconProps={{ iconName: 'FabricFolderSearch' }}
         onClick={ setValue }
         text="Browse..."
