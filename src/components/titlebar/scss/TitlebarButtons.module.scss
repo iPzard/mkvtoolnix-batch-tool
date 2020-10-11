@@ -1,0 +1,26 @@
+@import 'theme/variables.scss';
+
+.button {
+  padding: 0 25px;
+  -webkit-app-region: no-drag;
+  color: $black;
+  border-radius: 0;
+
+  &:hover {
+    background-color: rgba(245, 245, 245, .5);
+    color: $black;
+  }
+
+  &:last-child {
+    &:hover {
+      background-color: $red-exit;
+      span {
+        color: $white;
+      }
+    }
+  }
+
+  span i {
+    font-size: 12px;
+  }
+}

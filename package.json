@@ -1,0 +1,66 @@
+{
+  "author": "Daniel Wade",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "build": {
+    "extraResources": [
+      "./resources/app"
+    ]
+  },
+  "dependencies": {
+    "@fluentui/react": "^7.121.12",
+    "@reduxjs/toolkit": "^1.1.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.20.0",
+    "get-port": "^5.1.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "react-scripts": "3.4.1"
+  },
+  "description": "Started template for Electron, React, Python app",
+  "devDependencies": {
+    "electron": "^10.1.3",
+    "electron-installer-dmg": "^3.0.0",
+    "electron-packager": "^15.0.0",
+    "electron-wix-msi": "^3.0.4",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.7.0",
+    "jsdoc": "^3.6.5",
+    "prettier": "^2.0.4",
+    "sass": "^1.26.5"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "homepage": "./",
+  "license": "MIT",
+  "main": "main.js",
+  "name": "electron-react-python-template",
+  "private": true,
+  "scripts": {
+    "build:all": "node ./scripts/dispatch build all",
+    "build:react": "node ./scripts/dispatch build react",
+    "build:python": "node ./scripts/dispatch build python",
+    "build:docs": "jsdoc -c jsdoc.json",
+    "build:package:mac": "node ./scripts/dispatch package mac",
+    "build:package:windows": "node ./scripts/dispatch package windows",
+    "eject": "react-scripts eject",
+    "start": "electron .",
+    "test": "react-scripts test"
+  },
+  "version": "1.0.0"
+}

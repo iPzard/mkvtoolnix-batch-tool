@@ -1,0 +1,35 @@
+@import 'theme/variables.scss';
+
+body section.titlebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 32px;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  max-width: 100vw;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  background-color: $primary;
+
+  div {
+    display: flex;
+    align-items: center;
+
+    span {
+      font-size: 14px;
+      font-weight: bold;
+      font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+      color: $black;
+    }
+
+    img {
+      width: 20px;
+      padding: 5px 10px;
+    }
+
+  }
+}

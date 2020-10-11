@@ -1,0 +1,35 @@
+@import 'theme/variables.scss';
+
+.footer {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin-top: 35px;
+  border-top: solid 1px rgba(245, 245, 245, .1);
+}
+
+.continue-button {
+  margin: 25px 15px;
+  height: 30px;
+
+  &[disabled] {
+    cursor: not-allowed;
+    pointer-events: auto;
+    opacity: .5;
+
+    &:hover {
+      &::before {
+        content: "You must select a source and output folder before merging";
+        position: fixed;
+        left: 200px;
+        padding-top: 3px;
+      }
+    }
+  }
+}
+
+.tooltip {
+  margin-top: 10px;
+}

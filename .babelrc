@@ -1,0 +1,25 @@
+{
+  "presets": [
+    "@babel/preset-env",
+    "@babel/react",
+    ["minify", {
+      "builtIns": false
+    }]
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-async-generator-functions",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-transform-arrow-functions",
+    "@babel/plugin-transform-async-to-generator",
+    "@babel/plugin-transform-classes",
+    "@babel/plugin-transform-computed-properties",
+    "@babel/plugin-transform-destructuring",
+    "@babel/plugin-transform-for-of",
+    "@babel/plugin-transform-parameters",
+    "@babel/plugin-transform-shorthand-properties",
+    "@babel/plugin-transform-spread",
+    "@babel/plugin-transform-sticky-regex",
+    "@babel/plugin-transform-template-literals"
+  ]
+}
