@@ -2,7 +2,7 @@ import { DefaultButton } from 'office-ui-fabric-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import styles from 'components/homepage/assets/styles/InputField.module.scss';
+import styles from 'components/merge/assets/styles/InputField.module.scss';
 
 /**
  * @description - Input section component

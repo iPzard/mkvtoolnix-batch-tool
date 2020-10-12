@@ -5,7 +5,7 @@ import Footer from 'components/footer/Footer';
 import LanguageSettings from 'components/settings/LanguageSettings';
 import styles from 'components/settings/assets/styles/SettingsPage.module.scss';
 
-const Settings = () => {
+const SettingsPage = () => {
   const [ removeFilesSetting, setRemoveFilesSetting ] = useState(false);
   const [ hardcodeSetting, setHardcodeSetting ] = useState(false);
   const [ removeAdsSetting, setRemoveAdsSetting ] = useState(false);
@@ -45,4 +45,4 @@ const Settings = () => {
   )
 };
 
-export default Settings;
+export default SettingsPage;

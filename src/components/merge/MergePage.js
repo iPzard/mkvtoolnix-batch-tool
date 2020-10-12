@@ -2,20 +2,19 @@ import React, { Component } from 'react';
 
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import Footer from 'components/footer/Footer';
-import InputField from 'components/homepage/InputField';
+import InputField from 'components/merge/InputField';
 import PropTypes from 'prop-types';
 import { getDirectory } from 'utils/services';
-import { settings } from 'utils/settings';
-import styles from 'components/homepage/assets/styles/HomePage.module.scss';
+import styles from 'components/merge/assets/styles/MergePage.module.scss';
 
 /**
- * @namespace HomePage
- * @description - Main page of the app.
+ * @namespace MergePage
+ * @description - Main page of the app where files are merged.
  *
  * @property {object} appState - Global app state.
  * @property {function} setAppState - Function to set global app state.
  */
-class Home extends Component {
+class MergePage extends Component {
 
   // Generic method to update directories
   setDirectory = (type) => getDirectory((directory) => this.props.setAppState({ [type]: directory }));
@@ -33,6 +32,7 @@ class Home extends Component {
 
     updateSetting('isSameAsSource', !isSameAsSource);
   };
+
 
   render() {
     const {
@@ -84,9 +84,9 @@ class Home extends Component {
 
 }
 
-Home.propTypes = {
+MergePage.propTypes = {
   appState: PropTypes.object.isRequired,
   setAppState: PropTypes.func.isRequired
 };
 
-export default Home;
+export default MergePage;

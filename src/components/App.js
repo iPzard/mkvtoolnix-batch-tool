@@ -1,6 +1,6 @@
 import { Component, Fragment } from 'react';
 
-import HomePage from 'components/homepage/HomePage';
+import MergePage from 'components/merge/MergePage';
 import Navigation from 'components/navigation/Navigation';
 import React from 'react';
 import SettingsPage from 'components/settings/SettingsPage';
@@ -21,7 +21,7 @@ loadTheme({ palette: customTheme });
 class App extends Component {
 
   state = {
-    page: 'home',
+    page: 'merge',
     input: '',
     output: '',
     settings: {}
@@ -81,11 +81,13 @@ function Page(props) {
   const { page, ...componentProps } = props;
 
   switch(page) {
-    case 'home':
-      return <HomePage { ...componentProps }/>;
 
     case 'settings':
       return <SettingsPage { ...componentProps }/>;
+
+    case 'merge':
+    default:
+      return <MergePage { ...componentProps }/>;
   }
 };
 
