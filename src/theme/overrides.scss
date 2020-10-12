@@ -1,0 +1,24 @@
+/* MS Fluent Overrides */
+
+body {
+  .ms-Callout.ms-Dropdown-callout {
+    margin-top: 5px;
+    border: solid 1px;
+    height: 158px;
+    overflow-x: auto;
+  }
+
+  .ms-Callout-main {
+     // `!important` to override inline styles
+    max-height: unset !important;
+    overflow: hidden !important;
+  }
+
+  .ms-Dropdown-container i {
+    color: $primary;
+
+    &[data-icon-name="LocaleLanguage"] {
+      margin-left: 8px;
+    }
+  }
+}

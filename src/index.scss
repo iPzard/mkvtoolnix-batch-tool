@@ -1,4 +1,5 @@
 @import 'theme/variables.scss';
+@import 'theme/overrides.scss';
 
 body {
   background: $black;
@@ -10,26 +11,5 @@ body {
 
   div[role="tooltip"] {
     color: $black;
-  }
-
-  /* MS Fluent dropdown overrides */
-  .ms-Callout.ms-Dropdown-callout {
-    margin-top: 5px;
-    border: solid 1px;
-    height: 158px;
-    overflow-x: auto;
-  }
-
-  .ms-Callout-main {
-    max-height: unset !important; // Overrides inline styles
-    overflow: hidden !important; // Overrides inline styles
-  }
-
-  .ms-Dropdown-container i {
-    color: $primary;
-
-    &[data-icon-name="LocaleLanguage"] {
-      margin-left: 8px;
-    }
   }
 }

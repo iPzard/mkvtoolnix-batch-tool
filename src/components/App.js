@@ -7,7 +7,7 @@ import SettingsPage from 'components/settings/SettingsPage';
 import Titlebar from 'components/titlebar/Titlebar';
 import { customTheme } from 'theme/palette';
 import { loadTheme } from 'office-ui-fabric-react';
-import { settings } from 'utils/services';
+import { settings } from 'utils/settings';
 import styles from 'components/App.module.scss';
 
 // Load custom theme for Fluent UI
@@ -23,29 +23,42 @@ class App extends Component {
   state = {
     page: 'home',
     input: '',
-    isSameAsSource: false,
     output: '',
-  }
+    settings: {}
+  };
 
+  // Initialize settings on load
   componentDidMount() {
-    this.setState({ isSameAsSource: settings.getItem('isSameAsSource') });
+    this.setState({ settings: settings.getSettings() });
   };
 
   // Method to set global app state
   setAppState = (state, callback) => this.setState(state, callback);
 
+  // Method to update settings (including state)
+  updateSetting = (item, value, callback) => {
+    settings.setItem(item, value);
+    this.setState({ settings: settings.getSettings() }, callback);
+  };
 
   render() {
 
     const {
       setAppState,
-      state,
-      state: { page }
+      state: {
+        input,
+        output,
+        page,
+        settings
+      },
+      updateSetting
     } = this;
 
     const props = {
-      appState: state,
+      appState: { input, output },
       setAppState,
+      settings,
+      updateSetting
     };
 
     return (

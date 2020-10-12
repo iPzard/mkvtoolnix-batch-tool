@@ -5,11 +5,11 @@ import Footer from 'components/footer/Footer';
 import InputField from 'components/homepage/InputField';
 import PropTypes from 'prop-types';
 import { getDirectory } from 'utils/services';
-import { settings } from 'utils/services';
+import { settings } from 'utils/settings';
 import styles from 'components/homepage/assets/styles/HomePage.module.scss';
 
 /**
- * @namespace Home
+ * @namespace HomePage
  * @description - Main page of the app.
  *
  * @property {object} appState - Global app state.
@@ -28,21 +28,18 @@ class Home extends Component {
 
   // Method to update "Same as source" option for output
   onChangeSameAsSource = () => {
-    const { props: { appState: { isSameAsSource } } } = this;
+    const isSameAsSource = this.props.settings.isSameAsSource;
+    const updateSetting = this.props.updateSetting;
 
-    settings.setItem('isSameAsSource', !isSameAsSource);
-    this.props.setAppState({ isSameAsSource: !isSameAsSource });
+    updateSetting('isSameAsSource', !isSameAsSource);
   };
 
   render() {
     const {
       onChangeSameAsSource,
       props: {
-        appState: {
-          input,
-          isSameAsSource,
-          output
-        }
+        appState: { input, output },
+        settings: { isSameAsSource }
       },
       setInput,
       setOutput
