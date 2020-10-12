@@ -1,9 +1,9 @@
 import { Component, Fragment } from 'react';
 
-import Home from 'components/home/Home';
+import HomePage from 'components/homepage/HomePage';
 import Navigation from 'components/navigation/Navigation';
 import React from 'react';
-import Settings from 'components/settings/Settings';
+import SettingsPage from 'components/settings/SettingsPage';
 import Titlebar from 'components/titlebar/Titlebar';
 import { customTheme } from 'theme/palette';
 import { loadTheme } from 'office-ui-fabric-react';
@@ -12,6 +12,7 @@ import styles from 'components/App.module.scss';
 
 // Load custom theme for Fluent UI
 loadTheme({ palette: customTheme });
+
 
 /**
  * @namespace App
@@ -33,16 +34,10 @@ class App extends Component {
   // Method to set global app state
   setAppState = (state, callback) => this.setState(state, callback);
 
-  // Method to set page and pass props
-  pages = (props) => ({
-    home: <Home { ...props }/>,
-    settings: <Settings { ...props }/>
-  });
 
   render() {
 
     const {
-      pages,
       setAppState,
       state,
       state: { page }
@@ -58,11 +53,27 @@ class App extends Component {
         <Titlebar />
         <main className={ styles.main }>
           <Navigation { ...props } />
-          { pages(props)[page] }
+          <Page { ...props } page={ page }/>
         </main>
       </Fragment>
     );
   }
 }
+
+/**
+ * @description - Page navigation controller.
+ * @property {Component} page - Component to render.
+ */
+function Page(props) {
+  const { page, ...componentProps } = props;
+
+  switch(page) {
+    case 'home':
+      return <HomePage { ...componentProps }/>;
+
+    case 'settings':
+      return <SettingsPage { ...componentProps }/>;
+  }
+};
 
 export default App;

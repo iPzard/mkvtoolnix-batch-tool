@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import Footer from 'components/footer/Footer';
-import InputField from 'components/home/InputField';
+import InputField from 'components/homepage/InputField';
 import PropTypes from 'prop-types';
 import { getDirectory } from 'utils/services';
 import { settings } from 'utils/services';
-import styles from 'components/home/assets/styles/Home.module.scss';
+import styles from 'components/homepage/assets/styles/HomePage.module.scss';
 
 /**
  * @namespace Home

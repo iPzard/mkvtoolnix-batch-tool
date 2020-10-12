@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import Footer from 'components/footer/Footer';
 import LanguageSettings from 'components/settings/LanguageSettings';
-import styles from 'components/settings/assets/styles/Settings.module.scss';
+import styles from 'components/settings/assets/styles/SettingsPage.module.scss';
 
 const Settings = () => {
   const [ removeFilesSetting, setRemoveFilesSetting ] = useState(false);

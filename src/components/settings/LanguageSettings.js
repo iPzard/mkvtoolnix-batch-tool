@@ -4,7 +4,6 @@ import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import React from 'react';
 import { Stack } from 'office-ui-fabric-react/lib/Stack';
-import styles from 'components/settings/assets/styles/LanguageSettings.module.scss';
 
 const languageOptions = [
   { key: 'Header', text: 'Select Language', itemType: DropdownMenuItemType.Header },
@@ -38,7 +37,7 @@ const onRenderTitle = (options) => (
 );
 
 const LanguageSettings = (props) => (
-  <div className={ styles['language-settings'] }>
+  <div>
     <Stack>
       <Dropdown
         placeholder="English"
