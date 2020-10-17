@@ -1,14 +1,21 @@
 # MKVToolNix Batch Tools
-> MKVToolNix-powered, batch subtitle processing tools to help add/merge (or remove) subtitles from your video library.
+> Batch subtitle processing tools to help add/merge (or remove) subtitles from your video library.
+<br>
+
+## 💾 Downloads
+Due to limitations of [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix/-/wikis/Officially-supported-operating-systems-and-versions), which powers MKVToolNix Batch Tools, Windows is the only supported operating system.
+
+**Windows:**
+* [win32-x64](https://drive.google.com/file/d/1VnCBqaA4DG1g8Du1zpkFQMlLolmOo3Vc/view?usp=sharing)
 <br>
 
 ## 🛠️ Merging
-When merging each subdirectory ***must*** contain one video file and one subtitle file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored.<br><br>
+When merging subtitles, each subdirectory ***must*** contain one video file and one subtitle file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored.<br><br>
 
 <pre>
   <code>
     📂Movies
-    ┣ 📂Resident Evil (2002) 👈 <b>only <u>one video</u>, and one subtitle file per sub directory</b>
+    ┣ 📂Resident Evil (2002) 👈 <b>only one video, and one subtitle file per sub directory</b>
     ┃ ┣ 📺Resident Evil (2002) [1080p].mp4
     ┃ ┗ 📜Resident Evil (2002) [1080p].srt
     ┣ 📂Resident Evil Afterlife (2010)
@@ -31,6 +38,30 @@ When merging each subdirectory ***must*** contain one video file and one subtitl
 </pre>
 <br>
 
+## 🛠️ Removing
+When removing subtitles, each subdirectory ***must*** contain one video file, otherwise the directory will be skipped. Other non-video, may be included and will be ignored.<br><br>
+
+<pre>
+  <code>
+    📂Movies
+    ┣ 📂Resident Evil (2002) 👈 <b>only one video file per sub directory</b>
+    ┃ ┗ 📺Resident Evil (2002) [1080p].mp4
+    ┣ 📂Resident Evil Afterlife (2010)
+    ┃ ┣ 📺Resident Evil Afterlife (2010) [1080p].avi
+    ┃ ┗ 🎨Movie poster.png 👈 <b>extra non-video files may exist</b>
+    ┣ 📂Resident Evil Apocalypse (2004)
+    ┃ ┣ 📺Resident Evil Apocalypse (2004) [1080p].mkv
+    ┃ ┗ 📜Resident Evil Apocalypse (2004) [1080p].srt 👈 <b>extra non-video files may exist</b>
+    ┣ 📂Resident Evil Extinction (2007)
+    ┃ ┗ 📺Resident Evil Apocalypse (2004) [1080p].wmv
+    ┣ 📂Resident Evil Retribution (2012)
+    ┃ ┗ 📺Resident Evil Retribution (2012) [1080p].ogg
+    ┣ 📂Resident Evil The Final Chapter (2016)
+    ┃ ┗ 📺Resident Evil The Final Chapter (2016) [1080p].ogm
+  </code>
+</pre>
+<br>
+
 ## 🗃️ Support
 The following file types are supported.
 
@@ -41,5 +72,12 @@ The following file types are supported.
 * *ASS*, *PGS*, *SRT*, *SSA*, *SUP*
 <br>
 
-## 🏷️ License
-MIT © [iPzard](https://github.com/iPzard/electron-react-python-template/blob/master/LICENSE)
+
+## 🙏 Attribution
+* MKV batch processing is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix).
+* SVG icons used are from [Font Awesome](https://fontawesome.com).
+
+<br>
+## 🏷️ Licenses
+GPLv2 @ [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix/-/blob/main/COPYING)
+MIT © [iPzard](https://github.com/iPzard/mkvtoolnix-batch-tools/blob/master/LICENSE)
