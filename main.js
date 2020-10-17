@@ -40,7 +40,7 @@ function createWindow () {
   mainWindow.loadFile(path.join(__dirname, 'build/index.html'));
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 
   // Set opacity for title on window blur & focus
   const setTitleOpacity = value => `

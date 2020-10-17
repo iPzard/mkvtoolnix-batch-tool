@@ -1,6 +1,8 @@
 # MKVToolNix Batch Tools
 > Batch subtitle processing tools to help add or remove subtitles from your video library.
-<br>
+<br><br>
+
+![mkvtoolnix-batch-tools](https://user-images.githubusercontent.com/8584126/96355280-c0c0d800-1094-11eb-9694-b404d82ccc80.gif)
 
 ## 💾 Downloads
 MKVToolNix Batch Tools is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix), and is therefore limited to Windows.

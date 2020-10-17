@@ -96,6 +96,7 @@ def process_batch():
       if not os.listdir(video_directory):
         os.rmdir(video_directory)
 
+  # Status, warning, and error message handling
   status = 'Batch complete'
   error = 'No valid subdirectories were found in the selected directory.' if len(batch) == 0 else None
 
@@ -105,6 +106,7 @@ def process_batch():
   elif warning is not None:
     status = 'Warning'
 
+  # Return results to the front end
   return jsonify({
     "status": status,
     "warning": warning,
