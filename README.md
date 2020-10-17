@@ -3,12 +3,12 @@
 <br>
 
 ## 🛠️ Merging
-When merging each subdirectory must contain only one **video** file and one **subtitle** file, otherwise the directory will be skipped. Subdirectories may contain other non-video, non-subtitle files, which will be ignored.<br><br>
+When merging each subdirectory **must** contain **one video** file and **one subtitle** file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored.<br><br>
 
 <pre>
   <code>
     📂Movies
-    ┣ 📂Resident Evil (2002) 👈 <b>only one video, and one subtitle file per sub directory</b>
+    ┣ 📂Resident Evil (2002) 👈 <b>only <u>one video</u>, and one subtitle file per sub directory</b>
     ┃ ┣ 📺Resident Evil (2002) [1080p].mp4
     ┃ ┗ 📜Resident Evil (2002) [1080p].srt
     ┣ 📂Resident Evil Afterlife (2010)
