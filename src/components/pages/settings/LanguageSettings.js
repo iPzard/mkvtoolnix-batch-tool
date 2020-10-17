@@ -2,6 +2,7 @@ import { Dropdown, DropdownMenuItemType } from 'office-ui-fabric-react/lib/Dropd
 
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { Label } from 'office-ui-fabric-react/lib/Label';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Stack } from 'office-ui-fabric-react/lib/Stack';
 
@@ -30,6 +31,13 @@ const onRenderLabel = (props) => (
   </Stack>
 );
 
+/**
+ * @description - Language setting dropdown for settings page
+ * @property {object} language - Selected language object with `key` and `text` keys.
+ * @property {function} onChange - On change callback handler to return data to the parent.
+ *
+ * @memberof SettingsPage
+ */
 const LanguageSettings = (props) => (
   <Dropdown
     placeholder={ props.language.text }
@@ -41,5 +49,12 @@ const LanguageSettings = (props) => (
     selectedKey={ props.language.key }
   />
 );
+
+
+LanguageSettings.propTypes = {
+  language: PropTypes.object,
+  onChange: PropTypes.func
+};
+
 
 export default LanguageSettings;

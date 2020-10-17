@@ -5,7 +5,6 @@ from resources.modules import mkvtoolnix
 from flask import Flask, jsonify, request
 
 
-
 """
 --------------------------- INSTANTIATION --------------------------
 """
@@ -13,7 +12,6 @@ from flask import Flask, jsonify, request
 FileWalker = filewalker.FileWalker()
 MKVToolNix = mkvtoolnix.MKVToolNix()
 app = Flask(__name__)
-
 
 
 """
@@ -98,13 +96,20 @@ def process_batch():
       if not os.listdir(video_directory):
         os.rmdir(video_directory)
 
-  status = 'Warning' if warning is not None else 'Batch complete'
+  status = 'Batch complete'
+  error = 'No valid subdirectories were found in the selected directory.' if len(batch) == 0 else None
+
+  if error is not None:
+    status = 'Error'
+
+  elif warning is not None:
+    status = 'Warning'
 
   return jsonify({
     "status": status,
-    "warning": warning
+    "warning": warning,
+    "error": error
   })
-
 
 
 """

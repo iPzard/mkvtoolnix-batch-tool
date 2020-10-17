@@ -6,6 +6,16 @@ import SettingsIcon from 'components/navigation/assets/icons/SettingsIcon';
 import ThemeIcon from 'components/navigation/assets/icons/ThemeIcon';
 import styles from 'components/navigation/assets/styles/Navigation.module.scss';
 
+/**
+ * @namespace Navigation
+ * @description - Settings page of the app where settings are updated.
+ *
+ * @property {object} appState - Global app state.
+ * @property {function} setAppState - Function to set global app state.
+ * @property {object} settings - User defined, persistent settings.
+ * @property {function} updateMultipleSettings - Function to update multiple user defined settings at once.
+ * @property {function} updateSetting - Function to update a single setting at a time.
+ */
 const Navigation = (props) => {
 
   const [ active, setActive ] = useState('folders');
@@ -18,7 +28,9 @@ const Navigation = (props) => {
     props.setAppState({ page: 'settings' }, setActive('settings'));
   };
 
-  const setClassName = (type) => active === type ? `${styles.active} ${styles.svg}` : styles.svg;
+  const setClassName = (type) => active === type
+    ? `${styles.active} ${styles.svg}`
+    : styles.svg;
 
   const toggleAppTheme = () => {
     const { settings: { theme } } = props;
@@ -45,7 +57,6 @@ const Navigation = (props) => {
         <SettingsIcon />
       </div>
 
-
       <div
         className={ styles.theme }
         onClick={ toggleAppTheme }
@@ -57,9 +68,13 @@ const Navigation = (props) => {
   )
 };
 
+
 Navigation.propTypes = {
   appState: PropTypes.object.isRequired,
-  setAppState: PropTypes.func.isRequired
-}
+  setAppState: PropTypes.func.isRequired,
+  settings: PropTypes.object.isRequired,
+  updateMultipleSettings: PropTypes.func,
+  updateSetting: PropTypes.func
+};
 
 export default Navigation;

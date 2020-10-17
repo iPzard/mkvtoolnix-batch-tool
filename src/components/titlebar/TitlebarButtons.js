@@ -4,6 +4,8 @@ import styles from 'components/titlebar/scss/TitlebarButtons.module.scss';
 
 /**
  * @description Titlebar minimize button.
+ * @property {*} props - Optional props drilled down from parent component (e.g., className).
+ *
  * @memberof Titlebar
  */
 
@@ -19,6 +21,8 @@ export const MinimizeButton = props => (
 
 /**
  * @description Titlebar close button.
+ * @property {*} props - Optional props drilled down from parent component (e.g., className).
+ *
  * @memberof Titlebar
  */
 export const CloseButton = props => (

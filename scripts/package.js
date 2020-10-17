@@ -64,6 +64,7 @@ class Packager {
     console.log('Building windows package...');
 
     // Build Python & React distribution files
+    // TODO: Make option to not build all here (and for macOS) in scripts?
     builder.buildAll();
 
     const options = {

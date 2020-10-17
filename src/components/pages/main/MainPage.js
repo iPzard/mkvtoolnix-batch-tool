@@ -18,6 +18,9 @@ import styles from 'components/pages/main/assets/styles/MainPage.module.scss';
  *
  * @property {object} appState - Global app state.
  * @property {function} setAppState - Function to set global app state.
+ * @property {object} settings - User defined, persistent settings.
+ * @property {function} updateMultipleSettings - Function to update multiple user defined settings at once.
+ * @property {function} updateSetting - Function to update a single setting at a time.
  *
  * @memberof Pages
  */
@@ -62,18 +65,37 @@ class MainPage extends Component {
     // Start spinner
     this.setState({ loading: true }, () => {
 
-      const batch = JSON.stringify({ input, output, settings });
+      const requestBody = JSON.stringify({ input, output, settings });
 
       // Stop spinner on response and display message
-      post(batch, 'process_batch', (response) => {
-        this.setState({
-          loading: false,
-          hideDialog: false,
-          messageTitle: response.status,
-          messageText: response.warning ||
-            'Sub directories were successfully processed without any warnings.'
-        });
-      });
+      post(requestBody, 'process_batch',
+
+        // Success callback
+        (response) => {
+          this.setState({
+            loading: false,
+            hideDialog: false,
+            messageTitle: response.status,
+            messageText: response.error || response.warning ||
+              'Sub directories were successfully processed without any errors or warnings.'
+          });
+        },
+
+        // Error callback
+        (error) => {
+
+          // Log error
+          console.error(error);
+
+          this.setState({
+            loading: false,
+            hideDialog: false,
+            messageTitle: 'Error',
+            messageText: 'There was an error which prevented the batch from being processed.'
+          });
+        }
+
+      );
     });
 
   };
@@ -102,10 +124,19 @@ class MainPage extends Component {
       }
     } = this;
 
+
+    // If same as source or not
     const isFooterDisabled = isSameAsSource
       ? !input
       : !input || !output;
 
+    const sameAsSourceValue = isSameAsSource
+      ? input ? input + String.raw`\**\*`
+      : input : output;
+
+
+
+    // If merge or remove subtitles
     const buttonIcon = isRemoveSubtitles
       ? 'FabricUnsyncFolder'
       : 'FabricSyncFolder';
@@ -114,9 +145,9 @@ class MainPage extends Component {
       ? 'Remove'
       : 'Merge';
 
-    const sameAsSourceValue = isSameAsSource
-      ? input ? input + String.raw`\**\*`
-      : input : output;
+    const buttonTitle = isRemoveSubtitles
+      ? 'Remove subtitles'
+      : 'Merge subtitles';
 
     const MergeSettingButton = (props) => {
       return isRemoveSubtitles
@@ -159,7 +190,6 @@ class MainPage extends Component {
           <Checkbox
             checked={ isSameAsSource }
             className={ styles.checkbox }
-            label="Output to video source folder"
             label="Output same as source"
             onChange={ onChangeSameAsSource }
             title="Use video source directories for output"
@@ -186,6 +216,7 @@ class MainPage extends Component {
             buttonIcon={ buttonIcon }
             buttonOnClick={ processBatch }
             buttonText={ buttonText }
+            buttonTitle={ buttonTitle }
             disabled={ isFooterDisabled }
           />
         </section>
@@ -195,9 +226,13 @@ class MainPage extends Component {
 
 }
 
+
 MainPage.propTypes = {
   appState: PropTypes.object.isRequired,
-  setAppState: PropTypes.func.isRequired
+  setAppState: PropTypes.func.isRequired,
+  settings: PropTypes.object.isRequired,
+  updateMultipleSettings: PropTypes.func,
+  updateSetting: PropTypes.func
 };
 
 export default MainPage;

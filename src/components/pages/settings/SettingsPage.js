@@ -3,11 +3,18 @@ import React, { Component } from 'react';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import Footer from 'components/footer/Footer';
 import LanguageSettings from 'components/pages/settings/LanguageSettings';
+import PropTypes from 'prop-types';
 import styles from 'components/pages/settings/assets/styles/SettingsPage.module.scss';
 
 /**
  * @namespace SettingsPage
  * @description - Settings page of the app where settings are updated.
+ *
+ * @property {object} appState - Global app state.
+ * @property {function} setAppState - Function to set global app state.
+ * @property {object} settings - User defined, persistent settings.
+ * @property {function} updateMultipleSettings - Function to update multiple user defined settings at once.
+ * @property {function} updateSetting - Function to update a single setting at a time.
  *
  * @memberof Pages
  */
@@ -128,11 +135,22 @@ class SettingsPage extends Component{
           buttonOnClick={ buttonOnClick }
           buttonIcon="SyncOccurence"
           buttonText="Reset"
+          buttonTitle="Restore defaults"
           disabled={ false }
         />
       </section>
     )
   }
 };
+
+
+SettingsPage.propTypes = {
+  appState: PropTypes.object.isRequired,
+  setAppState: PropTypes.func.isRequired,
+  settings: PropTypes.object.isRequired,
+  updateMultipleSettings: PropTypes.func,
+  updateSetting: PropTypes.func
+};
+
 
 export default SettingsPage;

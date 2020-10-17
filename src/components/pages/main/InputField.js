@@ -6,10 +6,10 @@ import styles from 'components/pages/main/assets/styles/InputField.module.scss';
 
 /**
  * @description - Input section component
- * @property {function} handleOnChange - function to handle onChange
+ * @property {boolean} disabled - Determines whether input field is disabled or not.
  * @property {string} label - Input label.
  * @property {string} placeholder - Input placeholder.
- * @property {function} setValue - function set input value.
+ * @property {function} setValue - Function set input value.
  * @property {string} type - Type of input field (e.g., input or output directory).
  * @property {string} value - Current value of input field.
  *
@@ -50,6 +50,7 @@ const InputField = (props) => {
 };
 
 InputField.propTypes = {
+  disabled: PropTypes.bool,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
   setValue: PropTypes.func.isRequired,

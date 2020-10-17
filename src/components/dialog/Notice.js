@@ -1,7 +1,7 @@
-import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 import { Dialog, DialogFooter, DialogType } from 'office-ui-fabric-react/lib/Dialog';
 import React, { useMemo } from 'react';
 
+import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 import PropTypes from 'prop-types';
 import { useId } from '@uifabric/react-hooks';
 
@@ -9,14 +9,10 @@ import { useId } from '@uifabric/react-hooks';
  * @namespace Notice
  * @description - Generic notice component to display messages to the end user.
  *
- * @property {string} [okayText=Confirm] - Text to show in the primary button.
- * @property {string} [cancelText=Cancel] - Text to show in the secondary button.
- * @property {Function} okayFunc - Function to execute when the primary button is clicked.
- * @property {Function} cancelFunc - Function to execute when the secondary button is clicked.
  * @property {boolean} hideDialog - Boolean to determine if the dialog should be shown.
  * @property {string} messageText - Text to show as the main message.
- * @property {Function} setHideDialog - Function used to set the `hideDialog` boolean.
- * @property {string} title - Text to show as the title of the notice.
+ * @property {string} messageTitle - Text to show as the title of the notice.
+ * @property {function} setHideDialog - Function used to set the `hideDialog` boolean.
  * @tutorial - https://developer.microsoft.com/en-us/fluentui#/controls/web/dialog
  */
 
@@ -65,14 +61,10 @@ export const Notice = (props) => {
 
 
 Notice.propTypes = {
-  okayText: PropTypes.string,
-  cancelText: PropTypes.string,
-  okayFunc: PropTypes.func,
-  cancelFunc: PropTypes.func,
-  hideDialog: PropTypes.bool,
-  messageText: PropTypes.string,
-  setHideDialog: PropTypes.func,
-  title: PropTypes.string
+  hideDialog: PropTypes.bool.isRequired,
+  messageText: PropTypes.string.isRequired,
+  setHideDialog: PropTypes.func.isRequired,
+  messageTitle: PropTypes.string.isRequired
 };
 
 export default Notice;
