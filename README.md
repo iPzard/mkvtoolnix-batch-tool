@@ -79,4 +79,4 @@ The following file types are supported.
 
 ## 🏷️ Licenses
 MIT © [iPzard](https://github.com/iPzard/mkvtoolnix-batch-tools/blob/master/LICENSE)<br>
-GPLv2 @ [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix/-/blob/main/COPYING)
+GPLv2 © [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix/-/blob/main/COPYING)
