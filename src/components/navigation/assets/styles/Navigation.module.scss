@@ -1,34 +1,49 @@
 @import 'theme/variables.scss';
 
 .aside {
-  display: grid;
-  border-right: $border;
-  margin-top: -10px;
+  display: flex;
+  flex-direction: column;
+  border-right: var(--border);
+  margin-top: -8px;
+  width: 80px;
 }
 
 .svg {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 80px;
 
   svg {
-    color: $white;
-    width: 60px;
+    color: var(--white);
+    width: 40px;
   }
 
   &:first-child {
-    border-bottom: $border;
+    border-bottom: var(--border);
   }
 
   &:hover {
     cursor: pointer;
 
     &:not(.active) {
-      background-color: $hover-state;
+      background-color: var(--hover-state);
     }
   }
 
   &.active{
-    background-color: $active-state;
+    background-color: var(--active-state);
+  }
+}
+
+.theme {
+  svg {
+    width: 40px;
+    color: var(--primary);
+    transform: scale(-1, 1);
+    position: fixed;
+    bottom: 25px;
+    left: 20px;
+    cursor: pointer;
   }
 }

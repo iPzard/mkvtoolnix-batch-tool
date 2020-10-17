@@ -1,18 +1,14 @@
 import { Component, Fragment } from 'react';
+import { darkTheme, lightTheme, togglePalette } from 'theme/palettes';
 
-import MergePage from 'components/merge/MergePage';
+import MainPage from 'components/pages/main/MainPage';
 import Navigation from 'components/navigation/Navigation';
 import React from 'react';
-import SettingsPage from 'components/settings/SettingsPage';
+import SettingsPage from 'components/pages/settings/SettingsPage';
 import Titlebar from 'components/titlebar/Titlebar';
-import { customTheme } from 'theme/palette';
 import { loadTheme } from 'office-ui-fabric-react';
 import { settings } from 'utils/settings';
 import styles from 'components/App.module.scss';
-
-// Load custom theme for Fluent UI
-loadTheme({ palette: customTheme });
-
 
 /**
  * @namespace App
@@ -21,7 +17,7 @@ loadTheme({ palette: customTheme });
 class App extends Component {
 
   state = {
-    page: 'merge',
+    page: 'main',
     input: '',
     output: '',
     settings: {}
@@ -29,7 +25,20 @@ class App extends Component {
 
   // Initialize settings on load
   componentDidMount() {
+    loadTheme({ palette: darkTheme }); // default theme
     this.setState({ settings: settings.getSettings() });
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    const { state: { settings: { theme } } } = this;
+    const { settings: { theme: prevTheme } } = prevState;
+
+    if(theme !== prevTheme) {
+      togglePalette(theme);
+
+      if(theme === 'light') loadTheme({ palette: lightTheme });
+      else loadTheme({ palette: darkTheme });
+    }
   };
 
   // Method to set global app state
@@ -41,6 +50,15 @@ class App extends Component {
     this.setState({ settings: settings.getSettings() }, callback);
   };
 
+  // Method to update multiple settings (including state)
+  updateMultipleSettings = (newSettings, callback) => {
+    const currentSettings = settings.getSettings();
+    const updatedSettings = { ...currentSettings, ...newSettings };
+
+    settings.saveSettings(updatedSettings);
+    this.setState({ settings: updatedSettings }, callback);
+  };
+
   render() {
 
     const {
@@ -49,24 +67,28 @@ class App extends Component {
         input,
         output,
         page,
-        settings
+        settings,
+        theme
       },
+      updateMultipleSettings,
       updateSetting
     } = this;
 
-    const props = {
-      appState: { input, output },
+    const componentProps = {
+      appState: { input, output, theme },
       setAppState,
       settings,
+      updateMultipleSettings,
       updateSetting
     };
+
 
     return (
       <Fragment>
         <Titlebar />
         <main className={ styles.main }>
-          <Navigation { ...props } />
-          <Page { ...props } page={ page }/>
+          <Navigation { ...componentProps } />
+          <PageController { ...componentProps } page={ page }/>
         </main>
       </Fragment>
     );
@@ -77,7 +99,7 @@ class App extends Component {
  * @description - Page navigation controller.
  * @property {Component} page - Component to render.
  */
-function Page(props) {
+function PageController(props) {
   const { page, ...componentProps } = props;
 
   switch(page) {
@@ -85,9 +107,9 @@ function Page(props) {
     case 'settings':
       return <SettingsPage { ...componentProps }/>;
 
-    case 'merge':
+    case 'main':
     default:
-      return <MergePage { ...componentProps }/>;
+      return <MainPage { ...componentProps }/>;
   }
 };
 

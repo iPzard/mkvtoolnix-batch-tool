@@ -1,0 +1,34 @@
+.label {
+  color: var(--white-constant);
+}
+
+.spinner {
+  position: fixed;
+  top: 32px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: var(--loading-background-color);
+  z-index: 1;
+  cursor: not-allowed;
+  opacity: 1;
+  transition: opacity .3s;
+
+  &.hidden {
+    opacity: 0;
+  }
+
+  * {
+    cursor: not-allowed;
+  }
+}
+
+.spinner-icon {
+  height: 100px;
+  width: 100px;
+  margin-top: -16px;
+}

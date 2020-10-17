@@ -2,7 +2,7 @@
 @import 'theme/overrides.scss';
 
 body {
-  background: $black;
+  background: var(--black);
   margin: 0;
   margin-top: 40px;
   overflow: hidden;
@@ -10,6 +10,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   div[role="tooltip"] {
-    color: $black;
+    color: var(--black);
   }
 }

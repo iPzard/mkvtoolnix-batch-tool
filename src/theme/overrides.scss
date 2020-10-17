@@ -9,16 +9,29 @@ body {
   }
 
   .ms-Callout-main {
-     // `!important` to override inline styles
+
+    // `!important` to override inline styles
     max-height: unset !important;
     overflow: hidden !important;
   }
 
   .ms-Dropdown-container i {
-    color: $primary;
+    color: var(--primary);
 
     &[data-icon-name="LocaleLanguage"] {
       margin-left: 8px;
     }
+  }
+
+  span.ms-layer {
+    position: absolute;
+  }
+
+  div.ms-Layer {
+    top: 32px;
+  }
+
+  div.ms-Dialog-main {
+    margin-top: -32px;
   }
 }

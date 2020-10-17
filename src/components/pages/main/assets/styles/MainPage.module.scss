@@ -1,0 +1,19 @@
+@import 'theme/variables.scss';
+
+.home {
+  padding: 0 15px;
+}
+
+.checkbox {
+  margin: 12px 20px;
+}
+
+.mode-settings {
+  display: flex;
+  flex-direction: column;
+  margin: 23px 12px -33px;
+
+  button:first-child {
+    margin-right: 7px;
+  }
+}

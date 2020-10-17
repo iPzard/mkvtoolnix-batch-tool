@@ -31,14 +31,30 @@ class Settings{
   // Get all settings and return as a JavaScript object literal
   getSettings = () => {
 
-    // If settings don't exist, set to empty object
+    // If settings don't exist, set to defaults
     if(window.localStorage.getItem('settings') === null)
-      window.localStorage.setItem('settings', '{}');
+      this.loadDefaultSettings();
 
     // Return object literal of settings
     return JSON.parse(window.localStorage.getItem('settings'));
   };
 
+
+  // Load default settings
+  loadDefaultSettings = () => {
+    const settings = JSON.stringify({
+      isDefaultTrack: false,
+      isRemoveAds: false,
+      isRemoveExistingSubtitles: false,
+      isRemoveOld: false,
+      isRemoveSubtitles: false,
+      isSameAsSource: false,
+      language: { key: 'eng', text: 'English' },
+      theme: 'dark'
+    });
+
+    window.localStorage.setItem('settings', settings);
+  };
 
   // Update settings object with new settings
   saveSettings = (settings) => {

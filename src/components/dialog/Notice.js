@@ -23,19 +23,15 @@ import { useId } from '@uifabric/react-hooks';
 export const Notice = (props) => {
 
   const {
-    okayText = 'Confirm',
-    cancelText = 'Cancel',
-    okayFunc,
-    cancelFunc,
     hideDialog,
     messageText,
-    setHideDialog,
-    title
+    messageTitle,
+    setHideDialog
   } = props;
 
   const dialogContentProps = {
     type: DialogType.normal,
-    title: title,
+    title: messageTitle,
     closeButtonAriaLabel: 'Close',
     subText: messageText,
   };
@@ -53,21 +49,17 @@ export const Notice = (props) => {
 
   const toggleHideDialog = () => setHideDialog(!hideDialog);
 
-
   return (
-    <aside>
-      <Dialog
-        hidden={ hideDialog }
-        onDismiss={ toggleHideDialog }
-        dialogContentProps={ dialogContentProps }
-        modalProps={ modalProps }
-      >
-        <DialogFooter>
-          <PrimaryButton onClick={ okayFunc } text={ okayText } />
-          <DefaultButton onClick={ cancelFunc } text={ cancelText } />
-        </DialogFooter>
-      </Dialog>
-    </aside>
+    <Dialog
+      hidden={ hideDialog }
+      onDismiss={ toggleHideDialog }
+      dialogContentProps={ dialogContentProps }
+      modalProps={ modalProps }
+    >
+      <DialogFooter>
+        <PrimaryButton onClick={ toggleHideDialog } text="Okay" />
+      </DialogFooter>
+    </Dialog>
   );
 };
 

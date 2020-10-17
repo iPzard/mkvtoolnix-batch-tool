@@ -13,6 +13,7 @@ import styles from 'components/footer/assets/styles/Footer.module.scss';
 
   const {
     buttonClassName,
+    buttonOnClick,
     buttonIcon = null,
     buttonText,
     disabled = false
@@ -28,6 +29,7 @@ import styles from 'components/footer/assets/styles/Footer.module.scss';
         className={ className }
         disabled={ disabled }
         iconProps={{ iconName: buttonIcon }}
+        onClick={ buttonOnClick }
         text={ buttonText }
       />
     </footer>

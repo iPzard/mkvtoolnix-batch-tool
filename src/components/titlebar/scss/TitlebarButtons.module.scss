@@ -3,19 +3,19 @@
 .button {
   padding: 0 25px;
   -webkit-app-region: no-drag;
-  color: $black;
+  color: var(--black);
   border-radius: 0;
 
   &:hover {
-    background-color: rgba(245, 245, 245, .5);
-    color: $black;
+    background-color: var(--background-color);
+    color: var(--black);
   }
 
   &:last-child {
     &:hover {
-      background-color: $red-exit;
+      background-color: var(--red-exit);
       span {
-        color: $white;
+        color: var(--white-constant);
       }
     }
   }

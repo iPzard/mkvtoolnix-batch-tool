@@ -7,33 +7,31 @@
   align-items: center;
   width: 100%;
   margin-top: 15px;
-
 }
 
 .continue-button {
+  width: 117px;
   height: 30px;
   margin: 25px 15px;
-
   &[disabled] {
     cursor: not-allowed;
     pointer-events: auto;
-    opacity: .5;
+    opacity: .75;
 
     &:hover {
       &::before {
-        content: "You must select a source and output folder before merging";
+        content: "You must first select a source and output folder";
         position: fixed;
-        left: 150px;
-        padding-top: 5px;
-        color: $primary;
+        left: 180px;
+        padding-top: 6px;
+        color: var(--primary);
       }
     }
   }
 }
 
-.save-button {
-  margin: 0;
-  margin-top: -4px;
+.reset-button {
+  margin: 24px 0 0;
 }
 
 .tooltip {

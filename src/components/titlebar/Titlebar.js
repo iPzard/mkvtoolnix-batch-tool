@@ -1,8 +1,8 @@
 import { CloseButton, MinimizeButton } from 'components/titlebar/TitlebarButtons';
 
+import Favicon from 'components/titlebar/Favicon';
 import React from 'react';
 import { app } from 'utils/services';
-import favicon from 'components/titlebar/img/favicon.png';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 import styles from 'components/titlebar/scss/Titlebar.module.scss';
 
@@ -21,7 +21,7 @@ const Titlebar = () => {
   return (
     <section className={ styles.titlebar }>
       <div>
-        <img id='electron-window-title-icon' src={ favicon } alt='favicon' />
+        <Favicon id='electron-window-title-icon' />
         <span id='electron-window-title-text'>{ document.title }</span>
       </div>
 
