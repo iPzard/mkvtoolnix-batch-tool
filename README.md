@@ -67,21 +67,20 @@ When removing subtitles, each subdirectory ***must*** contain one video file, ot
 ## ⚙️ Settings
 ![mkvtoolnix-batch-tools-settings](https://user-images.githubusercontent.com/8584126/96355382-f74b2280-1095-11eb-9436-e68df7eb466f.png)
 
-* Remove existing subtitles from video before merging new ones.
-  * Excludes any existing, non hard-coded subtitles that are already on video.
-<br>
+**Remove existing subtitles from video before merging new ones**
+* Excludes any existing, non hard-coded subtitles that are already on video.
 
-* Remove old video and subtitle files from source directory when finished.
-  * Deletes old video and subtitle files from each sub directory after processing them.
-<br>
+**Remove old video and subtitle files from source directory when finished**
+* Deletes old video and subtitle files from each sub directory after processing them.
 
-* Mark subtitles as "default track" so they play automatically.
-  * Automatically enables the subtitle track when starting your video.
-<br>
 
-* Remove known advertisements from subtitles before merging
-  * Removes spam such as "advertise here" and alike from subtitle files before merging.
-<br>
+**Mark subtitles as "default track" so they play automatically**
+* Automatically enables the subtitle track when starting your video.
+
+
+**Remove known advertisements from subtitles before merging**
+* Removes spam such as "advertise here" and alike from subtitle files before merging.
+
 
 ## 🗃️ File types
 The following file types are supported.
