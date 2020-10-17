@@ -3,7 +3,7 @@
 <br>
 
 ## 💾 Downloads
-MKVToolNix Batch Tools is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix), and therefore [limited](https://gitlab.com/mbunkus/mkvtoolnix/-/wikis/Officially-supported-operating-systems-and-versions) to Windows.
+MKVToolNix Batch Tools is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix), and is therefore to Windows.
 
 **Windows:**
 * [win32-x64](https://drive.google.com/file/d/1VnCBqaA4DG1g8Du1zpkFQMlLolmOo3Vc/view?usp=sharing)
@@ -72,12 +72,11 @@ The following file types are supported.
 * *ASS*, *PGS*, *SRT*, *SSA*, *SUP*
 <br>
 
-
 ## 🙏 Attribution
 * MKV batch processing is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix).
 * SVG icons used are from [Font Awesome](https://fontawesome.com).
-
 <br>
+
 ## 🏷️ Licenses
 GPLv2 @ [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix/-/blob/main/COPYING)
 MIT © [iPzard](https://github.com/iPzard/mkvtoolnix-batch-tools/blob/master/LICENSE)
