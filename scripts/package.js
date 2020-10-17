@@ -27,6 +27,9 @@ class Packager {
         'app',
         '--asar',
         '--extra-resource=./resources/app',
+        '--extra-resource=./resources/mkvtoolnix',
+        '--extra-resource=./resources/modules',
+        '--extra-resource=./resources/__init__.py',
         '--icon ./public/favicon.ico',
         '--darwin',
         '--out',
@@ -40,7 +43,7 @@ class Packager {
         `--out=${path('../dist/mac/setup')}`,
         `--icon=${path('../utilities/dmg/images/icon.icns')}`,
         // `--background=${path('../utilities/dmg/images/background.png')}`,
-        `--title="Example App"`,
+        `--title="MKVToolNix Batch Tools"`,
         `--overwrite`
       ].join(' '),
 
@@ -68,6 +71,9 @@ class Packager {
         'app',
         '--asar',
         '--extra-resource=./resources/app',
+        '--extra-resource=./resources/mkvtoolnix',
+        '--extra-resource=./resources/modules',
+        '--extra-resource=./resources/__init__.py',
         '--icon ./public/favicon.ico',
         '--win32',
         '--out',
@@ -86,10 +92,10 @@ class Packager {
       appDirectory: path('../dist/windows/app-win32-x64'),
       appIconPath: path('../utilities/msi/images/icon.ico'),
       outputDirectory: path('../dist/windows/setup'),
-      description: 'Example app',
+      description: 'MKVToolNix batch processing tools',
       exe: 'app',
-      manufacturer: 'Example Manufacturer',
-      name: 'Example App',
+      manufacturer: 'Daniel Wade',
+      name: 'MKVToolNix Batch Tools',
       ui: {
         chooseDirectory: true,
         images: {

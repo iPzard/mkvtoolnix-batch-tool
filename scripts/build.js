@@ -31,6 +31,7 @@ class Builder {
     const options = [
       '--noconsole', // No shell
       '--noconfirm', // Don't confirm overwrite
+      // '--log-level=DEBUG',
       '--distpath ./resources', // Dist (out) path
       `--icon ${icon}` // Icon to use
     ].join(' ');
