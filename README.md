@@ -3,7 +3,7 @@
 <br>
 
 ## 💾 Downloads
-MKVToolNix Batch Tools is powered by MKVToolNix, and therefore is [limited](https://gitlab.com/mbunkus/mkvtoolnix/-/wikis/Officially-supported-operating-systems-and-versions) to Windows.
+MKVToolNix Batch Tools is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix), and therefore [limited](https://gitlab.com/mbunkus/mkvtoolnix/-/wikis/Officially-supported-operating-systems-and-versions) to Windows.
 
 **Windows:**
 * [win32-x64](https://drive.google.com/file/d/1VnCBqaA4DG1g8Du1zpkFQMlLolmOo3Vc/view?usp=sharing)
