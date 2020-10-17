@@ -9,7 +9,7 @@ MKVToolNix Batch Tools is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkv
 * [win32-x64](https://drive.google.com/file/d/1VnCBqaA4DG1g8Du1zpkFQMlLolmOo3Vc/view?usp=sharing)
 <br>
 
-## 🛠️ Merging
+## 🛠️ Merging subtitles
 When merging subtitles, each subdirectory ***must*** contain one video file and one subtitle file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored.<br><br>
 
 <pre>
@@ -38,7 +38,7 @@ When merging subtitles, each subdirectory ***must*** contain one video file and 
 </pre>
 <br>
 
-## 🛠️ Removing
+## 🛠️ Removing subtitles
 When removing subtitles, each subdirectory ***must*** contain one video file, otherwise the directory will be skipped. Other non-video, may be included and will be ignored.<br><br>
 
 <pre>
