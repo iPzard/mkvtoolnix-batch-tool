@@ -3,7 +3,7 @@
 <br>
 
 ## 🛠️ Merging
-When merging each subdirectory **must** contain **one video** file and **one subtitle** file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored.<br><br>
+When merging each subdirectory ***must*** contain one video file and one subtitle file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored.<br><br>
 
 <pre>
   <code>
@@ -32,11 +32,12 @@ When merging each subdirectory **must** contain **one video** file and **one sub
 <br>
 
 ## 🗃️ Support
+The following file types are supported.
 
-#### Video file types:
+#### Video:
 * *AVI*, *M4V*, *MKV*, *MOV*, *MP4*, *MPG*, *MPEG*, *OGG*, *OGM*, *WEBM*, *WMV*
 
-#### Subtitle file types:
+#### Subtitle:
 * *ASS*, *PGS*, *SRT*, *SSA*, *SUP*
 <br>
 
