@@ -3,7 +3,7 @@
 <br>
 
 ## 💾 Downloads
-Due to limitations of [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix/-/wikis/Officially-supported-operating-systems-and-versions), which powers MKVToolNix Batch Tools, Windows is the only supported operating system.
+Due to [limitations](https://gitlab.com/mbunkus/mkvtoolnix/-/wikis/Officially-supported-operating-systems-and-versions) of MKVToolNix, which powers MKVToolNix Batch Tools, Windows is the only supported operating system.
 
 **Windows:**
 * [win32-x64](https://drive.google.com/file/d/1VnCBqaA4DG1g8Du1zpkFQMlLolmOo3Vc/view?usp=sharing)
