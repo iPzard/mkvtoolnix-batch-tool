@@ -62,7 +62,7 @@ When removing subtitles, each subdirectory ***must*** contain one video file, ot
 </pre>
 <br>
 
-## 🗃️ Support
+## 🗃️ File types
 The following file types are supported.
 
 #### Video:
@@ -73,8 +73,8 @@ The following file types are supported.
 <br>
 
 ## 🙏 Attribution
-* MKV batch processing is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix).
-* SVG icons used are from [Font Awesome](https://fontawesome.com).
+* MKV batch processing is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix)
+* SVG icons used are from [Font Awesome](https://fontawesome.com)
 <br>
 
 ## 🏷️ Licenses
