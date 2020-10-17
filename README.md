@@ -3,7 +3,7 @@
 <br>
 
 ## 🛠️ Merging
-Ensure the video and subtitle files are arranged similar to the structure below, in this case you would select the `Movies` directory when choosing a source directory in the application. When merging each subdirectory must contain only one **video** file and one **subtitle** file, otherwise the directory will be skipped. Subdirectories may contain other non-video, non-subtitle files, which will be ignored.<br><br>
+When merging each subdirectory must contain only one **video** file and one **subtitle** file, otherwise the directory will be skipped. Subdirectories may contain other non-video, non-subtitle files, which will be ignored.<br><br>
 
 <pre>
   <code>
