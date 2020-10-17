@@ -1,5 +1,5 @@
 # MKVToolNix Batch Tools
-> Batch subtitle processing tools to help add/merge (or remove) subtitles from your video library.
+> Batch subtitle processing tools to help add or remove subtitles from your video library.
 <br>
 
 ## 💾 Downloads
@@ -9,7 +9,7 @@ MKVToolNix Batch Tools is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkv
 * [win32-x64](https://drive.google.com/file/d/1VnCBqaA4DG1g8Du1zpkFQMlLolmOo3Vc/view?usp=sharing)
 <br>
 
-## 🛠️ Merging subtitles
+## 🔨 Merging subtitles
 When merging subtitles, each subdirectory ***must*** contain one video file and one subtitle file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored.<br><br>
 
 <pre>
@@ -38,7 +38,7 @@ When merging subtitles, each subdirectory ***must*** contain one video file and 
 </pre>
 <br>
 
-## 🛠️ Removing subtitles
+## 🪓 Removing subtitles
 When removing subtitles, each subdirectory ***must*** contain one video file, otherwise the directory will be skipped. Other non-video, may be included and will be ignored.<br><br>
 
 <pre>
@@ -78,4 +78,4 @@ The following file types are supported.
 <br>
 
 ## 🏷️ License
-GPLv2 © [iPzard](https://github.com/iPzard/mkvtoolnix-batch-tools/blob/master/LICENSE)<br>
+GPLv2 © [iPzard](https://github.com/iPzard/mkvtoolnix-batch-tools/blob/master/LICENSE)
