@@ -1,5 +1,5 @@
-# MKVToolNix Batch Tool
-> An MKVToolNix powered, batch subtitle processing tool to merge subtitle files into videos or remove them from videos.
+# MKVToolNix Batch Tools
+> MKVToolNix-powered, batch subtitle processing tools to help add/merge (or remove) subtitles from your video library.
 <br>
 
 ## 🛠️ Merging
