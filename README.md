@@ -14,6 +14,7 @@ MKVToolNix Batch Tool is powered by MKVToolNix, and is therefore limited to Wind
 ## 🔨 Merging subtitles
 When merging subtitles, each subdirectory ***must*** contain one video file and one subtitle file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored.<br><br>
 
+**Directory example:**
 <pre>
   <code>
     📂Movies
@@ -43,6 +44,7 @@ When merging subtitles, each subdirectory ***must*** contain one video file and 
 ## 🪓 Removing subtitles
 When removing subtitles, each subdirectory ***must*** contain one video file, otherwise the directory will be skipped. Other non-video, may be included and will be ignored.<br><br>
 
+**Directory example:**
 <pre>
   <code>
     📂Movies
