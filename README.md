@@ -1,5 +1,5 @@
 # MKVToolNix Batch Tool
-> Batch video and subtitle processing tool to help you add or remove subtitles from your video library. Just select a folder, click a button, and MKVToolNix will process all of the folder's subdirectories in a single batch.
+> Batch video and subtitle processing tool to help you add (merge) or remove subtitles from your video library. Select a folder and MKVToolNix will process all of the folder's subdirectories in a single batch.
 <br><br>
 
 ![mkvtoolnix-batch-tool](https://user-images.githubusercontent.com/8584126/96355280-c0c0d800-1094-11eb-9694-b404d82ccc80.gif)
