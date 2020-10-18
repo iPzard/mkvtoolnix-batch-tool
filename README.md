@@ -5,6 +5,7 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/8584126/96355280-c0c0d800-1094-11eb-9694-b404d82ccc80.gif" />
 </p>
+<br>
 
 ## 💾 Downloads
 MKVToolNix Batch Tool is powered by MKVToolNix, and is therefore limited to Windows.
