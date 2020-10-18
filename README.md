@@ -69,7 +69,7 @@ When removing subtitles, each subdirectory ***must*** contain one video file, ot
 </pre>
 <br>
 
-## 🗃️ File types
+## 🗃️ Supported files
 The following file types are supported.
 
 **Video**:
