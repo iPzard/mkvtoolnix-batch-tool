@@ -10,7 +10,7 @@ MKVToolNix Batch Tool is powered by MKVToolNix, and is therefore limited to Wind
 
 **Windows:**
 * [win32-x64](https://drive.google.com/file/d/1SrbuFV7aqoBbFk3EmdRn6Vqac5q6T0Hn/view?usp=sharing)
-<br><br>
+<br><br><br>
 
 ## 🔨 Merging subtitles
 When merging subtitles, each subdirectory ***must*** contain one video file and one subtitle file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored.<br><br>
