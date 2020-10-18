@@ -1,14 +1,14 @@
-# MKVToolNix Batch Tools
-> Batch video and subtitle processing tools to help add or remove subtitles from your video library. There's finally a way to just select a folder, click a button, and have MKVToolNix process all of the folder's subdirectories in a single batch.
+# MKVToolNix Batch Tool
+> Batch video and subtitle processing tool to help add or remove subtitles from your video library. There's finally a way to just select a folder, click a button, and have MKVToolNix process all of the folder's subdirectories in a single batch.
 <br><br>
 
-![mkvtoolnix-batch-tools](https://user-images.githubusercontent.com/8584126/96355280-c0c0d800-1094-11eb-9694-b404d82ccc80.gif)
+![mkvtoolnix-batch-tool](https://user-images.githubusercontent.com/8584126/96355280-c0c0d800-1094-11eb-9694-b404d82ccc80.gif)
 
 ## 💾 Downloads
-MKVToolNix Batch Tools is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix), and is therefore limited to Windows.
+MKVToolNix Batch Tool is powered by MKVToolNix, and is therefore limited to Windows.
 
 **Windows:**
-* [win32-x64](https://drive.google.com/file/d/1hZPZwikkzilye4QzjriLnrWgypJ8iyyi/view?usp=sharing)
+* [win32-x64](https://drive.google.com/file/d/1sHaERX1KKTKZjnECUzyQNUiFp7pILOAq/view?usp=sharing)
 <br>
 
 ## 🔨 Merging subtitles
@@ -65,7 +65,7 @@ When removing subtitles, each subdirectory ***must*** contain one video file, ot
 <br>
 
 ## ⚙️ Settings
-![mkvtoolnix-batch-tools-settings](https://user-images.githubusercontent.com/8584126/96355382-f74b2280-1095-11eb-9436-e68df7eb466f.png)
+![mkvtoolnix-batch-tool-settings](https://user-images.githubusercontent.com/8584126/96355382-f74b2280-1095-11eb-9436-e68df7eb466f.png)
 
 **Remove existing subtitles from video before merging new ones**
 * Excludes any existing, non hard-coded subtitles that are already on video.
@@ -99,4 +99,4 @@ The following file types are supported.
 <br>
 
 ## 🏷️ License
-GPLv2 © [iPzard](https://github.com/iPzard/mkvtoolnix-batch-tools/blob/master/LICENSE)
+GPLv2 © [iPzard](https://github.com/iPzard/mkvtoolnix-batch-tool/blob/master/LICENSE)

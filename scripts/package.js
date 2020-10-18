@@ -43,7 +43,7 @@ class Packager {
         `--out=${path('../dist/mac/setup')}`,
         `--icon=${path('../utilities/dmg/images/icon.icns')}`,
         // `--background=${path('../utilities/dmg/images/background.png')}`,
-        `--title="MKVToolNix Batch Tools"`,
+        `--title="MKVToolNix Batch Tool"`,
         `--overwrite`
       ].join(' '),
 
@@ -93,10 +93,10 @@ class Packager {
       appDirectory: path('../dist/windows/app-win32-x64'),
       appIconPath: path('../utilities/msi/images/icon.ico'),
       outputDirectory: path('../dist/windows/setup'),
-      description: 'MKVToolNix batch processing tools',
+      description: 'MKVToolNix batch processing tool',
       exe: 'app',
       manufacturer: 'Daniel Wade',
-      name: 'MKVToolNix Batch Tools',
+      name: 'MKVToolNix Batch Tool',
       ui: {
         chooseDirectory: true,
         images: {
