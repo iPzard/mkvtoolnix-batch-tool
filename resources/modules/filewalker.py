@@ -22,6 +22,9 @@ class FileWalker:
     # Storage for (video, subtitle) tuples
     included_files = []
 
+    # Keep track of skipped_count directories
+    skipped_count = 0
+
     # Initialize warning
     warning = None
 
@@ -65,6 +68,10 @@ class FileWalker:
         if len(subtitle_files) == 1:
           subtitle_file = subtitle_files[0]
 
+        # Plural and non-plural definitions for warning messages
+        was_if_plural = 'was' if skipped_count is 0 else 'were'
+        directory_if_plural = 'directory' if skipped_count is 0 else 'directories'
+
         # If user is removing subtitles, only get videos
         if video_file is not None and is_remove_subtitles:
           included_files.append((video_file, None))
@@ -75,12 +82,15 @@ class FileWalker:
 
         # Otherwise skip directory and provide warning about it
         elif is_remove_subtitles:
-          warning = 'Sub directories with more or less than one video file were not processed.'
+          skipped_count += 1
+          warning = f'{skipped_count} sub {directory_if_plural} had more or less than one video file and {was_if_plural} not processed.'
 
+        # If merging subtitles
         else:
-          warning = 'Sub directories with more or less than one video and subtitle file were not processed.'
+          skipped_count += 1
+          warning = f'{skipped_count} sub {directory_if_plural} had more or less than one video and/or subtitle file and {was_if_plural} not processed.'
 
-
+    # Prepare valid files and warning message (or None if none)
     file_data = {
       "files": included_files,
       "warning": warning

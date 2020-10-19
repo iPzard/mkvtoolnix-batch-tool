@@ -1,37 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, { Component } from 'react';
 
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import PropTypes from 'prop-types';
 import Spinner from 'components/pages/main/assets/icons/Spinner';
+import { socket } from 'utils/requests';
 import styles from 'components/pages/main/assets/styles/LoadingScreen.module.scss';
 
 /**
  * @description - Loading screen for when data is processing
- * @property {boolean} isVisible - Determines whether or not to show loading screen.
- *
  * @memberof MainPage
  */
+class LoadingScreen extends Component {
+  state = {
+    batchSize: 0,
+    currentCount: 0
+  };
 
-const LoadingScreen = (props) => {
-  const { isVisible } = props;
-  const [fadedIn, setFadedIn] = useState(false);
+  componentDidMount(){
 
-  useEffect(() => {
-    setFadedIn(true);
-    return ()=> setFadedIn(false);
-  }, []);
+    // Configure socket communication
+    socket.on('batch_size', (batchSize) => (
+      this.setState({ batchSize })
+    ));
 
-  const spinnerContainerClassName = fadedIn
-    ? styles.spinner
-    : `${styles.spinner} ${styles.hidden}`;
+    socket.on('processing_subdirectory', () => (
+      this.setState({ currentCount: this.state.currentCount + 1 })
+    ));
+  };
 
 
-  return isVisible ? (
-    <div className={ spinnerContainerClassName }>
-      <Spinner className={ styles['spinner-icon'] } />
-      <Label className={ styles.label }>Your files are being processed</Label>
-    </div>
-  ) : null;
+  render() {
+    const {
+      state: { batchSize, currentCount }
+    } = this;
+
+    return (
+      <div className={ styles.spinner } >
+        <Spinner className={ styles['spinner-icon'] } />
+        <Label className={ styles.label }>
+          { `Batch in progress, processing ${currentCount} of ${batchSize}` }
+        </Label>
+      </div>
+    );
+  }
 };
 
 

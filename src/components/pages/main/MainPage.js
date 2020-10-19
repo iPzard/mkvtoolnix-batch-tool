@@ -163,7 +163,7 @@ class MainPage extends Component {
 
     return(
       <Fragment>
-        <LoadingScreen isVisible={ loading } />
+        { loading ? <LoadingScreen /> : null }
         <Notice
           hideDialog={ hideDialog }
           messageText={ messageText }

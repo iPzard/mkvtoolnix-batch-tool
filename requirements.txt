@@ -1,2 +1,3 @@
 Flask
+flask-socketio
 pyinstaller

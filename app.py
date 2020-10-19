@@ -3,7 +3,11 @@ from pathlib import PurePath
 from resources.modules import filewalker
 from resources.modules import mkvtoolnix
 from flask import Flask, jsonify, request
+from flask_socketio import SocketIO
 
+# For PyInstaller
+from engineio.async_drivers import threading
+from engineio import async_threading
 
 """
 --------------------------- INSTANTIATION --------------------------
@@ -12,7 +16,7 @@ from flask import Flask, jsonify, request
 FileWalker = filewalker.FileWalker()
 MKVToolNix = mkvtoolnix.MKVToolNix()
 app = Flask(__name__)
-
+socketio = SocketIO(app, async_mode='threading')
 
 """
 --------------------------- REST CALLS -----------------------------
@@ -44,6 +48,9 @@ def process_batch():
   batch = batch_data['files']
   warning = batch_data['warning']
 
+  # Communicate batch details to front end
+  socketio.emit('batch_size', len(batch))
+
   # Iterate through array of tuples and merge
   for video_input_path, subtitle_input_path in batch:
     video_name = PurePath(video_input_path).stem
@@ -64,6 +71,9 @@ def process_batch():
 
     # Once final video path is determined, add its extension
     video_output_path += video_output_extension
+
+    # Communicate that directory is being processed to front end
+    socketio.emit('processing_subdirectory')
 
     # If "remove" subtitles
     if is_remove_subtitles:
@@ -113,10 +123,15 @@ def process_batch():
     "error": error
   })
 
-
 """
 ------------------------- FLASK SETTINGS ---------------------------
 """
+
+""" Get Flask port:
+Accepts port as system argument
+e.g., `start app.exe 3000`
+"""
+port = sys.argv[1]
 
 """ Shutdown Flask:
 Generic function to shutdown
@@ -125,17 +140,7 @@ Flask when Electron app closes.
 @app.route('/quit')
 def quit():
   shutdown = request.environ.get('werkzeug.server.shutdown')
-  shutdown()
-
-  return
-
-
-""" Get Flask port:
-Accepts port as system argument
-e.g., `start app.exe 3000`
-"""
-port = sys.argv[1]
-
+  return shutdown()
 
 """
 Start Flask microservice server:
@@ -143,4 +148,5 @@ Uses a random port between 3000
 and 3999.
 """
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=port)
+  socketio.run(app, host='0.0.0.0', port=int(port))
+  #app.run(host='0.0.0.0', port=port)

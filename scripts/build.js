@@ -31,7 +31,9 @@ class Builder {
     const options = [
       '--noconsole', // No shell
       '--noconfirm', // Don't confirm overwrite
-      // '--log-level=DEBUG', // For debugging
+      //'--log-level=DEBUG', // For debugging
+      '--hidden-import engineio.async_threading',
+      '--hidden-import engineio.async_drivers',
       '--distpath ./resources', // Dist (out) path
       `--icon ${icon}` // Icon to use
     ].join(' ');

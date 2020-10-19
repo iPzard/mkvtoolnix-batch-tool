@@ -1,3 +1,5 @@
+import socketIOClient from "socket.io-client";
+
 // Electron Inter Process Communication and dialog
 const { ipcRenderer } = window.require('electron');
 
@@ -44,3 +46,9 @@ export const post = (body, route, callback, errorCallback) => {
   .then(response => callback(response))
   .catch((error) => errorCallback(error));
 };
+
+
+/**
+* @description - SocketIO client interface configuration.
+*/
+export const socket = socketIOClient(`http://localhost:${port}/`);
