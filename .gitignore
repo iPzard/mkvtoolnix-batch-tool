@@ -5,6 +5,7 @@ app.pyc
 app.spec
 __pycache__
 
+
 # debug
 npm-debug.log*
 yarn-debug.log*
@@ -21,6 +22,7 @@ yarn-error.log*
 # production
 /build
 /dist
+/app
 
 # misc
 .DS_Store
