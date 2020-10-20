@@ -95,7 +95,7 @@ class Packager {
       outputDirectory: path('../dist/windows/setup'),
       description: 'MKVToolNix batch processing tool',
       exe: 'app',
-      manufacturer: 'Daniel Wade',
+      manufacturer: 'MKVToolNix Batch Tool',
       name: 'MKVToolNix Batch Tool',
       ui: {
         chooseDirectory: true,
