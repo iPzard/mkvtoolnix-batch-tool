@@ -103,7 +103,7 @@ def process_batch():
       os.remove(video_input_path)
 
       # Delete video directory if it's now empty
-      if not os.listdir(video_directory):
+      if len(os.listdir(video_directory)) == 0:
         os.rmdir(video_directory)
 
   # Status, warning, and error message handling
