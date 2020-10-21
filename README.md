@@ -11,7 +11,7 @@
 MKVToolNix Batch Tool is powered by MKVToolNix, and is therefore limited to Windows.
 
 **Windows:**
-* [win32-x64](https://drive.google.com/file/d/1SrbuFV7aqoBbFk3EmdRn6Vqac5q6T0Hn/view?usp=sharing)
+* [win32-x64](https://github.com/iPzard/mkvtoolnix-batch-tool/releases)
 <br>
 
 ## 🔨 Merging subtitles
