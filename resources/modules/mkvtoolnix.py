@@ -132,7 +132,7 @@ class MKVToolNix:
 
         # Replace the whole ad line with an empty line
         if text in line_text:
-          line = "\n"
+          line = '\n'
 
       # Write line to file
       sys.stdout.write(line)
