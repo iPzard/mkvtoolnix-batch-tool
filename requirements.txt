@@ -1,3 +1,4 @@
+chardet
 Flask
 flask-socketio
 pyinstaller

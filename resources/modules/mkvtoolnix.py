@@ -1,4 +1,5 @@
-import fileinput, os, subprocess, sys
+import chardet, fileinput, os, subprocess, sys
+
 
 """ MKVToolNix:
 Wrapper for MKVToolNix to allow
@@ -75,7 +76,6 @@ class MKVToolNix:
     subprocess.call(os_command, shell=True)
 
 
-
   """ Remove subtitle ads:
   Function to remove common
   advertisements from subtitle
@@ -86,11 +86,43 @@ class MKVToolNix:
     subtitle_input_path
   ):
 
+    """
+    Encoding must be determined,
+    otherwise it can break text
+    and add strange characters
+    to the file(s)
+    """
+    # Sniff out encoding method
+    with open(subtitle_input_path, 'rb') as f:
+      rawdata = b''.join([f.readline() for _ in range(10)])
+
+    # Encoding method and method whitelist
+    encoding_method = chardet.detect(rawdata)['encoding']
+    encoding_method_whitelist = ['utf8', 'ascii']
+
+    # If encoding method will cause issues, convert it to utf-8
+    if encoding_method not in encoding_method_whitelist:
+
+      # Read the old file's content
+      with open(subtitle_input_path, encoding=encoding_method) as subtitle_file:
+        subtitle_text = subtitle_file.read()
+
+      # Convert to utf-8 and write to file
+      with open(subtitle_input_path,'w',encoding='utf8') as subtitle_file:
+        subtitle_file.write(subtitle_text)
+
+
+    """
+    Once encoding is worked out
+    Sort through each line of
+    subtitle file to find and
+    replace ads
+    """
     # Common (fractional) advertisement text
     ad_text = ['mkv player', 'opensubtitles', 'yify']
 
     # Iterate through lines of subtitle file
-    for line in fileinput.input(subtitle_input_path, inplace=1):
+    for line in fileinput.input(subtitle_input_path, inplace=True):
 
       # Reference lowercase version of line, so search is case insensitive
       line_text = line.lower()
@@ -102,9 +134,10 @@ class MKVToolNix:
         if text in line_text:
           line = "\n"
 
+      # Write line to file
       sys.stdout.write(line)
 
-    return "ad removed"
+
 
 
 """
