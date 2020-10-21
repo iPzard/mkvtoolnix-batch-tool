@@ -108,7 +108,7 @@ class MKVToolNix:
         subtitle_text = subtitle_file.read()
 
       # Convert to utf-8 and write to file
-      with open(subtitle_input_path,'w',encoding='utf8') as subtitle_file:
+      with open(subtitle_input_path,'w', encoding='utf8') as subtitle_file:
         subtitle_file.write(subtitle_text)
 
 
