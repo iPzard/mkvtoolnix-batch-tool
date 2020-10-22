@@ -79,6 +79,10 @@ The following file types are supported.
 * *ASS*, *PGS*, *SRT*, *SSA*, *SUP*
 <br>
 
+## 🦟 Finding bugs
+Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) will be exterminated as quickly as possible.
+<br><br><br>
+
 ## 🙏 Attribution
 * MKV batch processing is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix)
 * SVG icons used are from [Font Awesome](https://fontawesome.com)
