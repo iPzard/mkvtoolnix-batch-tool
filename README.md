@@ -8,7 +8,7 @@
 <br>
 
 ## 💾 Downloads
-MKVToolNix Batch Tool is powered by MKVToolNix, and is therefore limited to Windows. See the project's [releases page](https://github.com/iPzard/mkvtoolnix-batch-tool/releases) for download links.
+MKVToolNix Batch Tool is powered by MKVToolNix, and is therefore limited to Windows. See the project's [releases&nbsp;page](https://github.com/iPzard/mkvtoolnix-batch-tool/releases) for download links.
 <br><br>
 
 ## 🔨 Merging subtitles
