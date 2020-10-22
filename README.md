@@ -8,7 +8,7 @@
 <br>
 
 ## 💾 Downloads
-Downloads are available for Windows; see the project's [releases&nbsp;page](https://github.com/iPzard/mkvtoolnix-batch-tool/releases) for download links.
+Downloads are available for Windows, see the project's [releases&nbsp;page](https://github.com/iPzard/mkvtoolnix-batch-tool/releases) for download links.
 <br><br>
 
 ## 🔨 Merging subtitles
