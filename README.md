@@ -8,11 +8,8 @@
 <br>
 
 ## 💾 Downloads
-MKVToolNix Batch Tool is powered by MKVToolNix, and is therefore limited to Windows.
-
-**Windows:**
-* [win32-x64](https://github.com/iPzard/mkvtoolnix-batch-tool/releases)
-<br>
+MKVToolNix Batch Tool is powered by MKVToolNix, and is therefore limited to Windows. See the project's [releases page](https://github.com/iPzard/mkvtoolnix-batch-tool/releases) for download links.
+<br><br>
 
 ## 🔨 Merging subtitles
 When merging subtitles, each subdirectory ***must*** contain one video file and one subtitle file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored.<br><br>
