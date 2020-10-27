@@ -2,19 +2,19 @@ from pathlib import Path
 import os
 
 
-""" FileWalker:
+''' FileWalker:
 Contains methods to navigate
 files and use them to process
 required data
-"""
+'''
 class FileWalker:
 
-  """ Get files:
+  ''' Get files:
   returns tuples of matches
   including video and subtitle
   absolute paths
-  """
-  def get_files(self, directory, is_remove_subtitles):
+  '''
+  def get_files(self, directory, is_remove_subtitless):
 
     # Directories to search
     video_directories = os.listdir(directory)
@@ -70,7 +70,7 @@ class FileWalker:
         directory_if_plural = 'directory' if skipped_count is 0 else 'directories'
 
         # If user is removing subtitles, only get videos
-        if video_file is not None and is_remove_subtitles:
+        if video_file is not None and is_remove_subtitless:
           included_files.append((video_file, None))
 
         # If there are both video and a subtitle files, add them to list
@@ -78,7 +78,7 @@ class FileWalker:
           included_files.append((video_file, subtitle_files))
 
         # Otherwise skip directory and provide warning about it
-        elif is_remove_subtitles:
+        elif is_remove_subtitless:
           skipped_count += 1
           warning = f'{skipped_count} sub {directory_if_plural} had more or less than one video file and {was_if_plural} not processed.'
 

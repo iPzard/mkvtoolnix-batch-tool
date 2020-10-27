@@ -9,23 +9,23 @@ from flask_socketio import SocketIO
 from engineio.async_drivers import threading
 from engineio import async_threading
 
-"""
+'''
 --------------------------- INSTANTIATION --------------------------
-"""
+'''
 
 FileWalker = filewalker.FileWalker()
 MKVToolNix = mkvtoolnix.MKVToolNix()
 app = Flask(__name__)
 socketio = SocketIO(app, async_mode='threading')
 
-"""
+'''
 --------------------------- REST CALLS -----------------------------
-"""
+'''
 
-""" Request merge batch:
+''' Request merge batch:
 Merges batch of video/subtitles
 files using user-provided options.
-"""
+'''
 @app.route('/process_batch', methods=['POST'])
 def process_batch():
 
@@ -38,12 +38,12 @@ def process_batch():
   is_remove_ads = settings['isRemoveAds']
   is_remove_existing_subtitles = settings['isRemoveExistingSubtitles']
   is_remove_old = settings['isRemoveOld']
-  is_remove_subtitles = settings['isRemoveSubtitles']
+  is_remove_subtitless = settings['isRemoveSubtitles']
   is_same_as_source = settings['isSameAsSource']
   language = settings['language']
 
   # Get batch of files to process
-  batch_data = FileWalker.get_files(input_directory, is_remove_subtitles)
+  batch_data = FileWalker.get_files(input_directory, is_remove_subtitless)
   batch = batch_data['files']
   warning = batch_data['warning']
 
@@ -75,19 +75,19 @@ def process_batch():
     socketio.emit('processing_subdirectory')
 
     # If "remove" subtitles
-    if is_remove_subtitles:
-      MKVToolNix.remove_subtitle(video_input_path, video_output_path)
+    if is_remove_subtitless:
+      MKVToolNix.remove_subtitles(video_input_path, video_output_path)
 
     # If "merge" subtitles
     else:
-      preferred_language = language['text']
+      default_language_track = language['text']
 
       # Process batch
-      MKVToolNix.add_subtitle(
+      MKVToolNix.add_subtitles(
         is_remove_ads,
         is_remove_existing_subtitles,
         subtitle_input_paths,
-        preferred_language,
+        default_language_track,
         video_input_path,
         video_output_path,
       )
@@ -125,30 +125,30 @@ def process_batch():
     "error": error
   })
 
-"""
+'''
 ------------------------- FLASK SETTINGS ---------------------------
-"""
+'''
 
-""" Get Flask port:
+''' Get Flask port:
 Accepts port as system argument
 e.g., `start app.exe 3000`
-"""
+'''
 port = sys.argv[1]
 
-""" Shutdown Flask:
+''' Shutdown Flask:
 Generic function to shutdown
 Flask when Electron app closes.
-"""
+'''
 @app.route('/quit')
 def quit():
   shutdown = request.environ.get('werkzeug.server.shutdown')
   return shutdown()
 
-"""
+'''
 Start Flask microservice server:
 Uses a random port between 3000
 and 3999.
-"""
+'''
 if __name__ == '__main__':
   socketio.run(app, host='0.0.0.0', port=int(port))
   #app.run(host='0.0.0.0', port=port)

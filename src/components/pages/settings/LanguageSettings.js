@@ -24,7 +24,8 @@ const languageOptions = [
 const onRenderLabel = (props) => (
   <Stack horizontal verticalAlign="center">
     <Label
-      title="When multiple subtitles are merged, your preferred language will set as the default track">
+      title="Default track when multiple subtitles are merged into a single video"
+    >
       { props.label }
     </Label>
     <Icon
@@ -45,8 +46,8 @@ const onRenderLabel = (props) => (
 const LanguageSettings = (props) => (
   <Dropdown
     placeholder={ props.language.text }
-    label="Preferred Language"
-    ariaLabel="Preferred Language"
+    label="Default Language Track"
+    ariaLabel="Default Language Track"
     onChange={ props.onChange }
     onRenderLabel={ onRenderLabel }
     options={ languageOptions }
