@@ -32,6 +32,7 @@ class FileWalker:
     for subdirectory in video_directories:
       current_directory = Path().absolute()/directory/subdirectory
 
+      print('test')
       # Iterate though subdirectories
       for current_subdirectory, _, files in os.walk(current_directory):
 
@@ -39,7 +40,6 @@ class FileWalker:
         video_files = []
         subtitle_files = []
         video_file = None
-        subtitle_file = None
 
         for file in files:
 
@@ -60,13 +60,10 @@ class FileWalker:
             subtitle_files.append(file_path)
 
 
+
         # Make sure there's only one video file
         if len(video_files) == 1:
           video_file = video_files[0]
-
-        # Make sure there's only one subtitle file
-        if len(subtitle_files) == 1:
-          subtitle_file = subtitle_files[0]
 
         # Plural and non-plural definitions for warning messages
         was_if_plural = 'was' if skipped_count is 0 else 'were'
@@ -77,8 +74,8 @@ class FileWalker:
           included_files.append((video_file, None))
 
         # If there are both video and a subtitle files, add them to list
-        elif video_file is not None and subtitle_file is not None:
-          included_files.append((video_file, subtitle_file))
+        elif video_file is not None and len(subtitle_files) >= 1:
+          included_files.append((video_file, subtitle_files))
 
         # Otherwise skip directory and provide warning about it
         elif is_remove_subtitles:

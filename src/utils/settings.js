@@ -32,18 +32,17 @@ class Settings{
   getSettings = () => {
 
     // If settings don't exist, set to defaults
-    if(window.localStorage.getItem('settings') === null)
+    if(window.localStorage.getItem('mkvtoolnix-batch-tool-settings') === null)
       this.loadDefaultSettings();
 
     // Return object literal of settings
-    return JSON.parse(window.localStorage.getItem('settings'));
+    return JSON.parse(window.localStorage.getItem('mkvtoolnix-batch-tool-settings'));
   };
 
 
   // Load default settings
   loadDefaultSettings = () => {
     const settings = JSON.stringify({
-      isDefaultTrack: false,
       isRemoveAds: false,
       isRemoveExistingSubtitles: false,
       isRemoveOld: false,
@@ -53,12 +52,12 @@ class Settings{
       theme: 'dark'
     });
 
-    window.localStorage.setItem('settings', settings);
+    window.localStorage.setItem('mkvtoolnix-batch-tool-settings', settings);
   };
 
   // Update settings object with new settings
   saveSettings = (settings) => {
-    window.localStorage.setItem('settings', JSON.stringify(settings));
+    window.localStorage.setItem('mkvtoolnix-batch-tool-settings', JSON.stringify(settings));
   };
 };
 

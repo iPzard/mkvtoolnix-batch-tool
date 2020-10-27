@@ -11,6 +11,7 @@ const languageOptions = [
   { key: 'chi', text: 'Chinese' },
   { key: 'dut', text: 'Dutch' },
   { key: 'eng', text: 'English' },
+  { key: 'spa', text: 'Spanish' },
   { key: 'fre', text: 'French' },
   { key: 'ger', text: 'German' },
   { key: 'ita', text: 'Italian' },
@@ -22,12 +23,15 @@ const languageOptions = [
 
 const onRenderLabel = (props) => (
   <Stack horizontal verticalAlign="center">
-    <Label>{ props.label }</Label>
-      <Icon
-        ariaLabel="Language"
-        iconName="LocaleLanguage"
-        title="Language"
-      />
+    <Label
+      title="When multiple subtitles are merged, your preferred language will set as the default track">
+      { props.label }
+    </Label>
+    <Icon
+      ariaLabel="Language"
+      iconName="LocaleLanguage"
+      title="Language"
+    />
   </Stack>
 );
 
@@ -41,8 +45,8 @@ const onRenderLabel = (props) => (
 const LanguageSettings = (props) => (
   <Dropdown
     placeholder={ props.language.text }
-    label="Subtitle Language"
-    ariaLabel="Subtitle Language"
+    label="Preferred Language"
+    ariaLabel="Preferred Language"
     onChange={ props.onChange }
     onRenderLabel={ onRenderLabel }
     options={ languageOptions }

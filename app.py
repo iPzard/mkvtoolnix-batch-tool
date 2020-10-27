@@ -35,7 +35,6 @@ def process_batch():
   settings = request.json['settings']
 
   # User settings from request body
-  is_default_track = settings['isDefaultTrack']
   is_remove_ads = settings['isRemoveAds']
   is_remove_existing_subtitles = settings['isRemoveExistingSubtitles']
   is_remove_old = settings['isRemoveOld']
@@ -52,7 +51,7 @@ def process_batch():
   socketio.emit('batch_size', len(batch))
 
   # Iterate through array of tuples and merge
-  for video_input_path, subtitle_input_path in batch:
+  for video_input_path, subtitle_input_paths in batch:
     video_name = PurePath(video_input_path).stem
     video_output_path = original_output_path = os.path.join(output_directory, f'{video_name}')
     video_output_extension = '.mkv'
@@ -81,17 +80,14 @@ def process_batch():
 
     # If "merge" subtitles
     else:
-      subtitle_language = language['key']
-      subtitle_track_name = language['text']
+      preferred_language = language['text']
 
       # Process batch
       MKVToolNix.add_subtitle(
-        is_default_track,
         is_remove_ads,
         is_remove_existing_subtitles,
-        subtitle_input_path,
-        subtitle_language,
-        subtitle_track_name,
+        subtitle_input_paths,
+        preferred_language,
         video_input_path,
         video_output_path,
       )
@@ -99,12 +95,18 @@ def process_batch():
     # If remove old, delete original files and directory (if empty after)
     if is_remove_old:
       video_directory = PurePath(video_input_path).parent
-      os.remove(subtitle_input_path)
+
+      # Delete old video file
       os.remove(video_input_path)
+
+      # Delete all old subtitle files
+      for subtitle_input_path in subtitle_input_paths:
+        os.remove(subtitle_input_path)
 
       # Delete video directory if it's now empty
       if len(os.listdir(video_directory)) == 0 and not is_same_as_source:
         os.rmdir(video_directory)
+
 
   # Status, warning, and error message handling
   status = 'Batch complete'

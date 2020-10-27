@@ -1,5 +1,5 @@
 import chardet, fileinput, os, subprocess, sys
-
+from textblob import TextBlob
 
 """ MKVToolNix:
 Wrapper for MKVToolNix to allow
@@ -7,15 +7,51 @@ control via Python functions
 """
 class MKVToolNix:
 
+  # Function to determine subtitle language
+  def determine_language(
+    self,
+    subtitle_input_path
+  ):
+
+    # Sniff out subtitle language in first 10 lines
+    with open(subtitle_input_path, 'r') as file:
+      text = ''.join([file.readline() for _ in range(10)])
+
+    langauge_code = TextBlob(text).detect_language()
+
+    # ISO 639-1 to ISO 639-2 language code map
+    language_map = {
+      'zh': { 'code': 'chi', 'text': 'Chinese' },
+      'nl': { 'code': 'dut', 'text': 'Dutch' },
+      'en': { 'code': 'eng', 'text': 'English' },
+      'es': { 'code': 'spa', 'text': 'Spanish' },
+      'fr': { 'code': 'fre', 'text': 'French' },
+      'de': { 'code': 'ger', 'text': 'German' },
+      'it': { 'code': 'ita', 'text': 'Italian' },
+      'ja': { 'code': 'jpn', 'text': 'Japanese' },
+      'pt': { 'code': 'por', 'text': 'Portuguese' },
+      'ru': { 'code': 'rus', 'text': 'Russian' },
+      'sv': { 'code': 'swe', 'text': 'Swedish' }
+    }
+
+    # Return ISO 639-2 code or "und"/"Undetermined" if unsupported
+    language_code = language_map[langauge_code]['code'] if langauge_code in language_map else 'und'
+    language = language_map[langauge_code]['text'] if langauge_code in language_map else 'Undetermined'
+
+    # Return language and ISO 639-2 code
+    return {
+      'language': language,
+      'language_code': language_code
+    }
+
+
   # Function to merge video & subtitle into MKV
   def add_subtitle(
     self,
-    is_default_track,
     is_remove_ads,
     is_remove_existing_subtitles,
-    subtitle_input_path,
-    subtitle_language,
-    subtitle_track_name,
+    subtitle_input_paths,
+    preferred_language,
     video_input_path,
     video_output_path
   ):
@@ -31,26 +67,47 @@ class MKVToolNix:
     if is_remove_existing_subtitles:
       video_path_info = f'"{video_output_path}" --no-subtitles "{video_input_path}"'
 
-    # Determine if subtitles should play automatically (is default track)
-    default_track_setting = ' --default-track 0:true' if is_default_track else ''
+    # Keep track of subtitle options and count
+    subtitle_options = []
 
-    # Subtitle language, track name, and path
-    subtitle_language_setting = f'--language 0:{subtitle_language}'
-    subtitle_track_settings = f'--track-name 0:{subtitle_track_name}{default_track_setting}'
-    subtitle_remove_ad_path = subtitle_input_path
-    subtitle_input_path = f'"{subtitle_input_path}"' # Wrap in quotes for spaces in dir names
+    # Iterate through subtitle paths and generate option commands
+    for subtitle_input_path in subtitle_input_paths:
 
-    # If user wants advertisements removed from subtitle files
-    if is_remove_ads:
-      self.remove_subtitle_ads(subtitle_remove_ad_path)
+      # Determine subtitle language
+      subtitle_language_info = self.determine_language(subtitle_input_path)
+      subtitle_language_code = subtitle_language_info['language_code']
+      subtitle_language = subtitle_language_info['language']
+      is_preferred_language = subtitle_language is preferred_language
+
+      # Determine if subtitles should play automatically (is default track)
+      default_track_setting = ' --default-track 0:true' if is_preferred_language else ''
+
+      # Subtitle language, track name, and path
+      subtitle_language_setting = f'--language 0:{subtitle_language_code}'
+      subtitle_track_settings = f'--track-name 0:{subtitle_language}{default_track_setting}'
+      subtitle_remove_ad_path = subtitle_input_path
+      subtitle_input_path = f'"{subtitle_input_path}"' # Wrap in quotes for spaces in dir names
+
+      # If user wants advertisements removed from subtitle files
+      if is_remove_ads:
+        self.remove_subtitle_ads(subtitle_remove_ad_path)
+
+
+      subtitle_options.append(' '.join([
+        subtitle_language_setting,
+        subtitle_track_settings,
+        subtitle_input_path
+      ]))
+
+
+    # Combine subtitle options into command
+    subtitle_commands = ' '.join(subtitle_options)
 
     # Finalized command for OS
     os_command = ' '.join([
       mkv_command,
       video_path_info,
-      subtitle_language_setting,
-      subtitle_track_settings,
-      subtitle_input_path
+      subtitle_commands
     ])
 
     # Use command in system
@@ -92,7 +149,7 @@ class MKVToolNix:
     and add strange characters
     to the file(s)
     """
-    # Sniff out encoding method
+    # Sniff out encoding method in first 10 lines
     with open(subtitle_input_path, 'rb') as f:
       rawdata = b''.join([f.readline() for _ in range(10)])
 
@@ -136,17 +193,3 @@ class MKVToolNix:
 
       # Write line to file
       sys.stdout.write(line)
-
-
-
-
-"""
-TODO: should merge each subtitle
-file in directory. Need to find
-out way to auto determine language
-for multiple subtitle files
-
-* Updates settings to reflect this as an option
-* read text in subtitle and use this package?
-https://stackoverflow.com/questions/39142778/python-how-to-determine-the-language
-"""

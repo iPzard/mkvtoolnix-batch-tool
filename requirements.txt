@@ -1,4 +1,5 @@
 chardet
 Flask
 flask-socketio
+textblob
 pyinstaller
