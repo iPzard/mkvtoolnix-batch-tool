@@ -96,11 +96,11 @@ class MKVToolNix:
     with open(subtitle_input_path, 'r', encoding='utf8') as file:
       text = ''.join([file.readline() for _ in range(10)])
 
-    blob_code = TextBlob(text).detect_language()
+    # Detected ISO 639-1 code
+    iso_639_1_code = TextBlob(text).detect_language()
 
-    # Convert Chinese to 'zh' (i.e., 'zh-TW')
-    if 'zh' in blob_code:
-      blob_code = 'zh'
+    # Simplify ISO to base (e.g., 'zh-TW' = 'zh')
+    iso_code = iso_639_1_code[0] + iso_639_1_code[1]
 
     # ISO 639-1 to ISO 639-2 language code map
     language_map = {
@@ -118,8 +118,8 @@ class MKVToolNix:
     }
 
     # Return ISO 639-2 code or "und"/"Undetermined" if unsupported
-    language_code = language_map[blob_code]['code'] if blob_code in language_map else 'und'
-    language = language_map[blob_code]['text'] if blob_code in language_map else 'Undetermined'
+    language_code = language_map[iso_code]['code'] if iso_code in language_map else 'und'
+    language = language_map[iso_code]['text'] if iso_code in language_map else 'Undetermined'
 
     # Return language and ISO 639-2 code
     return {
