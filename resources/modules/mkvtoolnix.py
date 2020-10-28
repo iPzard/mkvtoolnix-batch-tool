@@ -4,8 +4,7 @@ from textblob import TextBlob
 
 ''' MKVToolNix:
 Wrapper for MKVToolNix to allow
-control via Python functions,
-includes the following:
+control via Python functions
 '''
 class MKVToolNix:
 
