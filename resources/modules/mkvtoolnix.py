@@ -34,11 +34,11 @@ class MKVToolNix:
     if is_remove_existing_subtitles:
       video_path_info = f'"{video_output_path}" --no-subtitles "{video_input_path}"'
 
-    # Keep track of subtitle options and count
+    # Keep track of subtitle options
     subtitle_options = []
 
     # Iterate through subtitle paths and generate option commands
-    for subtitle_input_path in subtitle_input_paths:
+    for index, subtitle_input_path in enumerate(subtitle_input_paths):
 
       # Determine subtitle language
       subtitle_language_info = self.determine_language(subtitle_input_path)
@@ -50,15 +50,15 @@ class MKVToolNix:
       default_track_setting = ' --default-track 0:true' if is_default_language_track else ''
 
       # Subtitle language, track name, and path
+      subtitle_track_count = f'0{index + 1}' if index < 9 else index + 1
       subtitle_language_setting = f'--language 0:{subtitle_language_code}'
-      subtitle_track_settings = f'--track-name 0:{subtitle_language}{default_track_setting}'
+      subtitle_track_settings = f'--track-name 0:{subtitle_track_count}{default_track_setting}'
       subtitle_remove_ad_path = subtitle_input_path
       subtitle_input_path = f'"{subtitle_input_path}"' # Wrap in quotes for spaces in dir names
 
       # If user wants advertisements removed from subtitle files
       if is_remove_ads:
         self.remove_subtitles_ads(subtitle_remove_ad_path)
-
 
       subtitle_options.append(' '.join([
         subtitle_language_setting,
