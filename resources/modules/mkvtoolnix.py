@@ -66,7 +66,6 @@ class MKVToolNix:
         subtitle_input_path
       ]))
 
-
     # Combine subtitle options into command
     subtitle_commands = ' '.join(subtitle_options)
 
@@ -94,10 +93,14 @@ class MKVToolNix:
     self.ensure_utf8_encoding(subtitle_input_path)
 
     # Sniff out subtitle language in first 10 lines
-    with open(subtitle_input_path, 'r') as file:
+    with open(subtitle_input_path, 'r', encoding='utf8') as file:
       text = ''.join([file.readline() for _ in range(10)])
 
-    langauge_code = TextBlob(text).detect_language()
+    blob_code = TextBlob(text).detect_language()
+
+    # Convert Chinese to 'zh' (i.e., 'zh-TW')
+    if 'zh' in blob_code:
+      blob_code = 'zh'
 
     # ISO 639-1 to ISO 639-2 language code map
     language_map = {
@@ -115,8 +118,8 @@ class MKVToolNix:
     }
 
     # Return ISO 639-2 code or "und"/"Undetermined" if unsupported
-    language_code = language_map[langauge_code]['code'] if langauge_code in language_map else 'und'
-    language = language_map[langauge_code]['text'] if langauge_code in language_map else 'Undetermined'
+    language_code = language_map[blob_code]['code'] if blob_code in language_map else 'und'
+    language = language_map[blob_code]['text'] if blob_code in language_map else 'Undetermined'
 
     # Return language and ISO 639-2 code
     return {

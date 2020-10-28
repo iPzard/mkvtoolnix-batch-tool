@@ -40,7 +40,7 @@ function createWindow () {
   mainWindow.loadFile(path.join(__dirname, 'build/index.html'));
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 
   // Set opacity for title on window blur & focus
   const setTitleOpacity = value => `
@@ -73,10 +73,10 @@ app.whenReady().then(() => {
 
 
   // Connect to Python micro-services..
-  //spawn(`start ./resources/app/app.exe ${port}`, { detached: false, shell: true, stdio: 'pipe' });
+  spawn(`start ./resources/app/app.exe ${port}`, { detached: false, shell: true, stdio: 'pipe' });
 
   // Run Flask in a shell for dev, debugging or testing
-  spawn(`flask run -p ${port}`, { detached: true, shell: true, stdio: 'inherit' });
+  //spawn(`flask run -p ${port}`, { detached: true, shell: true, stdio: 'inherit' });
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
