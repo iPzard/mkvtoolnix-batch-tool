@@ -10,7 +10,7 @@ const path = require('path');
 let port;
 (async () => {
   port = await getPort({port: getPort.makeRange(3000, 3999)});
-  ipcMain.on('get-port-number', (event, arg) => event.returnValue = port);
+  ipcMain.on('get-port-number', (event) => event.returnValue = port);
 })();
 
 const shutdown = (port)=> {
@@ -53,10 +53,10 @@ function createWindow () {
    mainWindow.on('blur',  ()=> executeOnWindow(setTitleOpacity(.5)));
 
    // Send window control event listeners to front end
-   ipcMain.on('app-maximize', (event, arg) => mainWindow.maximize());
-   ipcMain.on('app-minimize', (event, arg) => mainWindow.minimize());
-   ipcMain.on('app-quit', (event, arg) => shutdown(port));
-   ipcMain.on('app-unmaximize', (event, arg) => mainWindow.unmaximize());
+   ipcMain.on('app-maximize', () => mainWindow.maximize());
+   ipcMain.on('app-minimize', () => mainWindow.minimize());
+   ipcMain.on('app-quit', () => shutdown(port));
+   ipcMain.on('app-unmaximize', () => mainWindow.unmaximize());
 };
 
 // This method will be called when Electron has finished
@@ -65,11 +65,11 @@ function createWindow () {
 app.whenReady().then(() => {
   createWindow();
 
-  app.on('activate', function () {
+  app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  })
+  });
 
 
   // Connect to Python micro-services..
@@ -82,8 +82,7 @@ app.whenReady().then(() => {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on('window-all-closed', function () {
+app.on('window-all-closed', () => {
   if (process.platform !== 'darwin')
     shutdown();
-
 });

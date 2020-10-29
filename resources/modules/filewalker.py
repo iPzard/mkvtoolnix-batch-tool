@@ -32,7 +32,6 @@ class FileWalker:
     for subdirectory in video_directories:
       current_directory = Path().absolute()/directory/subdirectory
 
-      print('test')
       # Iterate though subdirectories
       for current_subdirectory, _, files in os.walk(current_directory):
 

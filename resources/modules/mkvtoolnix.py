@@ -1,4 +1,4 @@
-import chardet, fileinput, os, subprocess, sys
+import chardet, os, subprocess, sys
 from textblob import TextBlob
 
 
@@ -52,17 +52,16 @@ class MKVToolNix:
       subtitle_track_count = f'0{index + 1}' if index < 9 else index + 1
       subtitle_language_setting = f'--language 0:{subtitle_language_code}'
       subtitle_track_settings = f'--track-name 0:{subtitle_track_count}{default_track_setting}'
-      subtitle_remove_ad_path = subtitle_input_path
-      subtitle_input_path = f'"{subtitle_input_path}"' # Wrap in quotes for spaces in dir names
+      subtitle_input_path_quoted = f'"{subtitle_input_path}"' # Wrap in quotes for spaces in dir names
 
       # If user wants advertisements removed from subtitle files
       if is_remove_ads:
-        self.remove_subtitles_ads(subtitle_remove_ad_path)
+        self.remove_subtitles_ads(subtitle_input_path)
 
       subtitle_options.append(' '.join([
         subtitle_language_setting,
         subtitle_track_settings,
-        subtitle_input_path
+        subtitle_input_path_quoted
       ]))
 
     # Combine subtitle options into command
@@ -147,13 +146,15 @@ class MKVToolNix:
     # If encoding method will cause issues, convert it to utf-8
     if encoding_method not in encoding_method_whitelist:
 
-      # Read the old file's content
+      # Read the "old" file's content
       with open(subtitle_input_path, encoding=encoding_method) as subtitle_file:
         subtitle_text = subtitle_file.read()
 
       # Convert to utf-8 and write to file
-      with open(subtitle_input_path,'w', encoding='utf8') as subtitle_file:
+      with open(subtitle_input_path, 'w', encoding='utf8') as subtitle_file:
         subtitle_file.write(subtitle_text)
+
+      subtitle_file.close()
 
 
   ''' Remove subtitles
@@ -177,6 +178,7 @@ class MKVToolNix:
     # Finalized command for OS
     os_command = ' '.join([ mkv_command, video_info ])
 
+    # Run command
     subprocess.call(os_command, shell=True)
 
 
@@ -190,24 +192,29 @@ class MKVToolNix:
     subtitle_input_path
   ):
 
-    # Ensure UTF-8 encoding
-    self.ensure_utf8_encoding(subtitle_input_path)
-
     # Common (fractional) advertisement text
     ad_text = ['mkv player', 'opensubtitles', 'yify']
 
-    # Iterate through lines of subtitle file
-    for line in fileinput.input(subtitle_input_path, inplace=True):
+    # Read the "old" file's content
+    with open(subtitle_input_path, encoding='utf8') as subtitle_file:
+      subtitle_text = subtitle_file.readlines()
 
-      # Reference lowercase version of line, so search is case insensitive
-      line_text = line.lower()
+    # Iterate through lines and remove lines that contain ads
+    with open(subtitle_input_path, 'w', encoding='utf8') as subtitle_file:
 
-      # If advertisement found
-      for text in ad_text:
+      # Check each line
+      for line in subtitle_text:
+        line_text = line.lower()
 
-        # Replace the whole ad line with an empty line
-        if text in line_text:
-          line = '\n'
+        # Against each ad text
+        for text in ad_text:
 
-      # Write line to file
-      sys.stdout.write(line)
+          # Remove lines that contain ad text
+          if text in line_text:
+            line = '\n'
+
+        # Write potentially modified line to file
+        subtitle_file.write(line)
+
+    # Close file
+    subtitle_file.close()
