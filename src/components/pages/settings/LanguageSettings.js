@@ -46,8 +46,8 @@ const onRenderLabel = (props) => (
 const LanguageSettings = (props) => (
   <Dropdown
     placeholder={ props.language.text }
-    label="Default Language Track"
-    ariaLabel="Default Language Track"
+    label="Default language track"
+    ariaLabel="Default language track"
     onChange={ props.onChange }
     onRenderLabel={ onRenderLabel }
     options={ languageOptions }

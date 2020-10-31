@@ -3,7 +3,7 @@
 <br><br>
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/8584126/97788727-3ab68e00-1b78-11eb-8c71-ac4c9f63e0c1.gif" />
+  <img src="https://user-images.githubusercontent.com/8584126/97789453-d991b900-1b7d-11eb-8ff3-be2a67cb159b.gif" />
 </p>
 <br>
 
@@ -14,7 +14,7 @@ MKVToolNix Batch Tool works on Windows 32-bit (x86) and Windows 64-bit (x64) ope
 ## 🔨 Merging subtitles
 When merging subtitles, each subdirectory ***must*** contain one video file and at least one subtitle file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored. The language of each subtitle file is determined automatically by parsing through text in the files.<br><br>
 
-The language that matches your <b>Default Language Track</b> from the settings page (defaults to English) will be set as the default subtitle track on your videos.<br><br>
+The language that matches your <b>Default language track</b> from the settings page (defaults to English) will be set as the default subtitle track on your videos.<br><br>
 
 **Directory example:**
 <pre>
