@@ -18,7 +18,7 @@ When merging subtitles, each subdirectory ***must*** contain one video file and 
 <pre>
   <code>
     📂Movies
-    ┣ 📂Resident Evil (2002) 👈 <b>only one video, and one subtitle file per sub directory</b>
+    ┣ 📂Resident Evil (2002) 👈 <b>only one video, and at least one subtitle file per sub directory</b>
     ┃ ┣ 📺Resident Evil (2002) [1080p].mp4
     ┃ ┗ 📜Resident Evil (2002) [1080p] English.srt
     ┃ ┗ 📜Resident Evil (2002) [1080p] Spanish.srt
