@@ -3,7 +3,7 @@
 <br><br>
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/8584126/96399741-f1336f80-1183-11eb-8312-ea550799fcd5.gif" />
+  <img src="https://user-images.githubusercontent.com/8584126/97788727-3ab68e00-1b78-11eb-8c71-ac4c9f63e0c1.gif" />
 </p>
 <br>
 
@@ -12,7 +12,9 @@ MKVToolNix Batch Tool works on Windows 32-bit (x86) and Windows 64-bit (x64) ope
 <br><br>
 
 ## 🔨 Merging subtitles
-When merging subtitles, each subdirectory ***must*** contain one video file and one subtitle file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored.<br><br>
+When merging subtitles, each subdirectory ***must*** contain one video file and at least one subtitle file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored.<br><br>
+
+The language of each subtitle file is determined automatically by parsing through text in the files, the language that matches your <b>Default Language Track</b> from the settings page (defaults to English) will be set as the default subtitle track on your videos.<br><br>
 
 **Directory example:**
 <pre>
@@ -20,23 +22,31 @@ When merging subtitles, each subdirectory ***must*** contain one video file and 
     📂Movies
     ┣ 📂Resident Evil (2002) 👈 <b>only one video, and one subtitle file per sub directory</b>
     ┃ ┣ 📺Resident Evil (2002) [1080p].mp4
-    ┃ ┗ 📜Resident Evil (2002) [1080p].srt
+    ┃ ┗ 📜Resident Evil (2002) [1080p] English.srt
+    ┃ ┗ 📜Resident Evil (2002) [1080p] Spanish.srt
+    ┃ ┗ 📜Resident Evil (2002) [1080p] French.srt
     ┣ 📂Resident Evil Afterlife (2010)
     ┃ ┣ 📺Resident Evil Afterlife (2010) [1080p].avi
     ┃ ┣ 📜Resident Evil Afterlife (2010) [1080p].ass
     ┃ ┗ 🎨Movie poster.png 👈 <b>extra non-video, non-subtitle files may exist</b>
     ┣ 📂Resident Evil Apocalypse (2004)
     ┃ ┣ 📺Resident Evil Apocalypse (2004) [1080p].mkv
-    ┃ ┗ 📜Resident Evil Apocalypse (2004) [1080p].pgs
+    ┃ ┗ 📜Resident Evil Apocalypse (2004) [1080p].pgs 👈 <b>language is determined automatically</b>
+    ┃ ┗ 📜Resident Evil Apocalypse (2004) [1080p] German.pgs
     ┣ 📂Resident Evil Extinction (2007)
     ┃ ┣ 📺Resident Evil Apocalypse (2004) [1080p].wmv
     ┃ ┗ 📜Resident Evil Apocalypse (2004) [1080p].ssa
     ┣ 📂Resident Evil Retribution (2012)
     ┃ ┣ 📺Resident Evil Retribution (2012) [1080p].ogg
-    ┃ ┗ 📜Resident Evil Retribution (2012) [1080p].sup
+    ┃ ┗ 📜Resident Evil Retribution (2012) [1080p] English.sup
+    ┃ ┗ 📜Resident Evil Retribution (2012) [1080p] Italian.sup
+    ┃ ┗ 📜Resident Evil Retribution (2012) [1080p] Japanese.sup
+    ┃ ┗ 📜Resident Evil Retribution (2012) [1080p] Russian.sup
     ┣ 📂Resident Evil The Final Chapter (2016)
     ┃ ┣ 📺Resident Evil The Final Chapter (2016) [1080p].ogm
-    ┃ ┗ 📜Resident Evil The Final Chapter (2016) [1080p].srt
+    ┃ ┗ 📜Resident Evil The Final Chapter (2016) [1080p] Dutch.srt
+    ┃ ┗ 📜Resident Evil The Final Chapter (2016) [1080p] Swedish.srt
+    ┃ ┗ 📜Resident Evil The Final Chapter (2016) [1080p] Portuguese.srt
   </code>
 </pre>
 <br>

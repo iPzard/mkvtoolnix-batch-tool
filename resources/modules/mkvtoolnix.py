@@ -195,7 +195,7 @@ class MKVToolNix:
     # Common (fractional) advertisement text
     ad_text = ['mkv player', 'opensubtitles', 'yify']
 
-    # Read the "old" file's content
+    # Read the "old" file's content, it's converted to utf8 by this point
     with open(subtitle_input_path, encoding='utf8') as subtitle_file:
       subtitle_text = subtitle_file.readlines()
 
