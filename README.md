@@ -25,7 +25,7 @@ When merging subtitles, each subdirectory ***must*** contain one video file and 
     ┃ ┗ 📜Resident Evil (2002) [1080p] French.srt
     ┣ 📂Resident Evil Afterlife (2010)
     ┃ ┣ 📺Resident Evil Afterlife (2010) [1080p].avi
-    ┃ ┗ 📜Resident Evil Afterlife (2010) [1080p].pgs 👈 <b>language is determined automatically (always)</b>
+    ┃ ┗ 📜Resident Evil Afterlife (2010) [1080p].pgs 👈 <b>language is (always) determined automatically</b>
     ┣ 📂Resident Evil Apocalypse (2004)
     ┃ ┣ 📺Resident Evil Apocalypse (2004) [1080p].mkv
     ┃ ┣ 📜Resident Evil Apocalypse (2004) [1080p].ass
