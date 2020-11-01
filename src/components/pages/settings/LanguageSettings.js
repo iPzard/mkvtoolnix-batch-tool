@@ -5,6 +5,7 @@ import { Label } from 'office-ui-fabric-react/lib/Label';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Stack } from 'office-ui-fabric-react/lib/Stack';
+import supportedLanguages from 'components/pages/settings/util/supportedLanguages';
 
 const languageOptions = [
   { key: 'Header', text: 'Select Language', itemType: DropdownMenuItemType.Header },
@@ -19,6 +20,10 @@ const languageOptions = [
   { key: 'por', text: 'Portuguese' },
   { key: 'rus', text: 'Russian' },
   { key: 'swe', text: 'Swedish' },
+
+  // supported languages from MKVToolNix
+  { key: 'Header', text: 'Full Language List', itemType: DropdownMenuItemType.Header },
+  ...supportedLanguages
 ];
 
 const onRenderLabel = (props) => (
@@ -39,26 +44,42 @@ const onRenderLabel = (props) => (
 /**
  * @description - Language setting dropdown for settings page
  * @property {object} language - Selected language object with `key` and `text` keys.
- * @property {function} onChange - On change callback handler to return data to the parent.
+ * @property {function} setLanguageSetting - Callback handler to return language data to the parent.
  *
  * @memberof SettingsPage
  */
-const LanguageSettings = (props) => (
-  <Dropdown
-    placeholder={ props.language.text }
-    label="Default language track"
-    ariaLabel="Default language track"
-    onChange={ props.onChange }
-    onRenderLabel={ onRenderLabel }
-    options={ languageOptions }
-    selectedKey={ props.language.key }
-  />
-);
+const LanguageSettings = (props) => {
+  const {
+    language: { text, key },
+    setLanguageSetting
+  } = props;
 
+  const onKeyDown = (event) => {
+    const option = languageOptions.find((language) => {
+      return language.key[0] === event.key;
+    });
+
+    if(option)
+      setLanguageSetting(event, option);
+  };
+
+  return (
+    <Dropdown
+      placeholder={ text }
+      label="Default language track"
+      ariaLabel="Default language track"
+      onChange={ setLanguageSetting }
+      onKeyDown={ onKeyDown }
+      onRenderLabel={ onRenderLabel }
+      options={ languageOptions }
+      selectedKey={ key }
+    />
+  );
+};
 
 LanguageSettings.propTypes = {
   language: PropTypes.object,
-  onChange: PropTypes.func
+  setLanguageSetting: PropTypes.func
 };
 
 

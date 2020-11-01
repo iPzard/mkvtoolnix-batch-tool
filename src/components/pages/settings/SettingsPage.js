@@ -91,7 +91,7 @@ class SettingsPage extends Component{
       <section className={ styles.settings }>
         <LanguageSettings
           language={ language }
-          onChange={ setLanguageSetting }
+          setLanguageSetting={ setLanguageSetting }
         />
 
         <Checkbox
