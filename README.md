@@ -14,11 +14,11 @@ MKVToolNix Batch Tool works on Windows 32-bit (x86) and Windows 64-bit (x64) ope
 ## 🔨 Merging subtitles
 MKVToolNix Batch Tool is equipped to understand your intentions; you may have a folder of movies, each in their own subdirectory containing the movie and its subtitles file(s), or you may have the season(s) of a TV show, with a directory/directories containing several episodes and their matching subtitles files.<br><br>
 
-When there's only one video file in a directory, all subtitle files in that same directory will be merged into the video, regardless of the subtitle file name. However, when there are multiple videos in a directory, they will only be merged with subtitle files that contain their full name within (or as) their name.<br><br>
+When there's only one video file in a directory, all subtitle files in that same directory will be merged into the video, regardless of the subtitle file name. However, when there are multiple videos in a directory, they will only be merged with subtitle files that contain their full name within <i>(or as)</i> their name.<br><br>
 
 Directories containing no video files, no subtitle files, or multiple video files with subtitle files that don't have matching names, will be skipped. Non-video, non-subtitle files in directories <i>(e.g., movie poster jpg file)</i> may be included and will be ignored.<br><br>
 
- The language of each subtitle file is determined automatically by parsing through text in the files, the language that matches your <b>Default language track</b> from the settings page (defaults to English) will be set as the default subtitle track on your merged videos.<br><br>
+ The language of each subtitle file is determined automatically by parsing through text in the files, the language that matches your <b>Default language track</b> from the settings page <i>(defaults to English)</i> will be set as the default subtitle track on your merged videos.<br><br>
 
 **Example (e.g., movies):**
 <pre>
@@ -31,7 +31,7 @@ Directories containing no video files, no subtitle files, or multiple video file
     ┃ ┗ 📜Subtitles French.srt 👈 <b>when only 1 video, all subtitles regardless of name, are merged</b>
     ┣ 📂Resident Evil Afterlife (2010)
     ┃ ┣ 📺Resident Evil Afterlife (2010) [1080p].avi
-    ┃ ┗ 📜Resident Evil Afterlife (2010) [1080p].pgs 👈 <b>language is (always) determined automatically</b>
+    ┃ ┗ 📜Resident Evil Afterlife (2010) [1080p].pgs 👈 <b>language is <i>(always)</i> determined automatically</b>
     ┣ 📂Resident Evil Apocalypse (2004)
     ┃ ┣ 📺Resident Evil Apocalypse (2004) [1080p].mkv
     ┃ ┣ 📜Resident Evil Apocalypse (2004) [1080p].ass
