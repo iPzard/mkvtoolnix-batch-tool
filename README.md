@@ -16,7 +16,7 @@ MKVToolNix Batch Tool is equipped to understanding your intentions; you may have
 
 When there's only one video file in a directory, all subtitle files in that same directory will be merged into the video, regardless of the subtitle file name. However, when there are multiple videos in a directory, they will only be merged with subtitle files that contain their full name within (or as) their name.<br><br>
 
-Directories containing no video files, no subtitle files, or multiple video files with subtitle files that don't have matching names, will be skipped. Non-video, non-subtitle files in directories <i>(e.g., movie poster jpg file)<i> may be included and will be ignored.<br><br>
+Directories containing no video files, no subtitle files, or multiple video files with subtitle files that don't have matching names, will be skipped. Non-video, non-subtitle files in directories <i>(e.g., movie poster jpg file)</i> may be included and will be ignored.<br><br>
 
  The language of each subtitle file is determined automatically by parsing through text in the files, the language that matches your <b>Default language track</b> from the settings page (defaults to English) will be set as the default subtitle track on your merged videos.<br><br>
 
