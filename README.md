@@ -75,9 +75,6 @@ Directories containing no video files, no subtitle files, or multiple video file
     ┃ ┣ 📺Some TV Show S01E05.avi
     ┃ ┣ 📜Some TV Show S01E05 English.srt
     ┃ ┣ 📜Some TV Show S01E05 Spanish.srt
-    ┃ ┣ 📺Some TV Show S01E06.mp4
-    ┃ ┣ 📜Some TV Show S01E06 English.srt
-    ┃ ┗ 📜Some TV Show S01E06 Spanish.srt
     ┣ 📂Season 02
     ┃ ┣ 📺Some TV Show S02E01.mkv
     ┃ ┣ 📜Some TV Show S02E01 English.srt
@@ -88,15 +85,12 @@ Directories containing no video files, no subtitle files, or multiple video file
     ┃ ┣ 📺Some TV Show S02E03.avi
     ┃ ┣ 📜Some TV Show S02E03 English.srt
     ┃ ┣ 📜Some TV Show S02E03 Spanish.srt
-    ┃ ┣ 📺Some TV Show S02E04.ogm
+    ┃ ┣ 📺Some TV Show S02E04.avi
     ┃ ┣ 📜Some TV Show S02E04 English.srt
     ┃ ┣ 📜Some TV Show S02E04 Spanish.srt
-    ┃ ┣ 📺Some TV Show S02E05.avi
-    ┃ ┣ 📜Some TV Show S02E05 English.srt
-    ┃ ┣ 📜Some TV Show S02E05 Spanish.srt
-    ┃ ┣ 📺Some TV Show S02E05 Part 2.avi
-    ┃ ┣ 📜Some TV Show S02E05 Part 2 English.srt 👈 <b>This will only merge with "Part 2" as expected.</b>
-    ┃ ┗ 📜Some TV Show S02E05 Part 2 Spanish.srt
+    ┃ ┣ 📺Some TV Show S02E04 Part 2.avi
+    ┃ ┣ 📜Some TV Show S02E04 Part 2 English.srt 👈 <b>This will only merge with "Part 2" as expected.</b>
+    ┃ ┗ 📜Some TV Show S02E04 Part 2 Spanish.srt
   </code>
 </pre>
 <br>
