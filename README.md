@@ -12,7 +12,7 @@ MKVToolNix Batch Tool works on Windows 32-bit (x86) and Windows 64-bit (x64) ope
 <br><br>
 
 ## 🔨 Merging subtitles
-MKVToolNix Batch Tool is equipped to understanding your intentions; you may have a folder of movies, each in their own subdirectory containing the movie and its subtitles file(s), or you may have the season(s) of a TV show, with a directory/directories containing several episodes and their matching subtitles files.<br><br>
+MKVToolNix Batch Tool is equipped to understand your intentions; you may have a folder of movies, each in their own subdirectory containing the movie and its subtitles file(s), or you may have the season(s) of a TV show, with a directory/directories containing several episodes and their matching subtitles files.<br><br>
 
 When there's only one video file in a directory, all subtitle files in that same directory will be merged into the video, regardless of the subtitle file name. However, when there are multiple videos in a directory, they will only be merged with subtitle files that contain their full name within (or as) their name.<br><br>
 
