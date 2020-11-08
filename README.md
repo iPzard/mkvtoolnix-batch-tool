@@ -136,7 +136,7 @@ When removing subtitles, each directory and/or subdirectory contain at least one
     ┃ ┣ 📺Some TV Show S02E02.mp4
     ┃ ┣ 📺Some TV Show S02E03.avi
     ┃ ┣ 📺Some TV Show S02E04.avi
-    ┃ ┣ 📺Some TV Show S02E04 Part 2.avi
+    ┃ ┗ 📺Some TV Show S02E04 Part 2.avi
   </code>
 </pre>
 <br>
