@@ -1,5 +1,5 @@
 # MKVToolNix Batch Tool
-> Batch video and subtitle processing program to help you add (merge) or remove subtitles from your video library. Allows you to process all of a folder's subdirectories in a single batch.
+> Batch video and subtitle processing program to help you add (merge) or remove subtitles from your video library. Allows you to process a directory, and/or all of its subdirectories, in a single batch.
 <br><br>
 
 <p align="center">
@@ -12,11 +12,15 @@ MKVToolNix Batch Tool works on Windows 32-bit (x86) and Windows 64-bit (x64) ope
 <br><br>
 
 ## 🔨 Merging subtitles
-When merging subtitles, each subdirectory ***must*** contain one video file and at least one subtitle file, otherwise the directory will be skipped. Other non-video, non-subtitle files, may be included and will be ignored. The language of each subtitle file is determined automatically by parsing through text in the files.<br><br>
+MKVToolNix Batch Tool is equipped to understanding your intentions; you may have a folder of movies, each in their own subdirectory containing the movie and its subtitles file(s), or you may have the season(s) of a TV show, with a directory/directories containing several episodes and their matching subtitles files.<br><br>
 
-The language that matches your <b>Default language track</b> from the settings page (defaults to English) will be set as the default subtitle track on your videos.<br><br>
+When there's only one video file in a directory, all subtitle files in that same directory will be merged into the video, regardless of the subtitle file name. However, when there are multiple videos in a directory, they will only be merged with subtitle files that contain their full name within (or as) their name.<br><br>
 
-**Directory example:**
+Directories containing no video files, no subtitle files, or multiple video files with subtitle files that don't have matching names, will be skipped. Non-video, non-subtitle files in directories <i>(e.g., movie poster jpg file)<i> may be included and will be ignored.<br><br>
+
+ The language of each subtitle file is determined automatically by parsing through text in the files, the language that matches your <b>Default language track</b> from the settings page (defaults to English) will be set as the default subtitle track on your merged videos.<br><br>
+
+**Example (e.g., movies):**
 <pre>
   <code>
     📂Movies
@@ -24,7 +28,7 @@ The language that matches your <b>Default language track</b> from the settings p
     ┃ ┣ 📺Resident Evil (2002) [1080p].mp4
     ┃ ┣ 📜Resident Evil (2002) [1080p] English.srt
     ┃ ┣ 📜Resident Evil (2002) [1080p] Spanish.srt
-    ┃ ┗ 📜Resident Evil (2002) [1080p] French.srt
+    ┃ ┗ 📜Subtitles French.srt 👈 <b>when only 1 video, all subtitles regardless of name are merged</b>
     ┣ 📂Resident Evil Afterlife (2010)
     ┃ ┣ 📺Resident Evil Afterlife (2010) [1080p].avi
     ┃ ┗ 📜Resident Evil Afterlife (2010) [1080p].pgs 👈 <b>language is (always) determined automatically</b>
@@ -51,14 +55,60 @@ The language that matches your <b>Default language track</b> from the settings p
 </pre>
 <br>
 
-## 🪓 Removing subtitles
-When removing subtitles, each subdirectory ***must*** contain one video file, otherwise the directory will be skipped. Other non-video, may be included and will be ignored.<br><br>
+**Example (e.g., TV shows):**
+<pre>
+  <code>
+    📂Some TV Show
+    ┣ 📂Season 01 👈 <b>only one video, and at least one subtitle file per sub directory</b>
+    ┃ ┣ 📺Some TV Show S01E01.mp4
+    ┃ ┣ 📜Some TV Show S01E01 English.srt
+    ┃ ┣ 📜Some TV Show S01E01 Spanish.srt
+    ┃ ┣ 📺Some TV Show S01E02.avi
+    ┃ ┣ 📜Some TV Show S01E02 English.srt
+    ┃ ┣ 📜Some TV Show S01E02 Spanish.srt
+    ┃ ┣ 📺Some TV Show S01E03.ogm
+    ┃ ┣ 📜Some TV Show S01E03 English.srt
+    ┃ ┣ 📜Some TV Show S01E03 Spanish.srt
+    ┃ ┣ 📺Some TV Show S01E04.mp4
+    ┃ ┣ 📜Some TV Show S01E04 English.srt
+    ┃ ┣ 📜Some TV Show S01E04 Spanish.srt
+    ┃ ┣ 📺Some TV Show S01E05.avi
+    ┃ ┣ 📜Some TV Show S01E05 English.srt
+    ┃ ┣ 📜Some TV Show S01E05 Spanish.srt
+    ┃ ┣ 📺Some TV Show S01E06.mp4
+    ┃ ┣ 📜Some TV Show S01E06 English.srt
+    ┃ ┗ 📜Some TV Show S01E06 Spanish.srt
+    ┣ 📂Season 02
+    ┃ ┣ 📺Some TV Show S02E01.mkv
+    ┃ ┣ 📜Some TV Show S02E01 English.srt
+    ┃ ┣ 📜Some TV Show S02E01 Spanish.srt
+    ┃ ┣ 📺Some TV Show S02E02.mp4
+    ┃ ┣ 📜Some TV Show S02E02 English.srt
+    ┃ ┣ 📜Some TV Show S02E02 Spanish.srt
+    ┃ ┣ 📺Some TV Show S02E03.avi
+    ┃ ┣ 📜Some TV Show S02E03 English.srt
+    ┃ ┣ 📜Some TV Show S02E03 Spanish.srt
+    ┃ ┣ 📺Some TV Show S02E04.ogm
+    ┃ ┣ 📜Some TV Show S02E04 English.srt
+    ┃ ┣ 📜Some TV Show S02E04 Spanish.srt
+    ┃ ┣ 📺Some TV Show S02E05.avi
+    ┃ ┣ 📜Some TV Show S02E05 English.srt
+    ┃ ┣ 📜Some TV Show S02E05 Spanish.srt
+    ┃ ┣ 📺Some TV Show S02E05 Part 2.avi
+    ┃ ┣ 📜Some TV Show S02E05 Part 2 English.srt 👈 <b>This will only merge with "Part 2" as expected.</b>
+    ┃ ┗ 📜Some TV Show S02E05 Part 2 Spanish.srt
+  </code>
+</pre>
+<br>
 
-**Directory example:**
+## 🪓 Removing subtitles
+When removing subtitles, each directory and/or subdirectory contain at least one video file will be processed, others will be skipped. Other non-video files may be included and will be ignored.<br><br>
+
+**Example (e.g., movies):**
 <pre>
   <code>
     📂Movies
-    ┣ 📂Resident Evil (2002) 👈 <b>only one video file per sub directory</b>
+    ┣ 📂Resident Evil (2002)
     ┃ ┗ 📺Resident Evil (2002) [1080p].mp4
     ┣ 📂Resident Evil Afterlife (2010)
     ┃ ┣ 📺Resident Evil Afterlife (2010) [1080p].avi
@@ -76,6 +126,29 @@ When removing subtitles, each subdirectory ***must*** contain one video file, ot
 </pre>
 <br>
 
+**Example (e.g., TV shows):**
+<pre>
+  <code>
+    📂Some TV Show
+    ┣ 📂Season 01
+    ┃ ┣ 📺Some TV Show S01E01.mp4
+    ┃ ┣ 📺Some TV Show S01E02.avi
+    ┃ ┣ 📺Some TV Show S01E03.ogm
+    ┃ ┣ 📺Some TV Show S01E04.mp4
+    ┃ ┣ 📺Some TV Show S01E05.avi
+    ┃ ┣ 📺Some TV Show S01E06.mp4
+    ┃ ┗ 🎨Some TV Show.jpg 👈 <b>extra non-video files may exist</b>
+    ┣ 📂Season 02
+    ┃ ┣ 📺Some TV Show S02E01.mkv
+    ┃ ┣ 📺Some TV Show S02E02.mp4
+    ┃ ┣ 📺Some TV Show S02E03.avi
+    ┃ ┣ 📺Some TV Show S02E04.ogm
+    ┃ ┣ 📺Some TV Show S02E05.avi
+    ┃ ┣ 📺Some TV Show S02E05 Part 2.avi
+  </code>
+</pre>
+<br>
+
 ## 🗃️ Supported files
 The following file types are supported.
 
@@ -87,7 +160,7 @@ The following file types are supported.
 <br>
 
 ## 🦟 Software bugs
-Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) will be exterminated as quickly as possible.
+Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) will be exterminated as quickly as possible, be sure to include steps to reproduce so they can be spotted easily.
 <br><br><br>
 
 ## 🙏 Attribution

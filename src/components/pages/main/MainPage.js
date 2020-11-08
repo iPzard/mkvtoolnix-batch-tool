@@ -77,7 +77,7 @@ class MainPage extends Component {
             hideDialog: false,
             messageTitle: response.status,
             messageText: response.error || response.warning ||
-              'Sub directories were successfully processed without any errors or warnings.'
+              'Batch successfully processed without any errors or warnings.'
           });
         },
 
@@ -131,7 +131,7 @@ class MainPage extends Component {
       : !input || !output;
 
     const sameAsSourceValue = isSameAsSource
-      ? input ? input + String.raw`\**\*`
+      ? input ? input + String.raw`\*`
       : input : output;
 
 

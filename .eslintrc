@@ -3,11 +3,7 @@
     "browser": true,
     "node": true
   },
-  "extends": [
-    "plugin:compat/recommended",
-    "standard",
-    "standard-react"
-  ],
+  "extends": ["plugin:compat/recommended", "standard", "standard-react"],
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 2020,
@@ -21,12 +17,17 @@
     "curly": 0,
     "eol-last": ["error", "never"],
     "import/export": 0,
-    "keyword-spacing": [2, {"overrides": {
-      "if": {"after": false},
-      "for": {"after": false},
-      "while": {"after": false},
-      "switch": {"after": false}
-    }}],
+    "keyword-spacing": [
+      2,
+      {
+        "overrides": {
+          "if": { "after": false },
+          "for": { "after": false },
+          "while": { "after": false },
+          "switch": { "after": false }
+        }
+      }
+    ],
     "no-multiple-empty-lines": ["error", { "max": 2 }],
     "no-return-assign": 0,
     "no-trailing-spaces": "error",

@@ -5,56 +5,60 @@ from resources.modules import mkvtoolnix
 from flask import Flask, jsonify, request
 from flask_socketio import SocketIO
 
-# For PyInstaller
+# For PyInstaller w/SocketIO
 from engineio.async_drivers import threading
 from engineio import async_threading
 
-'''
+"""
 --------------------------- INSTANTIATION --------------------------
-'''
+"""
 
 FileWalker = filewalker.FileWalker()
 MKVToolNix = mkvtoolnix.MKVToolNix()
 app = Flask(__name__)
-socketio = SocketIO(app, async_mode='threading')
+socketio = SocketIO(app, async_mode="threading")
 
-'''
+"""
 --------------------------- REST CALLS -----------------------------
-'''
+"""
 
-''' Request merge batch:
+""" Request merge batch:
 Merges batch of video/subtitles
 files using user-provided options.
-'''
-@app.route('/process_batch', methods=['POST'])
+"""
+
+
+@app.route("/process_batch", methods=["POST"])
 def process_batch():
 
   # REST call request body
-  input_directory = request.json['input']
-  output_directory = request.json['output']
-  settings = request.json['settings']
+  input_directory = request.json["input"]
+  output_directory = request.json["output"]
+  settings = request.json["settings"]
 
   # User settings from request body
-  is_remove_ads = settings['isRemoveAds']
-  is_remove_existing_subtitles = settings['isRemoveExistingSubtitles']
-  is_remove_old = settings['isRemoveOld']
-  is_remove_subtitless = settings['isRemoveSubtitles']
-  is_same_as_source = settings['isSameAsSource']
-  language = settings['language']
+  is_remove_ads = settings["isRemoveAds"]
+  is_remove_existing_subtitles = settings["isRemoveExistingSubtitles"]
+  is_remove_old = settings["isRemoveOld"]
+  is_remove_subtitles = settings["isRemoveSubtitles"]
+  is_same_as_source = settings["isSameAsSource"]
+  language = settings["language"]
 
   # Get batch of files to process
-  batch_data = FileWalker.get_files(input_directory, is_remove_subtitless)
-  batch = batch_data['files']
-  warning = batch_data['warning']
+  batch_data = FileWalker.get_files(input_directory, is_remove_subtitles)
+  batch = batch_data["files"]
+  warning = batch_data["warning"]
 
   # Communicate batch details to front end
-  socketio.emit('batch_size', len(batch))
+  socketio.emit("batch_size", len(batch))
 
   # Iterate through array of tuples and merge
   for video_input_path, subtitle_input_paths in batch:
     video_name = PurePath(video_input_path).stem
-    video_output_path = original_output_path = os.path.join(output_directory, f'{video_name}')
-    video_output_extension = '.mkv'
+    video_output_path = original_output_path = os.path.join(
+      output_directory, f"{video_name}"
+    )
+    video_output_extension = ".mkv"
 
     # If output is "same as source"
     if is_same_as_source:
@@ -65,22 +69,22 @@ def process_batch():
     # Prevent duplicate file names by adding (#) to name
     count = 1
     while os.path.exists(video_output_path + video_output_extension):
-      video_output_path = f'{original_output_path} ({count})'
+      video_output_path = f"{original_output_path} ({count})"
       count += 1
 
     # Once final video path is determined, add its extension
     video_output_path += video_output_extension
 
     # Communicate that directory is being processed to front end
-    socketio.emit('processing_subdirectory')
+    socketio.emit("processing_subdirectory")
 
     # If "remove" subtitles
-    if is_remove_subtitless:
+    if is_remove_subtitles:
       MKVToolNix.remove_subtitles(video_input_path, video_output_path)
 
     # If "merge" subtitles
     else:
-      default_language_track = language['text']
+      default_language_track = language["text"]
 
       # Process batch
       MKVToolNix.add_subtitles(
@@ -107,48 +111,50 @@ def process_batch():
       if len(os.listdir(video_directory)) == 0 and not is_same_as_source:
         os.rmdir(video_directory)
 
-
   # Status, warning, and error message handling
-  status = 'Batch complete'
-  error = 'No valid subdirectories were found in the selected directory.' if len(batch) == 0 else None
+  status = "Batch complete"
+  error = (
+    "No valid directories were found using the path provided."
+    if len(batch) == 0
+    else None
+  )
 
   if error is not None:
-    status = 'Error'
+    status = "Error"
 
   elif warning is not None:
-    status = 'Warning'
+    status = "Warning"
 
   # Return results to the front end
-  return jsonify({
-    "status": status,
-    "warning": warning,
-    "error": error
-  })
+  return jsonify({"status": status, "warning": warning, "error": error})
 
-'''
+
+"""
 ------------------------- FLASK SETTINGS ---------------------------
-'''
+"""
 
-''' Get Flask port:
+""" Get Flask port:
 Accepts port as system argument
 e.g., `start app.exe 3000`
-'''
+"""
 port = sys.argv[1]
 
-''' Shutdown Flask:
+""" Shutdown Flask:
 Generic function to shutdown
 Flask when Electron app closes.
-'''
-@app.route('/quit')
+"""
+
+
+@app.route("/quit")
 def quit():
-  shutdown = request.environ.get('werkzeug.server.shutdown')
+  shutdown = request.environ.get("werkzeug.server.shutdown")
   return shutdown()
 
-'''
+
+"""
 Start Flask microservice server:
 Uses a random port between 3000
 and 3999.
-'''
-if __name__ == '__main__':
-  socketio.run(app, host='0.0.0.0', port=int(port))
-  #app.run(host='0.0.0.0', port=port)
+"""
+if __name__ == "__main__":
+  socketio.run(app, host="0.0.0.0", port=int(port))

@@ -9,17 +9,17 @@ const path = require('path');
 // This way if a port is in use it will just go to the next.
 let port;
 (async () => {
-  port = await getPort({port: getPort.makeRange(3000, 3999)});
-  ipcMain.on('get-port-number', (event) => event.returnValue = port);
+  port = await getPort({ port: getPort.makeRange(3000, 3999) });
+  ipcMain.on('get-port-number', (event) => (event.returnValue = port));
 })();
 
-const shutdown = (port)=> {
+const shutdown = (port) => {
   get(`http://localhost:${port}/quit`)
     .then(() => app.quit())
-    .catch(()=> app.quit());
+    .catch(() => app.quit());
 };
 
-function createWindow () {
+function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     frame: false,
@@ -43,21 +43,22 @@ function createWindow () {
   //mainWindow.webContents.openDevTools();
 
   // Set opacity for title on window blur & focus
-  const setTitleOpacity = value => `
+  const setTitleOpacity = (value) => `
     ['electron-window-title-icon', 'electron-window-title-text', 'electron-window-title-buttons']
     .forEach((id) => document.getElementById(id).style.opacity = ${value});
   `;
 
-   const executeOnWindow = command => mainWindow.webContents.executeJavaScript(command);
-   mainWindow.on('focus', ()=> executeOnWindow(setTitleOpacity(1)));
-   mainWindow.on('blur',  ()=> executeOnWindow(setTitleOpacity(.5)));
+  const executeOnWindow = (command) =>
+    mainWindow.webContents.executeJavaScript(command);
+  mainWindow.on('focus', () => executeOnWindow(setTitleOpacity(1)));
+  mainWindow.on('blur', () => executeOnWindow(setTitleOpacity(0.5)));
 
-   // Send window control event listeners to front end
-   ipcMain.on('app-maximize', () => mainWindow.maximize());
-   ipcMain.on('app-minimize', () => mainWindow.minimize());
-   ipcMain.on('app-quit', () => shutdown(port));
-   ipcMain.on('app-unmaximize', () => mainWindow.unmaximize());
-};
+  // Send window control event listeners to front end
+  ipcMain.on('app-maximize', () => mainWindow.maximize());
+  ipcMain.on('app-minimize', () => mainWindow.minimize());
+  ipcMain.on('app-quit', () => shutdown(port));
+  ipcMain.on('app-unmaximize', () => mainWindow.unmaximize());
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -71,18 +72,24 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 
-
   // Connect to Python micro-services..
-  spawn(`start ./resources/app/app.exe ${port}`, { detached: false, shell: true, stdio: 'pipe' });
+  spawn(`start ./resources/app/app.exe ${port}`, {
+    detached: false,
+    shell: true,
+    stdio: 'pipe'
+  });
 
   // Run Flask in a shell for dev, debugging or testing
-  //spawn(`flask run -p ${port}`, { detached: true, shell: true, stdio: 'inherit' });
+  // spawn(`flask run -p ${port}`, {
+  //   detached: true,
+  //   shell: true,
+  //   stdio: 'inherit'
+  // });
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin')
-    shutdown();
+  if (process.platform !== 'darwin') shutdown();
 });

@@ -12,13 +12,11 @@ const path = (directory) => {
  * @description - Packages app for various operating systems.
  */
 class Packager {
-
   /**
    * @description - Creates DMG installer for macOS.
    * @memberof Packager
    */
   packageMacOS = () => {
-
     // Build Python & React distribution files
     builder.buildAll();
 
@@ -54,13 +52,11 @@ class Packager {
     spawnSync(`electron-installer-dmg ${options.package}`, options.spawn);
   };
 
-
   /**
    * @description - Creates MSI installer for Windows.
    * @memberof Packager
    */
   packageWindows = () => {
-
     console.log('Building windows package...');
 
     // Build Python & React distribution files
@@ -101,10 +97,10 @@ class Packager {
         chooseDirectory: true,
         images: {
           background: path('../utilities/msi/images/background.png'),
-          banner: path('../utilities/msi/images/banner.png'),
+          banner: path('../utilities/msi/images/banner.png')
         }
       },
-      version: '1.1.1',
+      version: '2.0.0'
     });
 
     // Customized MSI template
@@ -112,11 +108,9 @@ class Packager {
       .replace(/ \(Machine - MSI\)/gi, '')
       .replace(/ \(Machine\)/gi, '');
 
-
     // Create .wxs template and compile MSI
     msiCreator.create().then(() => msiCreator.compile());
   };
-
 }
 
 module.exports.Packager = Packager;
