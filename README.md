@@ -89,7 +89,7 @@ Directories containing no video files, no subtitle files, or multiple video file
     ┃ ┣ 📜Some TV Show S02E04 English.srt
     ┃ ┣ 📜Some TV Show S02E04 Spanish.srt
     ┃ ┣ 📺Some TV Show S02E04 Part 2.avi
-    ┃ ┣ 📜Some TV Show S02E04 Part 2 English.srt 👈 <b>This will only merge with "Part 2" as expected.</b>
+    ┃ ┣ 📜Some TV Show S02E04 Part 2 English.srt 👈 <b>This will only merge with "Part 2" as expected</b>
     ┃ ┗ 📜Some TV Show S02E04 Part 2 Spanish.srt
   </code>
 </pre>
