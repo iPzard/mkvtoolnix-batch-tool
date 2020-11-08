@@ -61,7 +61,7 @@ Directories containing no video files, no subtitle files, or multiple video file
     📂Some TV Show
     ┣ 📂Season 01
     ┃ ┣ 📺Some TV Show S01E01.mp4
-    ┃ ┣ 📜Some TV Show S01E01 English.srt 👈 <b>with multiple videos, subtitle file name must include video file name</b>
+    ┃ ┣ 📜Some TV Show S01E01 English.srt 👈 <b>subtitle file name must include video file name</b>
     ┃ ┣ 📜Some TV Show S01E01 Spanish.srt
     ┃ ┣ 📺Some TV Show S01E02.avi
     ┃ ┣ 📜Some TV Show S01E02 English.srt
