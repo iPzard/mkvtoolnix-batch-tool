@@ -24,7 +24,7 @@ Directories containing no video files, no subtitle files, or multiple video file
 <pre>
   <code>
     📂Movies
-    ┣ 📂Resident Evil (2002) 👈 <b>only one video, and at least one subtitle file per sub directory</b>
+    ┣ 📂Resident Evil (2002)
     ┃ ┣ 📺Resident Evil (2002) [1080p].mp4
     ┃ ┣ 📜Resident Evil (2002) [1080p] English.srt
     ┃ ┣ 📜Resident Evil (2002) [1080p] Spanish.srt
@@ -59,9 +59,9 @@ Directories containing no video files, no subtitle files, or multiple video file
 <pre>
   <code>
     📂Some TV Show
-    ┣ 📂Season 01 👈 <b>only one video, and at least one subtitle file per sub directory</b>
+    ┣ 📂Season 01
     ┃ ┣ 📺Some TV Show S01E01.mp4
-    ┃ ┣ 📜Some TV Show S01E01 English.srt
+    ┃ ┣ 📜Some TV Show S01E01 English.srt 👈 <b>with multiple videos, subtitle file name must include video file name</b>
     ┃ ┣ 📜Some TV Show S01E01 Spanish.srt
     ┃ ┣ 📺Some TV Show S01E02.avi
     ┃ ┣ 📜Some TV Show S01E02 English.srt
