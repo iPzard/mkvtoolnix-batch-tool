@@ -55,7 +55,7 @@ Directories containing no video files, no subtitle files, or multiple video file
 </pre>
 <br>
 
-**Example (e.g., TV shows):**
+**Example (e.g., TV show):**
 <pre>
   <code>
     📂Some TV Show
@@ -120,7 +120,7 @@ When removing subtitles, each directory and/or subdirectory contain at least one
 </pre>
 <br>
 
-**Example (e.g., TV shows):**
+**Example (e.g., TV show):**
 <pre>
   <code>
     📂Some TV Show
