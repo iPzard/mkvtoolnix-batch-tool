@@ -28,7 +28,7 @@ Directories containing no video files, no subtitle files, or multiple video file
     ┃ ┣ 📺Resident Evil (2002) [1080p].mp4
     ┃ ┣ 📜Resident Evil (2002) [1080p] English.srt
     ┃ ┣ 📜Resident Evil (2002) [1080p] Spanish.srt
-    ┃ ┗ 📜Subtitles French.srt 👈 <b>when only 1 video, all subtitles regardless of name are merged</b>
+    ┃ ┗ 📜Subtitles French.srt 👈 <b>when only 1 video, all subtitles regardless of name, are merged</b>
     ┣ 📂Resident Evil Afterlife (2010)
     ┃ ┣ 📺Resident Evil Afterlife (2010) [1080p].avi
     ┃ ┗ 📜Resident Evil Afterlife (2010) [1080p].pgs 👈 <b>language is (always) determined automatically</b>
