@@ -62,7 +62,7 @@ The language of each subtitle file is determined automatically by parsing throug
     📂Some TV Show
     ┣ 📂Season 01
     ┃ ┣ 📺Some TV Show S01E01.mp4
-    ┃ ┣ 📜Some TV Show S01E01 English.srt 👈 <b>with multiple videos, subtitle's file name must include video's</b>
+    ┃ ┣ 📜Some TV Show S01E01 English.srt 👈 <b>with multiple videos, subtitle file name must include video's</b>
     ┃ ┣ 📜Some TV Show S01E01 Spanish.srt
     ┃ ┣ 📺Some TV Show S01E02.avi
     ┃ ┣ 📜Some TV Show S01E02 English.srt
