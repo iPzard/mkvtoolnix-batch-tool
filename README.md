@@ -135,7 +135,7 @@ When removing subtitles, each directory and/or subdirectory contain at least one
     ┃ ┣ 📺Some TV Show S01E03.ogm
     ┃ ┣ 📺Some TV Show S01E04.mp4
     ┃ ┣ 📺Some TV Show S01E05.avi
-    ┃ ┗ 🎨Some TV Show.jpg 👈 <b>extra non-video files may exist</b>
+    ┃ ┗ 🎨Some TV Show Poster.png 👈 <b>extra non-video, non-subtitle files may exist</b>
     ┣ 📂Season 02
     ┃ ┣ 📺Some TV Show S02E01.mkv
     ┃ ┣ 📺Some TV Show S02E02.mp4
