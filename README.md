@@ -1,6 +1,7 @@
 # MKVToolNix Batch Tool
+
 > Batch video and subtitle processing program to help you add (merge) or remove subtitles from your video library. Allows you to process a directory, and/or all of its subdirectories, in a single batch.
-<br><br>
+> <br><br>
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/8584126/97789453-d991b900-1b7d-11eb-8ff3-be2a67cb159b.gif" />
@@ -8,19 +9,18 @@
 <br>
 
 ## 💾 Downloads
+
 MKVToolNix Batch Tool works on Windows 32-bit (x86) and Windows 64-bit (x64) operating systems, see the project's [releases&nbsp;page](https://github.com/iPzard/mkvtoolnix-batch-tool/releases) for download links.
 <br><br>
 
 ## 🔨 Merging subtitles
-MKVToolNix Batch Tool is equipped to understand your intentions; you may have a folder of movies, each in their own subdirectory containing the movie and its subtitles file(s), or you may have the season(s) of a TV show, with a directory/directories containing several episodes and their matching subtitles files.<br><br>
 
-When there's only one video file in a directory, all subtitle files in that same directory will be merged into the video, regardless of the subtitle file name. However, when there are multiple videos in a directory, they will only be merged with subtitle files that contain their full name within <i>(or as)</i> their name.<br><br>
+When there's only one video file per subdirectory, all subtitle files in that same directory will be merged into the video, regardless of the subtitle file name. However, when there are multiple videos in a directory, they will only be merged with subtitle files that contain their full name within <i>(or as)</i> their name.<br><br>
 
-Directories containing no video files, no subtitle files, or multiple video files with subtitle files that don't have matching names, will be skipped. Non-video, non-subtitle files in directories <i>(e.g., movie poster jpg file)</i> may be included and will be ignored.<br><br>
-
- The language of each subtitle file is determined automatically by parsing through text in the files, the language that matches your <b>Default language track</b> from the settings page <i>(defaults to English)</i> will be set as the default subtitle track on your merged videos.<br><br>
+The language of each subtitle file is determined automatically by parsing through text in the files, the language that matches your <b>Default language track</b> from the settings page <i>(defaults to English)</i> will be set as the default subtitle track on your merged videos.<br><br>
 
 **Example (e.g., movies):**
+
 <pre>
   <code>
     📂Movies
@@ -56,6 +56,7 @@ Directories containing no video files, no subtitle files, or multiple video file
 <br>
 
 **Example (e.g., TV show):**
+
 <pre>
   <code>
     📂Some TV Show
@@ -95,10 +96,14 @@ Directories containing no video files, no subtitle files, or multiple video file
 </pre>
 <br>
 
+Directories containing no video files, no subtitle files, or multiple video files with subtitle files that don't have matching names, will be skipped. Non-video, non-subtitle files in directories <i>(e.g., movie poster jpg file)</i> may be included and will be ignored.<br>
+
 ## 🪓 Removing subtitles
+
 When removing subtitles, each directory and/or subdirectory contain at least one video file will be processed, others will be skipped. Other non-video files may be included and will be ignored.<br><br>
 
 **Example (e.g., movies):**
+
 <pre>
   <code>
     📂Movies
@@ -121,6 +126,7 @@ When removing subtitles, each directory and/or subdirectory contain at least one
 <br>
 
 **Example (e.g., TV show):**
+
 <pre>
   <code>
     📂Some TV Show
@@ -142,23 +148,29 @@ When removing subtitles, each directory and/or subdirectory contain at least one
 <br>
 
 ## 🗃️ Supported files
+
 The following file types are supported.
 
 **Video**:
-* *AVI*, *M4V*, *MKV*, *MOV*, *MP4*, *MPG*, *MPEG*, *OGG*, *OGM*, *WEBM*, *WMV*
+
+- _AVI_, _M4V_, _MKV_, _MOV_, _MP4_, _MPG_, _MPEG_, _OGG_, _OGM_, _WEBM_, _WMV_
 
 **Subtitle**:
-* *ASS*, *PGS*, *SRT*, *SSA*, *SUP*
-<br>
+
+- _ASS_, _PGS_, _SRT_, _SSA_, _SUP_
+  <br>
 
 ## 🦟 Software bugs
+
 Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) will be exterminated as quickly as possible, be sure to include steps to reproduce so they can be spotted easily.
 <br><br><br>
 
 ## 🙏 Attribution
-* MKV batch processing is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix)
-* SVG icons used are from [Font Awesome](https://fontawesome.com)
-<br>
+
+- MKV batch processing is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix)
+- SVG icons used are from [Font Awesome](https://fontawesome.com)
+  <br>
 
 ## 🏷️ License
+
 GPLv2 © [iPzard](https://github.com/iPzard/mkvtoolnix-batch-tool/blob/master/LICENSE)
