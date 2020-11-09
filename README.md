@@ -76,6 +76,7 @@ The language of each subtitle file is determined automatically by parsing throug
     ┃ ┣ 📺Some TV Show S01E05.avi
     ┃ ┣ 📜Some TV Show S01E05 English.srt
     ┃ ┣ 📜Some TV Show S01E05 Spanish.srt
+    ┃ ┗ 🎨Some TV Show Poster.png 👈 <b>extra non-video, non-subtitle files may exist</b>
     ┣ 📂Season 02
     ┃ ┣ 📺Some TV Show S02E01.mkv
     ┃ ┣ 📜Some TV Show S02E01 English.srt
@@ -90,7 +91,7 @@ The language of each subtitle file is determined automatically by parsing throug
     ┃ ┣ 📜Some TV Show S02E04 English.srt
     ┃ ┣ 📜Some TV Show S02E04 Spanish.srt
     ┃ ┣ 📺Some TV Show S02E04 Part 2.avi
-    ┃ ┣ 📜Some TV Show S02E04 Part 2 English.srt 👈 <b>This will only merge with "Part 2" as expected</b>
+    ┃ ┣ 📜Some TV Show S02E04 Part 2 English.srt 👈 <b>This will only merge with "Part 2", as expected</b>
     ┃ ┗ 📜Some TV Show S02E04 Part 2 Spanish.srt
   </code>
 </pre>
