@@ -86,10 +86,6 @@ class FileWalker:
           elif file_type in subtitle_file_types:
             subtitle_files.append(file_path)
 
-        # Plural and non-plural definitions for warning messages
-        directory_was_if_plural = "was" if skipped_directories == 1 else "were"
-        directory_if_plural = "directory" if skipped_directories == 1 else "directories"
-
         # If only one video, set it as "the" video file
         if len(video_files) == 1:
           video_file = video_files[0]
@@ -164,11 +160,18 @@ class FileWalker:
         # Otherwise skip directory and provide warning about it
         elif is_remove_subtitles and is_not_root_directory:
           skipped_directories += 1
-          warning = f"{skipped_directories} {directory_if_plural} had no video files and {directory_was_if_plural} not processed."
 
         # Check if any directories were skipped
         if skipped_directories:
-          warning = f"{skipped_directories} {directory_if_plural} had no videos and/or subtitle files and {directory_was_if_plural} not processed."
+          directory_was_if_plural = "was" if skipped_directories == 1 else "were"
+          directory_if_plural = (
+            "directory" if skipped_directories == 1 else "directories"
+          )
+
+          if is_remove_subtitles:
+            warning = f"{skipped_directories} {directory_if_plural} had no video files and {directory_was_if_plural} not processed."
+          else:
+            warning = f"{skipped_directories} {directory_if_plural} had no videos and/or subtitle files and {directory_was_if_plural} not processed."
 
         # if there are skipped subtitles, provide a warning
         if skipped_subtitles and not is_remove_subtitles:
