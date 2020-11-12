@@ -13,13 +13,13 @@ const Spinner = (props) => {
         <path id="path_b" d="M0 0A15 35 0 0 1 0 70A15 35 0 0 1 0 0" fill="none"></path>
       </defs>
       <g transform="rotate(0 50 50)">
-        <use xlinkHref="#path_a" stroke="#f5f5f5" stroke-width="3"></use>
+        <use xlinkHref="#path_a" stroke="#f5f5f5" strokeWidth="3"></use>
       </g>
       <g transform="rotate(60 50 50)">
-        <use xlinkHref="#path_a" stroke="#f5f5f5" stroke-width="3"></use>
+        <use xlinkHref="#path_a" stroke="#f5f5f5" strokeWidth="3"></use>
       </g>
       <g transform="rotate(120 50 50)">
-        <use xlinkHref="#path_a" stroke="#f5f5f5" stroke-width="3"></use>
+        <use xlinkHref="#path_a" stroke="#f5f5f5" strokeWidth="3"></use>
       </g>
       <g transform="rotate(0 50 50)">
         <circle cx="50" cy="14" r="6" fill="#bf7e45">
