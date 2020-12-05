@@ -39,7 +39,10 @@ class MainPage extends Component {
       this.props.setAppState({ [type]: directory }));
 
   // Method to update the input directory
-  setInput = () => this.setDirectory('input');
+  setInput = (path) => {
+    if(typeof path === 'string') this.props.setAppState({ input: path });
+    else this.setDirectory('input');
+  };
 
   // Method to update the output directory
   setOutput = () => this.setDirectory('output');

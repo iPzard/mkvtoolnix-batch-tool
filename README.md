@@ -157,7 +157,7 @@ The following file types are supported.
 **Subtitle**:
 
 - _ASS_, _PGS_, _SRT_, _SSA_, _SUP_
-  <br>
+<br><br>
 
 ## 🦟 Software bugs
 
@@ -168,7 +168,7 @@ Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolni
 
 - MKV batch processing is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix)
 - SVG icons used are from [Font Awesome](https://fontawesome.com)
-  <br>
+<br><br>
 
 ## 🏷️ License
 

@@ -25,6 +25,10 @@ const InputField = (props) => {
     value
   } = props;
 
+  const onDrop = (event) => {
+    const path = event.dataTransfer.files[0].path;
+    setValue(path);
+  };
 
   return (
     <article className={ styles['input-block'] }>
@@ -36,6 +40,8 @@ const InputField = (props) => {
         onClick={ setValue }
         onChange={ setValue }
         value={ value }
+        webkitdirectory
+        onDrop={onDrop}
       />
 
       <DefaultButton

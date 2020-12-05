@@ -64,5 +64,5 @@
     "start": "electron .",
     "test": "react-scripts test"
   },
-  "version": "2.0.1"
+  "version": "2.0.2"
 }
