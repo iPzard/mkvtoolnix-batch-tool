@@ -1,5 +1,4 @@
 # MKVToolNix Batch Tool
-
 > Batch video and subtitle processing program to help you add (merge) or remove subtitles from your video library. Allows you to process a directory, and/or all of its subdirectories, in a single batch.
 > <br><br>
 
@@ -9,12 +8,10 @@
 <br>
 
 ## 💾 Downloads
-
 MKVToolNix Batch Tool works on Windows 32-bit (x86) and Windows 64-bit (x64) operating systems, see the project's [releases&nbsp;page](https://github.com/iPzard/mkvtoolnix-batch-tool/releases) for download links.
 <br><br>
 
 ## 🔨 Merging subtitles
-
 When there's only one video file per subdirectory, all subtitle files in that same subdirectory will be merged into the video, regardless of the subtitle file's name. However, when there are multiple videos in a subdirectory, videos will only be merged with subtitle files that contain the video's full name within <i>(or as)</i> the subtitle file name, less the extension.\
 \
 The language of each subtitle file is determined automatically by parsing through text in the files as they're being merged, the language that matches your <b>Default language track</b> from the settings page <i>(defaults to English)</i> will be set as the default subtitle track on your merged video(s).<br><br>
@@ -98,7 +95,6 @@ The language of each subtitle file is determined automatically by parsing throug
 <br>
 
 ## 🪓 Removing subtitles
-
 When removing subtitles, each directory and/or subdirectory contain at least one video file will be processed, others will be skipped. Other non-video files may be included and will be ignored.<br><br>
 
 **Example (e.g., movies):**
@@ -147,7 +143,6 @@ When removing subtitles, each directory and/or subdirectory contain at least one
 <br>
 
 ## 🗃️ Supported files
-
 The following file types are supported.
 
 **Video**:
@@ -159,17 +154,14 @@ The following file types are supported.
 - _ASS_, _PGS_, _SRT_, _SSA_, _SUP_
 <br><br>
 
-## 🦟 Software bugs
-
-Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) will be exterminated as quickly as possible, be sure to include steps to reproduce so they can be spotted easily.
-<br><br><br>
-
 ## 🙏 Attribution
-
 - MKV batch processing is powered by [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix)
 - SVG icons used are from [Font Awesome](https://fontawesome.com)
 <br><br>
 
-## 🏷️ License
+## 🦟 Software bugs
+Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) will be exterminated as quickly as possible, be sure to include steps to reproduce so they can be spotted easily.
+<br><br>
 
+## 🏷️ License
 GPLv2 © [iPzard](https://github.com/iPzard/mkvtoolnix-batch-tool/blob/master/LICENSE)
