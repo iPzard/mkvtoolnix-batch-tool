@@ -97,7 +97,7 @@ class MKVToolNix:
     self.ensure_utf8_encoding(subtitle_input_path)
 
     # Sniff out subtitle language in first 10 lines
-    with open(subtitle_input_path, "r", encoding="utf8") as file:
+    with open(subtitle_input_path, "r", encoding="utf8", errors="replace") as file:
       text = "".join([file.readline() for _ in range(10)])
 
     # Detected ISO 639-1 code
@@ -155,7 +155,9 @@ class MKVToolNix:
         subtitle_text = subtitle_file.read()
 
       # Convert to utf-8 and write to file
-      with open(subtitle_input_path, "w", encoding="utf8") as subtitle_file:
+      with open(
+        subtitle_input_path, "w", encoding="utf8", errors="replace"
+      ) as subtitle_file:
         subtitle_file.write(subtitle_text)
 
       subtitle_file.close()
@@ -193,11 +195,13 @@ class MKVToolNix:
     ad_text = ["mkv player", "opensubtitles", "yify"]
 
     # Read the "old" file's content, it's converted to utf8 by this point
-    with open(subtitle_input_path, encoding="utf8") as subtitle_file:
+    with open(subtitle_input_path, encoding="utf8", errors="replace") as subtitle_file:
       subtitle_text = subtitle_file.readlines()
 
     # Iterate through lines and remove lines that contain ads
-    with open(subtitle_input_path, "w", encoding="utf8") as subtitle_file:
+    with open(
+      subtitle_input_path, "w", encoding="utf8", errors="replace"
+    ) as subtitle_file:
 
       # Check each line
       for line in subtitle_text:
