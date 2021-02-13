@@ -6,7 +6,7 @@ import Footer from 'components/footer/Footer';
 import InputField from 'components/pages/main/InputField';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import LoadingScreen from 'components/pages/main/LoadingScreen';
-import Notice from 'components/dialog/notice';
+import Notice from 'components/dialog/Notice';
 import PropTypes from 'prop-types';
 import { getDirectory } from 'utils/services';
 import { post } from 'utils/requests'
@@ -27,10 +27,10 @@ import styles from 'components/pages/main/assets/styles/MainPage.module.scss';
 class MainPage extends Component {
 
   state ={
-    loading: false,
     hideDialog: true,
-    messageTitle: '',
-    messageText: ''
+    loading: false,
+    messageText: '',
+    messageTitle: ''
   };
 
   // Generic method to update directories
@@ -76,11 +76,11 @@ class MainPage extends Component {
         // Success callback
         (response) => {
           this.setState({
-            loading: false,
             hideDialog: false,
-            messageTitle: response.status,
+            loading: false,
             messageText: response.error || response.warning ||
-              'Batch successfully processed without any errors or warnings.'
+              'Batch successfully processed without any errors or warnings.',
+            messageTitle: response.status
           });
         },
 
@@ -91,10 +91,10 @@ class MainPage extends Component {
           console.error(error);
 
           this.setState({
-            loading: false,
             hideDialog: false,
-            messageTitle: 'Error',
-            messageText: 'There was an error which prevented the batch from being processed.'
+            loading: false,
+            messageText: 'There was an error which prevented the batch from being processed.',
+            messageTitle: 'Error'
           });
         }
 
@@ -120,48 +120,53 @@ class MainPage extends Component {
       setInput,
       setOutput,
       state: {
-        loading,
         hideDialog,
+        loading,
         messageText,
         messageTitle
       }
     } = this;
 
+    // Determine if same as source or not
+    const isFooterDisabled = Boolean(
+      isSameAsSource ? !input : (!input || !output)
+    );
 
-    // If same as source or not
-    const isFooterDisabled = isSameAsSource
-      ? !input
-      : !input || !output;
-
+    // Determine same as source input text
     const sameAsSourceValue = isSameAsSource
       ? input ? input + String.raw`\*`
       : input : output;
 
-
-
-    // If merge or remove subtitles
+    // Determine if merging or removing subtitles
     const buttonIcon = isRemoveSubtitles
       ? 'FabricUnsyncFolder'
       : 'FabricSyncFolder';
 
-    const buttonText = isRemoveSubtitles
-      ? 'Remove'
-      : 'Merge';
+    // Determine button text
+    const buttonText = (
+      isRemoveSubtitles ? 'Remove' : 'Merge'
+    );
 
-    const buttonTitle = isRemoveSubtitles
-      ? 'Remove subtitles'
-      : 'Merge subtitles';
+    // Determine button title
+    const buttonTitle = (
+      isRemoveSubtitles ? 'Remove subtitles' : 'Merge subtitles'
+    );
 
-    const MergeSettingButton = (props) => {
-      return isRemoveSubtitles
-        ? <DefaultButton { ...props } />
-        : <PrimaryButton { ...props } />;
-    };
+    // Determine button types for settings
+    const SettingButton = (props) => {
+      const { type, ...buttonProps } = props;
 
-    const RemoveSettingButton = (props) => {
-      return isRemoveSubtitles
-        ? <PrimaryButton { ...props } />
-        : <DefaultButton { ...props } />;
+      switch(type) {
+        case 'merge':
+          return isRemoveSubtitles
+            ? <DefaultButton { ...buttonProps } />
+            : <PrimaryButton { ...buttonProps } />;
+
+        case 'remove':
+          return isRemoveSubtitles
+            ? <PrimaryButton { ...buttonProps } />
+            : <DefaultButton { ...buttonProps } />;
+      }
     };
 
     return(
@@ -202,15 +207,17 @@ class MainPage extends Component {
             <Label>Subtitle processing mode <i>({ `${buttonText.toLowerCase()} selected` })</i></Label>
 
             <div>
-              <MergeSettingButton
+              <SettingButton
+                onClick={ () => onChangeModeToggle('merge') }
                 text="Merge"
                 title="Merge subtitles"
-                onClick={ () => onChangeModeToggle('merge') }
+                type="merge"
               />
-              <RemoveSettingButton
+              <SettingButton
+                onClick={ () => onChangeModeToggle('remove') }
                 text="Remove"
                 title="Remove subtitles"
-                onClick={ () => onChangeModeToggle('remove') }
+                type="remove"
               />
             </div>
           </div>

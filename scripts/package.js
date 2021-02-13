@@ -12,11 +12,13 @@ const path = (directory) => {
  * @description - Packages app for various operating systems.
  */
 class Packager {
+
   /**
    * @description - Creates DMG installer for macOS.
    * @memberof Packager
    */
   packageMacOS = () => {
+
     // Build Python & React distribution files
     builder.buildAll();
 
@@ -25,9 +27,6 @@ class Packager {
         'app',
         '--asar',
         '--extra-resource=./resources/app',
-        '--extra-resource=./resources/mkvtoolnix',
-        '--extra-resource=./resources/modules',
-        '--extra-resource=./resources/__init__.py',
         '--icon ./public/favicon.ico',
         '--darwin',
         '--out',
@@ -41,7 +40,7 @@ class Packager {
         `--out=${path('../dist/mac/setup')}`,
         `--icon=${path('../utilities/dmg/images/icon.icns')}`,
         // `--background=${path('../utilities/dmg/images/background.png')}`,
-        `--title="MKVToolNix Batch Tool"`,
+        `--title="Example App"`,
         `--overwrite`
       ].join(' '),
 
@@ -52,6 +51,7 @@ class Packager {
     spawnSync(`electron-installer-dmg ${options.package}`, options.spawn);
   };
 
+
   /**
    * @description - Creates MSI installer for Windows.
    * @memberof Packager
@@ -60,7 +60,6 @@ class Packager {
     console.log('Building windows package...');
 
     // Build Python & React distribution files
-    // TODO: Make option to not build all here (and for macOS) in scripts?
     builder.buildAll();
 
     const options = {
@@ -111,6 +110,7 @@ class Packager {
     // Create .wxs template and compile MSI
     msiCreator.create().then(() => msiCreator.compile());
   };
+
 }
 
 module.exports.Packager = Packager;

@@ -43,10 +43,10 @@ import styles from 'components/footer/assets/styles/Footer.module.scss';
 
 Footer.propTypes = {
   buttonClassName: PropTypes.string,
-  buttonOnClickL: PropTypes.func.isRequired,
+  buttonOnClick: PropTypes.func.isRequired,
   buttonIcon: PropTypes.string,
   buttonText: PropTypes.string.isRequired,
-  disabled: PropTypes.string
+  disabled: PropTypes.bool
 };
 
 Footer.defaultProps = {

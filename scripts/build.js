@@ -1,4 +1,5 @@
 const { spawnSync } = require('child_process');
+const spawnOptions = { detached: false, shell: true, stdio: 'inherit' };
 
 /**
  * @namespace Builder
@@ -31,15 +32,12 @@ class Builder {
     const options = [
       '--noconsole', // No shell
       '--noconfirm', // Don't confirm overwrite
-      //'--log-level=DEBUG', // For debugging
-      '--hidden-import engineio.async_threading',
-      '--hidden-import engineio.async_drivers',
       '--distpath ./resources', // Dist (out) path
       `--icon ${icon}` // Icon to use
     ].join(' ');
     // TODO: Check if python is installed.. If not, prompt user
     // "Python is required but not installed, install it? (y/n)"
-    spawnSync(`pyinstaller ${options} ${app}`, { detached: false, shell: true, stdio: 'inherit' });
+    spawnSync(`pyinstaller ${options} ${app}`, spawnOptions);
   }
 
   /**
@@ -48,7 +46,7 @@ class Builder {
    */
   buildReact = () => {
     console.log('Creating React distribution files...');
-    spawnSync(`react-scripts build`, { detached: false, shell: true, stdio: 'inherit' });
+    spawnSync(`react-scripts build`, spawnOptions);
   }
 }
 

@@ -1,5 +1,6 @@
 const [ , , script, command ] = process.argv;
 const { Builder } = require('./build');
+const { Starter } = require('./start');
 const { Packager } = require('./package');
 
 /**
@@ -15,6 +16,9 @@ switch(script) {
 
   case 'package':
     return packageApp();
+
+  case 'start':
+    return startDeveloperMode();
 }
 
 /**
@@ -50,4 +54,14 @@ function packageApp() {
     case 'mac':
       return packager.packageMacOS();
   }
+};
+
+/**
+ * @description - Starts developer mode of app.
+ * Including; React, Electron, and Python/Flask.
+ * @memberof Dispatcher
+ */
+function startDeveloperMode() {
+  const start = new Starter();
+  start.developerMode();
 };

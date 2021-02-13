@@ -27,12 +27,14 @@
   },
   "description": "MKVToolNix batch processing tool",
   "devDependencies": {
-    "@fluentui/react": "^7.121.12",
+    "@fluentui/react": "^7.160.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "cross-env": "^7.0.3",
     "electron": "^10.1.3",
     "electron-installer-dmg": "^3.0.0",
+    "electron-is-dev": "^1.2.0",
     "electron-packager": "^15.0.0",
     "electron-wix-msi": "^3.0.4",
     "eslint": "^6.8.0",
@@ -54,6 +56,7 @@
   "name": "mkvtoolnix-batch-tool",
   "private": true,
   "scripts": {
+    "build": "node ./scripts/dispatch build all",
     "build:all": "node ./scripts/dispatch build all",
     "build:react": "node ./scripts/dispatch build react",
     "build:python": "node ./scripts/dispatch build python",
@@ -61,7 +64,9 @@
     "build:package:mac": "node ./scripts/dispatch package mac",
     "build:package:windows": "node ./scripts/dispatch package windows",
     "eject": "react-scripts eject",
-    "start": "electron .",
+    "start": "node ./scripts/dispatch start",
+    "start:electron": "electron .",
+    "start:react": "react-scripts start",
     "test": "react-scripts test"
   },
   "version": "2.0.3"

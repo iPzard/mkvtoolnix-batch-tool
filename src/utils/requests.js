@@ -36,7 +36,12 @@ export const get = (route, callback, errorCallback) => {
 * @return response data from Python/Flask service.
 * @memberof Requests
 */
-export const post = (body, route, callback, errorCallback) => {
+export const post = (
+  body,
+  route,
+  callback,
+  errorCallback
+) => {
   fetch(`http://localhost:${port}/${route}`, {
     body,
     method: 'POST',
