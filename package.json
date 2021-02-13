@@ -21,7 +21,7 @@
     ]
   },
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "get-port": "^5.1.1",
     "socket.io-client": "^2.3.1"
   },
