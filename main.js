@@ -56,9 +56,13 @@ const createMainWindow = (port) => {
 const createLoadingWindow = () => {
   return new Promise((resolve, reject) => {
     const { loadingWindow } = browserWindows;
+    const loaderConfig = {
+      react: 'utilities/loaders/react/index.html',
+      redux: 'utilities/loaders/redux/index.html'
+    };
 
     try {
-      loadingWindow.loadFile(path.join(__dirname, 'utilities/loading/index.html'));
+      loadingWindow.loadFile(path.join(__dirname, loaderConfig.react));
       loadingWindow.webContents.on('did-finish-load', () => {
         resolve(loadingWindow.show());
       });
