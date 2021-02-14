@@ -166,6 +166,8 @@ class MainPage extends Component {
           return isRemoveSubtitles
             ? <PrimaryButton { ...buttonProps } />
             : <DefaultButton { ...buttonProps } />;
+
+        // no default
       }
     };
 
