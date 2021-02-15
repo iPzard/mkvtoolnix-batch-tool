@@ -1,15 +1,19 @@
-import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react';
 import React, { Component, Fragment } from 'react';
 
+import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
-import Footer from 'components/footer/Footer';
-import InputField from 'components/pages/main/InputField';
 import { Label } from 'office-ui-fabric-react/lib/Label';
+
 import LoadingScreen from 'components/pages/main/LoadingScreen';
 import Notice from 'components/dialog/Notice';
-import PropTypes from 'prop-types';
+import Footer from 'components/footer/Footer';
+import InputField from 'components/pages/main/InputField';
+
 import { getDirectory } from 'utils/services';
-import { post } from 'utils/requests'
+import { post } from 'utils/requests';
+
+import PropTypes from 'prop-types';
+
 import styles from 'components/pages/main/assets/styles/MainPage.module.scss';
 
 /**
@@ -34,9 +38,9 @@ class MainPage extends Component {
   };
 
   // Generic method to update directories
-  setDirectory = (type) =>
+  setDirectory = (type, callback) =>
     getDirectory((directory) =>
-      this.props.setAppState({ [type]: directory }));
+      this.props.setAppState({ [type]: directory }, callback && callback(directory)));
 
   // Method to update the input directory
   setInput = (path) => {
@@ -45,7 +49,13 @@ class MainPage extends Component {
   };
 
   // Method to update the output directory
-  setOutput = () => this.setDirectory('output');
+  setOutput = () => {
+    if(this.props.settings.isRememberOutputDir) {
+      this.setDirectory('output', (directory) => {
+        this.props.updateSetting('outputDir', directory)
+      });
+    } else this.setDirectory('output');
+  };
 
   onChangeModeToggle = (mode) => {
     const updateSetting = this.props.updateSetting;
@@ -55,10 +65,24 @@ class MainPage extends Component {
 
   // Method to update "Same as source" option for output
   onChangeSameAsSource = () => {
-    const isSameAsSource = this.props.settings.isSameAsSource;
-    const updateSetting = this.props.updateSetting;
+    const {
+      props: {
+        settings: { isSameAsSource, isRememberOutputDir },
+        updateMultipleSettings
+      }
+    } = this;
 
-    updateSetting('isSameAsSource', !isSameAsSource);
+    if(isSameAsSource && isRememberOutputDir) {
+      updateMultipleSettings({
+        isSameAsSource: false,
+        outputDir: this.props.appState.output || null
+      });
+    } else {
+      updateMultipleSettings({
+        isSameAsSource: !isSameAsSource,
+        outputDir: null
+      });
+    }
   };
 
   processBatch = () => {
@@ -114,7 +138,12 @@ class MainPage extends Component {
       processBatch,
       props: {
         appState: { input, output },
-        settings: { isRemoveSubtitles, isSameAsSource }
+        settings: {
+          isRememberOutputDir,
+          isRemoveSubtitles,
+          isSameAsSource,
+          outputDir
+        },
       },
       setHideDialog,
       setInput,
@@ -133,9 +162,12 @@ class MainPage extends Component {
     );
 
     // Determine same as source input text
-    const sameAsSourceValue = isSameAsSource
-      ? input ? input + String.raw`\*`
-      : input : output;
+    const outputValue = {
+      [true]: output,
+      [Boolean(isRememberOutputDir && outputDir)]: outputDir,
+      [isSameAsSource]: input,
+      [Boolean(isSameAsSource && input)]: input + String.raw`\*`,
+    }[true];
 
     // Determine if merging or removing subtitles
     const buttonIcon = isRemoveSubtitles
@@ -194,7 +226,7 @@ class MainPage extends Component {
             label="Output directory"
             placeholder="Select output directory"
             setValue={ setOutput }
-            value={ sameAsSourceValue }
+            value={ outputValue }
           />
 
           <Checkbox

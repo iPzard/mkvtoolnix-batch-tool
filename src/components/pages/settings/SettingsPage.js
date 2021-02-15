@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
-import Footer from 'components/footer/Footer';
 import LanguageSettings from 'components/pages/settings/LanguageSettings';
 import PropTypes from 'prop-types';
 import styles from 'components/pages/settings/assets/styles/SettingsPage.module.scss';
@@ -21,6 +20,7 @@ import styles from 'components/pages/settings/assets/styles/SettingsPage.module.
 class SettingsPage extends Component{
 
   state = {
+    isRememberOutputDir: false,
     isRemoveAds: false,
     isRemoveExistingSubtitles: false,
     isRemoveOld: false,
@@ -30,6 +30,7 @@ class SettingsPage extends Component{
   // Keep component up-to-date w/latest props
   static getDerivedStateFromProps(nextProps) {
     return {
+      isRememberOutputDir: nextProps.settings.isRememberOutputDir,
       isRemoveAds: nextProps.settings.isRemoveAds,
       isRemoveExistingSubtitles: nextProps.settings.isRemoveExistingSubtitles,
       isRemoveOld: nextProps.settings.isRemoveOld,
@@ -37,54 +38,46 @@ class SettingsPage extends Component{
     }
   };
 
-  // OnClick method passed to the footer button
-  buttonOnClick = () => {
-
-    const defaultSettings = {
-      isRemoveAds: false,
-      isRemoveExistingSubtitles: false,
-      isRemoveOld: false,
-      language: { key: 'eng', text: 'English' }
-    };
-
-    // Update settings with defaults for settings page
-    this.props.updateMultipleSettings(defaultSettings);
-  };
-
   // Method to toggle "subtitle language" setting
   setLanguageSetting = (event, language) => {
     this.props.updateSetting('language', language);
   };
 
-  // Method to toggle "remove subtitle ads" setting
-  setRemoveAdsSetting = () => this.toggleSetting('isRemoveAds');
-
-  // Method to toggle "remove old files" setting
-  setRemoveFilesSetting = () => this.toggleSetting('isRemoveOld');
-
-  setRemoveExistingSubtitles = () => this.toggleSetting('isRemoveExistingSubtitles');
-
-  // Generic method to toggle a setting
+  // Generic method to toggle or update a setting
   toggleSetting = (option) => {
-    const { props: { settings, updateSetting } } = this;
-
-    updateSetting(option, !settings[option]);
+    this.props.updateSetting(option, !this.props.settings[option]);
   };
 
+  // Method to update the remember output directory and related settings
+  updateRememberOutputDir = () => {
+    const { isRememberOutputDir, isSameAsSource } = this.props.settings;
+    const outputIfNotSameAsSource = !isSameAsSource && this.props.appState.output;
+
+    if(isRememberOutputDir) {
+      this.props.updateMultipleSettings({
+        isRememberOutputDir: false,
+        outputDir: null
+      });
+    }
+
+    else this.props.updateMultipleSettings({
+      isRememberOutputDir: true,
+      outputDir: outputIfNotSameAsSource || null
+    });
+  };
 
   render() {
     const {
-      buttonOnClick,
       setLanguageSetting,
-      setRemoveAdsSetting,
-      setRemoveExistingSubtitles,
-      setRemoveFilesSetting,
       state: {
+        isRememberOutputDir,
         isRemoveAds,
         isRemoveExistingSubtitles,
         isRemoveOld,
         language
-      }
+      },
+      toggleSetting,
+      updateRememberOutputDir
     } = this;
 
     return (
@@ -98,30 +91,28 @@ class SettingsPage extends Component{
           checked={ isRemoveExistingSubtitles }
           className={ styles.checkbox }
           label="Remove existing subtitles from video before merging new ones"
-          onChange={ setRemoveExistingSubtitles }
+          onChange={ () => toggleSetting('isRemoveExistingSubtitles') }
         />
 
         <Checkbox
           checked={ isRemoveOld }
           className={ styles.checkbox }
           label="Remove old video and subtitle files from source directory when finished"
-          onChange={ setRemoveFilesSetting }
+          onChange={ () => toggleSetting('isRemoveOld') }
         />
 
         <Checkbox
           checked={ isRemoveAds }
           className={ styles.checkbox }
           label="Remove known advertisements from subtitles before merging"
-          onChange={ setRemoveAdsSetting }
+          onChange={ () => toggleSetting('isRemoveAds') }
         />
 
-        <Footer
-          buttonClassName="reset-button"
-          buttonOnClick={ buttonOnClick }
-          buttonIcon="SyncOccurence"
-          buttonText="Reset"
-          buttonTitle="Restore defaults"
-          disabled={ false }
+        <Checkbox
+          checked={ isRememberOutputDir }
+          className={ styles.checkbox }
+          label="Remember output directory if not same as source"
+          onChange={ updateRememberOutputDir }
         />
       </section>
     )

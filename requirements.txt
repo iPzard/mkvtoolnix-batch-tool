@@ -1,5 +1,6 @@
 chardet
-Flask
+flask
+flask-cors
 flask-socketio
 textblob
 pyinstaller

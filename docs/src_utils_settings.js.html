@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/utils/settings.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/daybrush.css">
+    <link type="text/css" rel="stylesheet" href="styles/custom.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="description" content="src/utils/settings.js - Documentation"/>
+
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><div class="search"><div class="input-area"><input type="text"/></div><button></button></div><ul class="classes"><li file="loadingscreen" class="parent"><a href="MainPage.LoadingScreen.html">MainPage.LoadingScreen</a></li></ul><ul class="namespaces"><li file="app" class="parent"><a href="App.html">App</a></li><li file="builder" class="parent"><a href="Builder.html">Builder</a><h4><a href="Builder.html#static members">Static Members</a></h4><ul class='static members'><li data-type='member'><a href="Builder.html#.buildAll">buildAll</a></li><li data-type='member'><a href="Builder.html#.buildPython">buildPython</a></li><li data-type='member'><a href="Builder.html#.buildReact">buildReact</a></li></ul></li><li file="dispatcher" class="parent"><a href="Dispatcher.html">Dispatcher</a><h4><a href="Dispatcher.html#static methods">Static Methods</a></h4><ul class='static methods'><li data-type='method'><a href="Dispatcher.html#.buildApp">buildApp</a></li><li data-type='method'><a href="Dispatcher.html#.packageApp">packageApp</a></li><li data-type='method'><a href="Dispatcher.html#.startDeveloperMode">startDeveloperMode</a></li></ul></li><li file="footer" class="parent"><a href="Footer.html">Footer</a></li><li file="navigation" class="parent"><a href="Navigation.html">Navigation</a></li><li file="notice" class="parent"><a href="Notice.html">Notice</a></li><li file="packager" class="parent"><a href="Packager.html">Packager</a><h4><a href="Packager.html#static members">Static Members</a></h4><ul class='static members'><li data-type='member'><a href="Packager.html#.packageMacOS">packageMacOS</a></li><li data-type='member'><a href="Packager.html#.packageWindows">packageWindows</a></li></ul></li><li file="mainpage" class="parent"><a href="Pages.MainPage.html">Pages.MainPage</a></li><li file="settingspage" class="parent"><a href="Pages.SettingsPage.html">Pages.SettingsPage</a></li><li file="requests" class="parent"><a href="Requests.html">Requests</a><h4><a href="Requests.html#static members">Static Members</a></h4><ul class='static members'><li data-type='member'><a href="Requests.html#.exports.get">get</a></li><li data-type='member'><a href="Requests.html#.exports.post">post</a></li></ul></li><li file="services" class="parent"><a href="Services.html">Services</a><h4><a href="Services.html#static members">Static Members</a></h4><ul class='static members'><li data-type='member'><a href="Services.html#.exports.getDirectory">getDirectory</a></li></ul></li><li file="settings" class="parent"><a href="Settings.html">Settings</a></li><li file="starter" class="parent"><a href="Starter.html">Starter</a><h4><a href="Starter.html#static members">Static Members</a></h4><ul class='static members'><li data-type='member'><a href="Starter.html#.developerMode">developerMode</a></li></ul></li><li file="themes" class="parent"><a href="Themes.html">Themes</a></li><li file="titlebar" class="parent"><a href="Titlebar.html">Titlebar</a><h4><a href="Titlebar.html#static methods">Static Methods</a></h4><ul class='static methods'><li data-type='method'><a href="Titlebar.html#.Favicon">Favicon</a></li></ul><h4><a href="Titlebar.html#static members">Static Members</a></h4><ul class='static members'><li data-type='member'><a href="Titlebar.html#.exports.CloseButton">CloseButton</a></li><li data-type='member'><a href="Titlebar.html#.exports.MinimizeButton">MinimizeButton</a></li></ul></li></ul><ul class="global"><li file="global"  class="parent"><a href="global.html">Global</a><h4><a href="global.html#methods">Methods</a></h4><ul class='methods'><li data-type='method'><a href="global.html#PageController">PageController</a></li></ul><h4><a href="global.html#members">Members</a></h4><ul class='members'><li data-type='member'><a href="global.html#socket">socket</a></li><li data-type='member'><a href="global.html#supportedLanguages">supportedLanguages</a></li><li data-type='member'><a href="global.html#togglePalette">togglePalette</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">src/utils/settings.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @namespace Settings
+ * @description - Class to manage user settings in localStorage so they persist after
+ * the application has closed.
+ */
+class Settings{
+
+  // Check if item exists in settings
+  hasItem = (item) => this.getSettings()[item] !== null;
+
+  // Set item in settings
+  setItem = (item, setting) => this.saveSettings({
+    ...this.getSettings(), [item]: setting
+  });
+
+  // Get a specific item in settings (or `undefined`)
+  getItem = (item) => this.getSettings()[item];
+
+  // Delete an item if it exists, otherwise does nothing
+  removeItem = (item) => {
+    const settings = this.getSettings();
+    delete settings[item];
+
+    this.saveSettings(settings);
+  };
+
+  // Get all settings and return as a JavaScript object literal
+  getSettings = () => {
+
+    // If settings don't exist, set to defaults
+    if(window.localStorage.getItem('mkvtoolnix-batch-tool-settings') === null)
+      this.loadDefaultSettings();
+
+    // Return object literal of settings
+    return JSON.parse(window.localStorage.getItem('mkvtoolnix-batch-tool-settings'));
+  };
+
+  // Load default settings
+  loadDefaultSettings = () => {
+    const settings = JSON.stringify({
+      isRemoveAds: false,
+      isRememberOutputDir: false,
+      isRemoveExistingSubtitles: false,
+      isRemoveOld: false,
+      isRemoveSubtitles: false,
+      isSameAsSource: false,
+      language: { key: 'eng', text: 'English' },
+      outputDir: null,
+      theme: 'dark'
+    });
+
+    window.localStorage.setItem('mkvtoolnix-batch-tool-settings', settings);
+  };
+
+  // Update settings object with new settings
+  saveSettings = (settings) => {
+    window.localStorage.setItem('mkvtoolnix-batch-tool-settings', JSON.stringify(settings));
+  };
+};
+
+
+// Export instantiated version of settings
+export const settings = new Settings();</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+<style>
+
+
+nav li[file="src/utils/settings"]:after {
+    display: none;
+}
+nav li[file="src/utils/settings"] h4, nav li[file="src/utils/settings"] ul {
+    display: block;
+}
+</style>
+
+</div>
+
+<br class="clear">
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/utils.min.js"></script>
+<script src="scripts/search.js"></script>
+<script src="scripts/custom.js"></script>
+</body>
+</html>

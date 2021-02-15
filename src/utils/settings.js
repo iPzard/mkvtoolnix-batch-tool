@@ -8,16 +8,13 @@ class Settings{
   // Check if item exists in settings
   hasItem = (item) => this.getSettings()[item] !== null;
 
-
   // Set item in settings
   setItem = (item, setting) => this.saveSettings({
     ...this.getSettings(), [item]: setting
   });
 
-
   // Get a specific item in settings (or `undefined`)
   getItem = (item) => this.getSettings()[item];
-
 
   // Delete an item if it exists, otherwise does nothing
   removeItem = (item) => {
@@ -26,7 +23,6 @@ class Settings{
 
     this.saveSettings(settings);
   };
-
 
   // Get all settings and return as a JavaScript object literal
   getSettings = () => {
@@ -39,16 +35,17 @@ class Settings{
     return JSON.parse(window.localStorage.getItem('mkvtoolnix-batch-tool-settings'));
   };
 
-
   // Load default settings
   loadDefaultSettings = () => {
     const settings = JSON.stringify({
       isRemoveAds: false,
+      isRememberOutputDir: false,
       isRemoveExistingSubtitles: false,
       isRemoveOld: false,
       isRemoveSubtitles: false,
       isSameAsSource: false,
       language: { key: 'eng', text: 'English' },
+      outputDir: null,
       theme: 'dark'
     });
 

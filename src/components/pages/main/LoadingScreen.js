@@ -45,9 +45,4 @@ class LoadingScreen extends Component {
   }
 };
 
-
-LoadingScreen.propTypes = {
-  isVisible: PropTypes.bool.isRequired
-};
-
 export default LoadingScreen;

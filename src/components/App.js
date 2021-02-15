@@ -26,10 +26,13 @@ class App extends Component {
   // Initialize settings on load
   componentDidMount() {
     loadTheme({ palette: darkTheme }); // default theme
-    this.setState({ settings: settings.getSettings() });
-  };
+    this.setState({
+      output: settings.getItem('outputDir') || '',
+      settings: settings.getSettings()
+    });
+  }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(_prevProps, prevState) {
     const { state: { settings: { theme } } } = this;
     const { settings: { theme: prevTheme } } = prevState;
 
