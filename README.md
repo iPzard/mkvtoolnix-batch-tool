@@ -1,6 +1,6 @@
 # MKVToolNix Batch Tool
 
-[![Build](https://img.shields.io/badge/build-passing-%2357a9a9?color=bf7e45&style=for-the-badge)](https://github.com/iPzard/mkvtoolnix-batch-tool#readme)
+[![Build](https://img.shields.io/badge/build-passing-%23bf7e45?style=for-the-badge)](https://github.com/iPzard/mkvtoolnix-batch-tool#readme)
 [![License](https://img.shields.io/github/license/iPzard/mkvtoolnix-batch-tool?color=bf7e45&style=for-the-badge)](https://github.com/iPzard/mkvtoolnix-batch-tool/blob/master/LICENSE)
 [![Github All Releases](https://img.shields.io/github/downloads/iPzard/mkvtoolnix-batch-tool/total.svg?color=bf7e45&style=for-the-badge)](https://github.com/iPzard/mkvtoolnix-batch-tool/releases)
 
