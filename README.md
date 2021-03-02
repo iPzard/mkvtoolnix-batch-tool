@@ -33,7 +33,7 @@ The language of each subtitle file is determined automatically by parsing throug
     ┃ ┗ 📜Subtitles French.srt 👈 <b>when only 1 video, all subtitles regardless of name, are merged</b>
     ┣ 📂Resident Evil Afterlife (2010)
     ┃ ┣ 📺Resident Evil Afterlife (2010) [1080p].avi
-    ┃ ┗ 📜Resident Evil Afterlife (2010) [1080p].pgs 👈 <b>language is (always) determined automatically</b>
+    ┃ ┗ 📜Resident Evil Afterlife (2010) [1080p].pgs 👈 <b>language is always determined automatically</b>
     ┣ 📂Resident Evil Apocalypse (2004)
     ┃ ┣ 📺Resident Evil Apocalypse (2004) [1080p].mkv
     ┃ ┣ 📜Resident Evil Apocalypse (2004) [1080p].ass
@@ -44,10 +44,10 @@ The language of each subtitle file is determined automatically by parsing throug
     ┃ ┗ 📜Resident Evil Apocalypse (2004) [1080p].ssa
     ┣ 📂Resident Evil Retribution (2012)
     ┃ ┣ 📺Resident Evil Retribution (2012) [1080p].ogg
-    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] English.sup
-    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] Italian.sup
-    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] Japanese.sup
-    ┃ ┗ 📜Resident Evil Retribution (2012) [1080p] Russian.sup
+    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] English.srt
+    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] Italian.srt
+    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] Japanese.srt
+    ┃ ┗ 📜Resident Evil Retribution (2012) [1080p] Russian.srt
     ┣ 📂Resident Evil The Final Chapter (2016)
     ┃ ┣ 📺Resident Evil The Final Chapter (2016) [1080p].ogm
     ┃ ┣ 📜Resident Evil The Final Chapter (2016) [1080p] Dutch.srt

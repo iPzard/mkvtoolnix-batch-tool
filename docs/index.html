@@ -52,12 +52,15 @@
 
     <section class="readme">
         <article><h1>MKVToolNix Batch Tool</h1>
+<p><a href="https://github.com/iPzard/mkvtoolnix-batch-tool#readme"><img src="https://img.shields.io/badge/build-passing-%23bf7e45?style=for-the-badge" alt="Build"></a>
+<a href="https://github.com/iPzard/mkvtoolnix-batch-tool/blob/master/LICENSE"><img src="https://img.shields.io/github/license/iPzard/mkvtoolnix-batch-tool?color=bf7e45&amp;style=for-the-badge" alt="License"></a>
+<a href="https://github.com/iPzard/mkvtoolnix-batch-tool/releases"><img src="https://img.shields.io/github/downloads/iPzard/mkvtoolnix-batch-tool/total.svg?color=bf7e45&amp;style=for-the-badge" alt="Github All Releases"></a></p>
 <blockquote>
 <p>Batch video and subtitle processing program to help you add (merge) or remove subtitles from your video library. Allows you to process a directory, and/or all of its subdirectories, in a single batch.
 <br><br></p>
 </blockquote>
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/8584126/97789453-d991b900-1b7d-11eb-8ff3-be2a67cb159b.gif" />
+  <img src="https://user-images.githubusercontent.com/8584126/108663926-81612880-7486-11eb-87d4-23bb3f821f16.gif" />
 </p>
 <br>
 <h2>💾 Downloads</h2>
@@ -78,7 +81,7 @@ The language of each subtitle file is determined automatically by parsing throug
     ┃ ┗ 📜Subtitles French.srt 👈 <b>when only 1 video, all subtitles regardless of name, are merged</b>
     ┣ 📂Resident Evil Afterlife (2010)
     ┃ ┣ 📺Resident Evil Afterlife (2010) [1080p].avi
-    ┃ ┗ 📜Resident Evil Afterlife (2010) [1080p].pgs 👈 <b>language is (always) determined automatically</b>
+    ┃ ┗ 📜Resident Evil Afterlife (2010) [1080p].pgs 👈 <b>language is determined automatically</b>
     ┣ 📂Resident Evil Apocalypse (2004)
     ┃ ┣ 📺Resident Evil Apocalypse (2004) [1080p].mkv
     ┃ ┣ 📜Resident Evil Apocalypse (2004) [1080p].ass
@@ -89,10 +92,10 @@ The language of each subtitle file is determined automatically by parsing throug
     ┃ ┗ 📜Resident Evil Apocalypse (2004) [1080p].ssa
     ┣ 📂Resident Evil Retribution (2012)
     ┃ ┣ 📺Resident Evil Retribution (2012) [1080p].ogg
-    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] English.sup
-    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] Italian.sup
-    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] Japanese.sup
-    ┃ ┗ 📜Resident Evil Retribution (2012) [1080p] Russian.sup
+    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] English.srt
+    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] Italian.srt
+    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] Japanese.srt
+    ┃ ┗ 📜Resident Evil Retribution (2012) [1080p] Russian.srt
     ┣ 📂Resident Evil The Final Chapter (2016)
     ┃ ┣ 📺Resident Evil The Final Chapter (2016) [1080p].ogm
     ┃ ┣ 📜Resident Evil The Final Chapter (2016) [1080p] Dutch.srt
@@ -190,11 +193,12 @@ The language of each subtitle file is determined automatically by parsing throug
 <ul>
 <li><em>AVI</em>, <em>M4V</em>, <em>MKV</em>, <em>MOV</em>, <em>MP4</em>, <em>MPG</em>, <em>MPEG</em>, <em>OGG</em>, <em>OGM</em>, <em>WEBM</em>, <em>WMV</em></li>
 </ul>
-<p><strong>Subtitle</strong>:</p>
+<p><strong>Subtitle</strong>:<br></p>
 <ul>
-<li><em>ASS</em>, <em>PGS</em>, <em>SRT</em>, <em>SSA</em>, <em>SUP</em>
-<br><br></li>
+<li><em>ASS</em>, <em>PGS</em>, <em>SRT</em>, <em>SSA</em>, <em>SUP¹</em></li>
 </ul>
+<p><em>¹ Language cannot be detected on image-based subtitles.</em>
+<br><br></p>
 <h2>🙏 Attribution</h2>
 <ul>
 <li>MKV batch processing is powered by <a href="https://gitlab.com/mbunkus/mkvtoolnix">MKVToolNix</a></li>
