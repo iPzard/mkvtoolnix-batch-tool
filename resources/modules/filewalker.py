@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import re
 
 
 """ FileWalker:
@@ -21,7 +22,7 @@ class FileWalker:
 
     # Directories (and only directories) to look for videos in
     video_directories = list(
-      filter(os.path.isdir, os.listdir(Path().absolute() / directory))
+        filter(os.path.isdir, os.listdir(Path().absolute() / directory))
     )
 
     # Include current directory
@@ -64,17 +65,17 @@ class FileWalker:
 
           # Identify acceptable video & subtitle file extensions
           video_file_types = [
-            "avi",
-            "m4v",
-            "mkv",
-            "mov",
-            "mp4",
-            "mpg",
-            "mpeg",
-            "ogg",
-            "ogm",
-            "webm",
-            "wmv",
+              "avi",
+              "m4v",
+              "mkv",
+              "mov",
+              "mp4",
+              "mpg",
+              "mpeg",
+              "ogg",
+              "ogm",
+              "webm",
+              "wmv",
           ]
           subtitle_file_types = ["ass", "pgs", "srt", "ssa", "sup"]
 
@@ -92,7 +93,7 @@ class FileWalker:
 
         # If no subtitle (while merging) and/or video files
         invalid_subtitles = (
-          len(subtitle_files) == 0 and not is_remove_subtitles and is_not_root_directory
+            len(subtitle_files) == 0 and not is_remove_subtitles and is_not_root_directory
         )
         invalid_videos = len(video_files) == 0 and is_not_root_directory
         if invalid_subtitles or invalid_videos:
@@ -101,27 +102,40 @@ class FileWalker:
         # If more than one video, match with subtitles by names
         elif len(video_files) > 1 and not is_remove_subtitles:
 
-          # sorting these by length (reverse order) to solve edge cases such as:
-          # episode.avi, episode part 2.avi,
-          # episode.srt, episode part 2.srt
-          video_files = [str(video) for video in video_files]  # convert to strings
-          video_files = sorted(video_files, key=len, reverse=True)  # sort strings
-          video_files = [Path(video) for video in video_files]  # convert back to paths
+          """
+          Sorting these by length (reverse order)
+          to solve edge cases such as:
+          episode.avi | episode part 2.avi
+          episode.srt | episode part 2.srt
+          """
+
+          # convert to strings
+          video_files = [str(video) for video in video_files]
+
+          # sort strings
+          video_files = sorted(video_files, key=len, reverse=True)
+
+          # convert back to paths
+          video_files = [Path(video) for video in video_files]
 
           # Keep track of processed videos to see if dir is used
           videos_processed = 0
+
+          # Helper method to retreive file name without extension
+          def remove_extension(file_name):
+            return re.sub(r'\.\w{2,4}$', '', os.path.basename(file_name))
 
           # Iterate through videos and look for matching subtitles
           for video in video_files:
 
             # Exact file name of video without extension
-            video_name = os.path.basename(video).split(".")[0]
+            video_name = remove_extension(video)
 
             # List of subtitles that include the video name in their name
             matching_subtitles = [
-              subtitle_file
-              for subtitle_file in subtitle_files
-              if video_name in os.path.basename(subtitle_file).split(".")[0]
+                subtitle_file
+                for subtitle_file in subtitle_files
+                if video_name in remove_extension(subtitle_file)
             ]
 
             # If there are matching subtitle files
@@ -129,9 +143,9 @@ class FileWalker:
 
               # Remove matching subtitles from subtitle_files list
               subtitle_files = [
-                subtitle_file
-                for subtitle_file in subtitle_files
-                if subtitle_file not in matching_subtitles
+                  subtitle_file
+                  for subtitle_file in subtitle_files
+                  if subtitle_file not in matching_subtitles
               ]
 
               # Add video and matching subtitle file to list
@@ -165,7 +179,7 @@ class FileWalker:
         if skipped_directories:
           directory_was_if_plural = "was" if skipped_directories == 1 else "were"
           directory_if_plural = (
-            "directory" if skipped_directories == 1 else "directories"
+              "directory" if skipped_directories == 1 else "directories"
           )
 
           if is_remove_subtitles:

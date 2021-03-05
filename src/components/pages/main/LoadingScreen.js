@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import { Label } from 'office-ui-fabric-react/lib/Label';
-import PropTypes from 'prop-types';
 import Spinner from 'components/pages/main/assets/icons/Spinner';
 import { socket } from 'utils/requests';
 import styles from 'components/pages/main/assets/styles/LoadingScreen.module.scss';
