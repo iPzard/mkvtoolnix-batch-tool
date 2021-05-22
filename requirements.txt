@@ -6,4 +6,4 @@ python-socketio==2.1.2
 jsonify==0.5
 textblob==0.15.3
 pyinstaller==4.3
-python-engineio==3.1.0
+python-engineio==3.8.2.post1
