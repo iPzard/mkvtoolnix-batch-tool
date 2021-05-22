@@ -99,7 +99,7 @@ class Packager {
           banner: path('../utilities/msi/images/banner.png')
         }
       },
-      version: '2.1.2'
+      version: '2.1.3'
     });
 
     // Customized MSI template
