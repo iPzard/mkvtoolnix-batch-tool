@@ -15,17 +15,27 @@ class LoadingScreen extends Component {
     currentCount: 0
   };
 
+  setBatchSize = (batchSize) => {
+    this.setState({ batchSize });
+  };
+
+  processDirectory = () => {
+    this.setState({ currentCount: this.state.currentCount + 1 });
+  };
+
   componentDidMount(){
 
     // Configure socket communication
-    socket.on('batch_size', (batchSize) => (
-      this.setState({ batchSize })
-    ));
-
-    socket.on('processing_subdirectory', () => (
-      this.setState({ currentCount: this.state.currentCount + 1 })
-    ));
+    socket.on('batch_size', this.setBatchSize);
+    socket.on('processing_subdirectory', this.processDirectory);
   };
+
+  componentWillUnmount() {
+
+    // Disconnect socket on unmount
+    socket.off('batch_size', this.setBatchSize);
+    socket.off('processing_subdirectory', this.processDirectory);
+  }
 
 
   render() {

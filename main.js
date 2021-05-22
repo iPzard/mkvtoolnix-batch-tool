@@ -19,15 +19,28 @@ const browserWindows = {};
 const createMainWindow = (port) => {
   const { loadingWindow, mainWindow } = browserWindows;
 
-  // If in developer mode, show a loading window while
-  // the app and developer server compile.
+  /**
+   * If in developer mode, show a loading window while
+   * the app and developer server compile.
+  */
   if(isDevMode) {
     mainWindow.hide();
     mainWindow.loadURL('http://localhost:3000');
+
+    /**
+     * Opening devTools, must be done before dom-ready
+     * to avoid occasional error from the webContents
+     * object being destroyed.
+    */
+    mainWindow.webContents.openDevTools();
+
+    /**
+     * Destroy loading window once the main
+     * window is ready.
+     */
     mainWindow.webContents.on('dom-ready', () => {
       loadingWindow.destroy();
       mainWindow.show();
-      mainWindow.webContents.openDevTools(); // Open the DevTools.
     });
   }
 
@@ -72,9 +85,11 @@ const createLoadingWindow = () => {
   });
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+/**
+ * This method will be called when Electron has finished
+ * initialization and is ready to create browser windows.
+ * Some APIs can only be used after this event occurs.
+*/
 app.whenReady().then(async () => {
 
   // Method to set port in range of 3001-3999, based on availability
@@ -112,8 +127,10 @@ app.whenReady().then(async () => {
   }
 
   app.on('activate', () => {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
+    /**
+     * On macOS it's common to re-create a window in the app when the
+     * dock icon is clicked and there are no other windows open.
+    */
     if (BrowserWindow.getAllWindows().length === 0) createMainWindow(port);
   });
 
@@ -127,9 +144,11 @@ app.whenReady().then(async () => {
     });
   }
 
-  // Quit when all windows are closed, except on macOS. There, it's common
-  // for applications and their menu bar to stay active until the user quits
-  // explicitly with Cmd + Q.
+  /**
+   * Quit when all windows are closed, except on macOS. There, it's common
+   * for applications and their menu bar to stay active until the user quits
+   * explicitly with Cmd + Q.
+  */
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') shutdown(port);
   });
