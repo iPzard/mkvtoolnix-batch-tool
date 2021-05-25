@@ -16,6 +16,7 @@ const shutdown = (port) => {
 // Browser window configurations
 const browserWindows = {};
 
+// Function to create main window
 const createMainWindow = (port) => {
   const { loadingWindow, mainWindow } = browserWindows;
 
