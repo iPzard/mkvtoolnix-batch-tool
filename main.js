@@ -49,13 +49,16 @@ const createMainWindow = (port) => {
 
   // Set opacity for title on window blur & focus
   const setTitleOpacity = (value) => `
-    ['electron-window-title-icon', 'electron-window-title-text', 'electron-window-title-buttons']
-    .forEach((id) => document.getElementById(id).style.opacity = ${value});
+    if(document.readyState === 'complete') {
+      document.getElementById('electron-window-title-text').style.opacity = ${value};
+      document.getElementById('electron-window-title-buttons').style.opacity = ${value};
+    }
   `;
 
+  // Set window event handlers
   const executeOnWindow = (command) => mainWindow.webContents.executeJavaScript(command);
   mainWindow.on('focus', () => executeOnWindow(setTitleOpacity(1)));
-  mainWindow.on('blur', () => executeOnWindow(setTitleOpacity(0.5)));
+  mainWindow.on('blur', () => executeOnWindow(setTitleOpacity(.5)));
 
   // Send window control event listeners to front end
   ipcMain.on('app-maximize', () => mainWindow.maximize());
