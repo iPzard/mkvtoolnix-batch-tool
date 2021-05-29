@@ -1,7 +1,11 @@
 const [ , , script, command ] = process.argv;
 const { Builder } = require('./build');
-const { Starter } = require('./start');
+const { Cleaner } = require('./clean');
 const { Packager } = require('./package');
+const { Starter } = require('./start');
+
+const path = require('path');
+
 
 /**
  * @namespace Dispatcher
@@ -13,6 +17,9 @@ const { Packager } = require('./package');
 switch(script) {
   case 'build':
     return buildApp();
+
+  case 'clean':
+    return cleanProject();
 
   case 'package':
     return packageApp();
@@ -38,6 +45,49 @@ function buildApp() {
     case 'all':
       return builder.buildAll();
   }
+};
+
+/**
+ * @description - Cleans project by removing various files and folders.
+ * @memberof Dispatcher
+ */
+function cleanProject() {
+  const cleaner = new Cleaner();
+  const getPath = (file) => path.join(__dirname, '..', file);
+
+  // Files to remove during cleaning
+  [
+    // Cache
+    getPath('app.pyc'),
+    getPath('app.spec'),
+    getPath('__pycache__'),
+
+    // Debug
+    getPath('npm-debug.log'),
+    getPath('yarn-debug.log'),
+    getPath('yarn-error.log'),
+
+    // Dependencies
+    getPath('.pnp'),
+    getPath('.pnp.js'),
+    getPath('node_modules'),
+    getPath('package-lock.json'),
+    getPath('yarn.lock'),
+
+    // Testing
+    getPath('coverage'),
+
+    // Production
+    getPath('build'),
+    getPath('dist'),
+    getPath('docs'),
+
+    // Misc
+    getPath('.DS_Store')
+  ]
+    // Iterate and remove process
+    .forEach(cleaner.removePath);
+    console.log('Project is clean.');
 };
 
 /**
