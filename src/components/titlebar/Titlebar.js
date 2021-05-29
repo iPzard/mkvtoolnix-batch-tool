@@ -1,4 +1,7 @@
-import { CloseButton, MinimizeButton } from 'components/titlebar/TitlebarButtons';
+import {
+  CloseButton,
+  MinimizeButton
+} from 'components/titlebar/TitlebarButtons';
 
 import Favicon from 'components/titlebar/Favicon';
 import React from 'react';
@@ -17,17 +20,16 @@ initializeIcons();
  */
 
 const Titlebar = () => {
-
   return (
-    <section className={ styles.titlebar }>
+    <section className={styles.titlebar}>
       <div>
-        <Favicon id='electron-window-title-icon' />
-        <span id='electron-window-title-text'>{ document.title }</span>
+        <Favicon id="electron-window-title-icon" />
+        <span id="electron-window-title-text">{document.title}</span>
       </div>
 
-      <div id='electron-window-title-buttons'>
-        <MinimizeButton onClick={ app.minimize }/>
-        <CloseButton onClick={ app.quit } />
+      <div id="electron-window-title-buttons">
+        <MinimizeButton onClick={app.minimize} />
+        <CloseButton onClick={app.quit} />
       </div>
     </section>
   );

@@ -1,5 +1,8 @@
 // Electron Inter Process Communication and dialog
-const { ipcRenderer, remote: { dialog }  } = window.require('electron');
+const {
+  ipcRenderer,
+  remote: { dialog }
+} = window.require('electron');
 
 /**
  * @namespace Services
@@ -17,15 +20,17 @@ export const app = {
 };
 
 /**
-* @description - Function to get a list of files that a user wants to have renamed, this
-* also returns the folder path and name the user has selected.
-* @return - User selected folder path.
-* @memberof Services
-*/
+ * @description - Function to get a list of files that a user wants to have renamed, this
+ * also returns the folder path and name the user has selected.
+ * @return - User selected folder path.
+ * @memberof Services
+ */
 export const getDirectory = async (callback) => {
-  dialog.showOpenDialog({ properties: ['openDirectory'] })
-    .then((response) => response.canceled ? null :
-      callback(String.raw`${response.filePaths[0]}`))
+  dialog
+    .showOpenDialog({ properties: ['openDirectory'] })
+    .then((response) =>
+      response.canceled ? null : callback(String.raw`${response.filePaths[0]}`)
+    )
 
     .catch((error) => console.error(error));
 };

@@ -9,13 +9,13 @@ import styles from 'components/titlebar/scss/TitlebarButtons.module.scss';
  * @memberof Titlebar
  */
 
-export const MinimizeButton = props => (
+export const MinimizeButton = (props) => (
   <IconButton
     ariaLabel="Minimize"
-    className={ styles.button }
+    className={styles.button}
     iconProps={{ iconName: 'ChromeMinimize' }}
     title="Minimize"
-    { ...props }
+    {...props}
   />
 );
 
@@ -25,12 +25,12 @@ export const MinimizeButton = props => (
  *
  * @memberof Titlebar
  */
-export const CloseButton = props => (
+export const CloseButton = (props) => (
   <IconButton
     ariaLabel="Close"
-    className={ styles.button }
+    className={styles.button}
     iconProps={{ iconName: 'ChromeClose' }}
     title="Close"
-    { ...props }
+    {...props}
   />
 );

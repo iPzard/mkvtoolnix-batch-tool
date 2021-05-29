@@ -1,9 +1,14 @@
-import { Dialog, DialogFooter, DialogType } from 'office-ui-fabric-react/lib/Dialog';
 import React, { useMemo } from 'react';
+import {
+  Dialog,
+  DialogFooter,
+  DialogType
+} from 'office-ui-fabric-react/lib/Dialog';
 
 import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
-import PropTypes from 'prop-types';
 import { useId } from '@uifabric/react-hooks';
+
+import PropTypes from 'prop-types';
 
 /**
  * @namespace Notice
@@ -17,48 +22,44 @@ import { useId } from '@uifabric/react-hooks';
  */
 
 export const Notice = (props) => {
-
-  const {
-    hideDialog,
-    messageText,
-    messageTitle,
-    setHideDialog
-  } = props;
+  const { hideDialog, messageText, messageTitle, setHideDialog } = props;
 
   const dialogContentProps = {
     type: DialogType.normal,
     title: messageTitle,
     closeButtonAriaLabel: 'Close',
-    subText: messageText,
+    subText: messageText
   };
 
   // Ensure unique IDs
   const labelId = useId('dialogLabel');
   const subTextId = useId('subTextLabel');
 
-  const modalProps = useMemo(() => ({
-    titleAriaId: labelId,
-    subtitleAriaId: subTextId,
-    isBlocking: false,
-    styles: { main: { maxWidth: 450 } },
-  }), [labelId, subTextId]);
+  const modalProps = useMemo(
+    () => ({
+      titleAriaId: labelId,
+      subtitleAriaId: subTextId,
+      isBlocking: false,
+      styles: { main: { maxWidth: 450 } }
+    }),
+    [labelId, subTextId]
+  );
 
   const toggleHideDialog = () => setHideDialog(!hideDialog);
 
   return (
     <Dialog
-      hidden={ hideDialog }
-      onDismiss={ toggleHideDialog }
-      dialogContentProps={ dialogContentProps }
-      modalProps={ modalProps }
+      hidden={hideDialog}
+      onDismiss={toggleHideDialog}
+      dialogContentProps={dialogContentProps}
+      modalProps={modalProps}
     >
       <DialogFooter>
-        <PrimaryButton onClick={ toggleHideDialog } text="Okay" />
+        <PrimaryButton onClick={toggleHideDialog} text="Okay" />
       </DialogFooter>
     </Dialog>
   );
 };
-
 
 Notice.propTypes = {
   hideDialog: PropTypes.bool.isRequired,

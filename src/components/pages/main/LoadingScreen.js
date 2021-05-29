@@ -23,20 +23,17 @@ class LoadingScreen extends Component {
     this.setState({ currentCount: this.state.currentCount + 1 });
   };
 
-  componentDidMount(){
-
+  componentDidMount() {
     // Configure socket communication
     socket.on('batch_size', this.setBatchSize);
     socket.on('processing_subdirectory', this.processDirectory);
-  };
+  }
 
   componentWillUnmount() {
-
     // Disconnect socket on unmount
     socket.off('batch_size', this.setBatchSize);
     socket.off('processing_subdirectory', this.processDirectory);
   }
-
 
   render() {
     const {
@@ -44,14 +41,14 @@ class LoadingScreen extends Component {
     } = this;
 
     return (
-      <div className={ styles.spinner } >
-        <Spinner className={ styles['spinner-icon'] } />
-        <Label className={ styles.label }>
-          { `Batch in progress, processing ${currentCount} of ${batchSize}` }
+      <div className={styles.spinner}>
+        <Spinner className={styles['spinner-icon']} />
+        <Label className={styles.label}>
+          {`Batch in progress, processing ${currentCount} of ${batchSize}`}
         </Label>
       </div>
     );
   }
-};
+}
 
 export default LoadingScreen;

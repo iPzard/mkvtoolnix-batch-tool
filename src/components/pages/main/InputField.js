@@ -17,13 +17,7 @@ import styles from 'components/pages/main/assets/styles/InputField.module.scss';
  */
 
 const InputField = (props) => {
-  const {
-    disabled,
-    label,
-    placeholder,
-    setValue,
-    value
-  } = props;
+  const { disabled, label, placeholder, setValue, value } = props;
 
   const onDrop = (event) => {
     const path = event.dataTransfer.files[0].path;
@@ -31,28 +25,28 @@ const InputField = (props) => {
   };
 
   return (
-    <article className={ styles['input-block'] }>
+    <article className={styles['input-block']}>
       <TextField
-        className={ styles['input-field'] }
-        disabled={ disabled }
-        label={ label }
-        placeholder={ placeholder }
-        onClick={ setValue }
-        onChange={ setValue }
-        value={ value }
+        className={styles['input-field']}
+        disabled={disabled}
+        label={label}
+        placeholder={placeholder}
+        onClick={setValue}
+        onChange={setValue}
+        value={value}
         webkitdirectory
         onDrop={onDrop}
       />
 
       <DefaultButton
-        className={ styles['browse-button'] }
-        disabled={ disabled }
+        className={styles['browse-button']}
+        disabled={disabled}
         iconProps={{ iconName: 'FabricFolderSearch' }}
-        onClick={ setValue }
+        onClick={setValue}
         text="Browse..."
       />
     </article>
-  )
+  );
 };
 
 InputField.propTypes = {

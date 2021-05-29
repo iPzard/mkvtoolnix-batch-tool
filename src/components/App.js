@@ -15,11 +15,10 @@ import styles from 'components/App.module.scss';
  * @description - Controls global state and page navigation
  */
 class App extends Component {
-
   state = {
-    page: 'main',
     input: '',
     output: '',
+    page: 'main',
     settings: {}
   };
 
@@ -33,16 +32,22 @@ class App extends Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    const { state: { settings: { theme } } } = this;
-    const { settings: { theme: prevTheme } } = prevState;
+    const {
+      state: {
+        settings: { theme }
+      }
+    } = this;
+    const {
+      settings: { theme: prevTheme }
+    } = prevState;
 
-    if(theme !== prevTheme) {
+    if (theme !== prevTheme) {
       togglePalette(theme);
 
-      if(theme === 'light') loadTheme({ palette: lightTheme });
+      if (theme === 'light') loadTheme({ palette: lightTheme });
       else loadTheme({ palette: darkTheme });
     }
-  };
+  }
 
   // Method to set global app state
   setAppState = (state, callback) => this.setState(state, callback);
@@ -63,16 +68,9 @@ class App extends Component {
   };
 
   render() {
-
     const {
       setAppState,
-      state: {
-        input,
-        output,
-        page,
-        settings,
-        theme
-      },
+      state: { input, output, page, settings, theme },
       updateMultipleSettings,
       updateSetting
     } = this;
@@ -85,13 +83,12 @@ class App extends Component {
       updateSetting
     };
 
-
     return (
       <Fragment>
         <Titlebar />
-        <main className={ styles.main }>
-          <Navigation { ...componentProps } />
-          <PageController { ...componentProps } page={ page }/>
+        <main className={styles.main}>
+          <Navigation {...componentProps} />
+          <PageController {...componentProps} page={page} />
         </main>
       </Fragment>
     );
@@ -105,15 +102,14 @@ class App extends Component {
 function PageController(props) {
   const { page, ...componentProps } = props;
 
-  switch(page) {
-
+  switch (page) {
     case 'settings':
-      return <SettingsPage { ...componentProps }/>;
+      return <SettingsPage {...componentProps} />;
 
     case 'main':
     default:
-      return <MainPage { ...componentProps }/>;
+      return <MainPage {...componentProps} />;
   }
-};
+}
 
 export default App;

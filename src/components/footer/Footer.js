@@ -12,8 +12,7 @@ import styles from 'components/footer/assets/styles/Footer.module.scss';
  * @property {string} buttonTitle - Title for button element.
  * @property {boolean} [disabled=false] - Boolean determining if button is disabled.
  */
- const Footer = (props) => {
-
+const Footer = (props) => {
   const {
     buttonClassName = null,
     buttonOnClick,
@@ -28,14 +27,14 @@ import styles from 'components/footer/assets/styles/Footer.module.scss';
     : styles['continue-button'];
 
   return (
-    <footer className={ styles.footer } >
+    <footer className={styles.footer}>
       <PrimaryButton
-        className={ className }
-        disabled={ disabled }
+        className={className}
+        disabled={disabled}
         iconProps={{ iconName: buttonIcon }}
-        onClick={ buttonOnClick }
-        text={ buttonText }
-        title={ buttonTitle }
+        onClick={buttonOnClick}
+        text={buttonText}
+        title={buttonTitle}
       />
     </footer>
   );

@@ -29,8 +29,7 @@ import styles from 'components/pages/main/assets/styles/MainPage.module.scss';
  * @memberof Pages
  */
 class MainPage extends Component {
-
-  state ={
+  state = {
     hideDialog: true,
     loading: false,
     messageText: '',
@@ -40,19 +39,23 @@ class MainPage extends Component {
   // Generic method to update directories
   setDirectory = (type, callback) =>
     getDirectory((directory) =>
-      this.props.setAppState({ [type]: directory }, callback && callback(directory)));
+      this.props.setAppState(
+        { [type]: directory },
+        callback && callback(directory)
+      )
+    );
 
   // Method to update the input directory
   setInput = (path) => {
-    if(typeof path === 'string') this.props.setAppState({ input: path });
+    if (typeof path === 'string') this.props.setAppState({ input: path });
     else this.setDirectory('input');
   };
 
   // Method to update the output directory
   setOutput = () => {
-    if(this.props.settings.isRememberOutputDir) {
+    if (this.props.settings.isRememberOutputDir) {
       this.setDirectory('output', (directory) => {
-        this.props.updateSetting('outputDir', directory)
+        this.props.updateSetting('outputDir', directory);
       });
     } else this.setDirectory('output');
   };
@@ -72,7 +75,7 @@ class MainPage extends Component {
       }
     } = this;
 
-    if(isSameAsSource && isRememberOutputDir) {
+    if (isSameAsSource && isRememberOutputDir) {
       updateMultipleSettings({
         isSameAsSource: false,
         outputDir: this.props.appState.output || null
@@ -86,23 +89,28 @@ class MainPage extends Component {
   };
 
   processBatch = () => {
-    const { props: { appState, settings } } = this;
+    const {
+      props: { appState, settings }
+    } = this;
     const { input, output } = appState;
 
     // Start spinner
     this.setState({ loading: true }, () => {
-
       const requestBody = JSON.stringify({ input, output, settings });
 
       // Stop spinner on response and display message
-      post(requestBody, 'process_batch',
+      post(
+        requestBody,
+        'process_batch',
 
         // Success callback
         (response) => {
           this.setState({
             hideDialog: false,
             loading: false,
-            messageText: response.error || response.warning ||
+            messageText:
+              response.error ||
+              response.warning ||
               'Batch successfully processed without any errors or warnings.',
             messageTitle: response.status
           });
@@ -110,26 +118,22 @@ class MainPage extends Component {
 
         // Error callback
         (error) => {
-
           // Log error
           console.error(error);
 
           this.setState({
             hideDialog: false,
             loading: false,
-            messageText: 'There was an error which prevented the batch from being processed.',
+            messageText:
+              'There was an error which prevented the batch from being processed.',
             messageTitle: 'Error'
           });
         }
-
       );
     });
-
   };
 
-  setHideDialog = (setting) => (
-    this.setState({ hideDialog: setting })
-  );
+  setHideDialog = (setting) => this.setState({ hideDialog: setting });
 
   render() {
     const {
@@ -143,22 +147,17 @@ class MainPage extends Component {
           isRemoveSubtitles,
           isSameAsSource,
           outputDir
-        },
+        }
       },
       setHideDialog,
       setInput,
       setOutput,
-      state: {
-        hideDialog,
-        loading,
-        messageText,
-        messageTitle
-      }
+      state: { hideDialog, loading, messageText, messageTitle }
     } = this;
 
     // Determine if same as source or not
     const isFooterDisabled = Boolean(
-      isSameAsSource ? !input : (!input || !output)
+      isSameAsSource ? !input : !input || !output
     );
 
     // Determine same as source input text
@@ -166,7 +165,7 @@ class MainPage extends Component {
       [true]: output,
       [Boolean(isRememberOutputDir && outputDir)]: outputDir,
       [isSameAsSource]: input,
-      [Boolean(isSameAsSource && input)]: input + String.raw`\*`,
+      [Boolean(isSameAsSource && input)]: input + String.raw`\*`
     }[true];
 
     // Determine if merging or removing subtitles
@@ -175,80 +174,85 @@ class MainPage extends Component {
       : 'FabricSyncFolder';
 
     // Determine button text
-    const buttonText = (
-      isRemoveSubtitles ? 'Remove' : 'Merge'
-    );
+    const buttonText = isRemoveSubtitles ? 'Remove' : 'Merge';
 
     // Determine button title
-    const buttonTitle = (
-      isRemoveSubtitles ? 'Remove subtitles' : 'Merge subtitles'
-    );
+    const buttonTitle = isRemoveSubtitles
+      ? 'Remove subtitles'
+      : 'Merge subtitles';
 
     // Determine button types for settings
     const SettingButton = (props) => {
       const { type, ...buttonProps } = props;
 
-      switch(type) {
+      switch (type) {
         case 'merge':
-          return isRemoveSubtitles
-            ? <DefaultButton { ...buttonProps } />
-            : <PrimaryButton { ...buttonProps } />;
+          return isRemoveSubtitles ? (
+            <DefaultButton {...buttonProps} />
+          ) : (
+            <PrimaryButton {...buttonProps} />
+          );
 
         case 'remove':
-          return isRemoveSubtitles
-            ? <PrimaryButton { ...buttonProps } />
-            : <DefaultButton { ...buttonProps } />;
+          return isRemoveSubtitles ? (
+            <PrimaryButton {...buttonProps} />
+          ) : (
+            <DefaultButton {...buttonProps} />
+          );
 
         // no default
       }
     };
 
-    return(
+    return (
       <Fragment>
-        { loading ? <LoadingScreen /> : null }
+        {loading ? <LoadingScreen /> : null}
         <Notice
-          hideDialog={ hideDialog }
-          messageText={ messageText }
-          messageTitle={ messageTitle }
-          setHideDialog={ setHideDialog }
+          hideDialog={hideDialog}
+          messageText={messageText}
+          messageTitle={messageTitle}
+          setHideDialog={setHideDialog}
         />
 
-        <section className={ styles.home }>
+        <section className={styles.home}>
           <InputField
             label="Source directory"
             placeholder="Select source directory"
-            setValue={ setInput }
-            value={ input }
+            setValue={setInput}
+            value={input}
           />
 
           <InputField
-            disabled={ isSameAsSource }
+            disabled={isSameAsSource}
             label="Output directory"
             placeholder="Select output directory"
-            setValue={ setOutput }
-            value={ outputValue }
+            setValue={setOutput}
+            value={outputValue}
           />
 
           <Checkbox
-            checked={ isSameAsSource }
-            className={ styles.checkbox }
+            checked={isSameAsSource}
+            className={styles.checkbox}
             label="Output same as source"
-            onChange={ onChangeSameAsSource }
+            onChange={onChangeSameAsSource}
             title="Use video source directories for output"
           />
 
-          <div className={ styles['mode-settings'] } >
-            <Label>Subtitle processing mode <i>({ `${buttonText.toLowerCase()} selected` })</i></Label>
+          <div className={styles['mode-settings']}>
+            <Label>
+              Subtitle processing mode{' '}
+              <i>({`${buttonText.toLowerCase()} selected`})</i>
+            </Label>
 
             <div>
               <SettingButton
-                onClick={ () => onChangeModeToggle('merge') }
+                onClick={() => onChangeModeToggle('merge')}
                 text="Merge"
                 title="Merge subtitles"
                 type="merge"
               />
               <SettingButton
-                onClick={ () => onChangeModeToggle('remove') }
+                onClick={() => onChangeModeToggle('remove')}
                 text="Remove"
                 title="Remove subtitles"
                 type="remove"
@@ -257,19 +261,17 @@ class MainPage extends Component {
           </div>
 
           <Footer
-            buttonIcon={ buttonIcon }
-            buttonOnClick={ processBatch }
-            buttonText={ buttonText }
-            buttonTitle={ buttonTitle }
-            disabled={ isFooterDisabled }
+            buttonIcon={buttonIcon}
+            buttonOnClick={processBatch}
+            buttonText={buttonText}
+            buttonTitle={buttonTitle}
+            disabled={isFooterDisabled}
           />
         </section>
       </Fragment>
     );
-  };
-
+  }
 }
-
 
 MainPage.propTypes = {
   appState: PropTypes.object.isRequired,
