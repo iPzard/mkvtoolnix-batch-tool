@@ -132,9 +132,13 @@ def process_batch():
             # Delete old video file
             os.remove(video_input_path)
 
+            # Rename new video file to match old name (now removed)
+            os.rename(video_output_path, f"{original_output_path}.mkv")
+
             # Delete all old subtitle files
-            for subtitle_input_path in subtitle_input_paths:
-                os.remove(subtitle_input_path)
+            if subtitle_input_paths is not None: # e.g., "remove" mode
+              for subtitle_input_path in subtitle_input_paths:
+                  os.remove(subtitle_input_path)
 
             # Delete video directory if it's now empty
             if len(os.listdir(video_directory)) == 0 and not is_same_as_source:
