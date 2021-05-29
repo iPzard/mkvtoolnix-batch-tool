@@ -63,6 +63,7 @@
     "build:docs": "jsdoc -c jsdoc.json",
     "build:package:mac": "node ./scripts/dispatch package mac",
     "build:package:windows": "node ./scripts/dispatch package windows",
+    "clean": "node ./scripts/dispatch clean",
     "eject": "react-scripts eject",
     "start": "node ./scripts/dispatch start",
     "start:electron": "electron .",
