@@ -136,7 +136,7 @@ def process_batch():
             os.rename(video_output_path, f"{original_output_path}.mkv")
 
             # Delete all old subtitle files
-            if subtitle_input_paths is not None: # e.g., "remove" mode
+            if subtitle_input_paths is not None: # e.g., not "remove" mode
               for subtitle_input_path in subtitle_input_paths:
                   os.remove(subtitle_input_path)
 
