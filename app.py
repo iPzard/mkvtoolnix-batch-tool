@@ -176,8 +176,6 @@ port = sys.argv[1]
 Generic function to shutdown
 Flask when Electron app closes.
 """
-
-
 @app.route("/quit")
 def quit():
     shutdown = request.environ.get("werkzeug.server.shutdown")
