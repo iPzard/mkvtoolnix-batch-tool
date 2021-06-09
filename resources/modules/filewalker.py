@@ -8,8 +8,6 @@ Contains methods to navigate
 files and use them to process
 required data
 """
-
-
 class FileWalker:
 
   """Get files:
@@ -17,7 +15,6 @@ class FileWalker:
   including video and subtitle
   absolute paths
   """
-
   def get_files(self, directory, is_remove_subtitles):
 
     # Directories (and only directories) to look for videos in

@@ -6,15 +6,12 @@ from textblob import TextBlob
 Wrapper for MKVToolNix to allow
 control via Python functions
 """
-
-
 class MKVToolNix:
 
     """Add subtitle
     Function to merge video and
     subtitle file(s) into an MKV
     """
-
     def add_subtitles(
         self,
         is_remove_ads,
@@ -94,11 +91,11 @@ class MKVToolNix:
         # Use command in system
         subprocess.call(os_command, shell=True)
 
-    """ Determine language
-  Function to parse text and
-  determine subtitle language
-  """
 
+    """ Determine language
+    Function to parse text and
+    determine subtitle language
+    """
     def determine_language(self, subtitle_input_path):
 
         # Ensure UTF-8 encoding
@@ -145,11 +142,11 @@ class MKVToolNix:
         # Return language and ISO 639-2 code
         return {"language": language, "language_code": language_code}
 
-    """ Ensure UTF-8
-  Function to ensure encoding
-  is compatible with MKVToolNix
-  """
 
+    """ Ensure UTF-8
+    Function to ensure encoding
+    is compatible with MKVToolNix
+    """
     def ensure_utf8_encoding(self, subtitle_input_path):
 
         # Sniff out encoding method in first 10 lines
@@ -175,12 +172,12 @@ class MKVToolNix:
 
             subtitle_file.close()
 
-    """ Remove subtitles
-  Function to create new MKV
-  which excludes all existing
-  subtitles
-  """
 
+    """ Remove subtitles
+    Function to create new MKV
+    which excludes all existing
+    subtitles
+    """
     def remove_subtitles(self, video_input_path, video_output_path):
 
         # MKVToolNix command to use
@@ -196,12 +193,12 @@ class MKVToolNix:
         # Run command
         subprocess.call(os_command, shell=True)
 
-    """ Remove subtitle ads:
-  Function to remove common
-  advertisements from subtitle
-  files
-  """
 
+    """ Remove subtitle ads:
+    Function to remove common
+    advertisements from subtitle
+    files
+    """
     def remove_subtitles_ads(self, subtitle_input_path):
 
         # Common (fractional) advertisement text
