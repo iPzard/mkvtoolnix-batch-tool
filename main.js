@@ -90,7 +90,7 @@ const createMainWindow = (port) => {
            * unresponsive behavior during page load.
            */
           mainWindow.show();
-          loadingWindow.hide();
+          loadingWindow.destroy();
         }
       };
 
@@ -132,7 +132,9 @@ const createMainWindow = (port) => {
   ipcMain.on('app-minimize', (_event, _arg) => mainWindow.minimize());
   ipcMain.on('app-quit', (_event, _arg) => shutdown(port));
   ipcMain.on('app-unmaximize', (_event, _arg) => mainWindow.unmaximize());
-  ipcMain.on('get-port-number', (event, _arg) => (event.returnValue = port));
+  ipcMain.on('get-port-number', (event, _arg) => {
+    event.returnValue = port;
+  });
 };
 
 /**
@@ -199,8 +201,8 @@ app.whenReady().then(async () => {
    * and run Flask in shell.
    */
   if (isDevMode) {
-    (browserWindows.loadingWindow = new BrowserWindow({ frame: false })),
-      createLoadingWindow().then(() => createMainWindow(port));
+    (browserWindows.loadingWindow = new BrowserWindow({ frame: false }));
+    createLoadingWindow().then(() => createMainWindow(port));
     spawn(`python app.py ${port}`, {
       detached: true,
       shell: true,
@@ -236,8 +238,7 @@ app.whenReady().then(async () => {
   if (!initialInstance) app.quit();
   else {
     app.on('second-instance', () => {
-      if (browserWindows.mainWindow?.isMinimized())
-        browserWindows.mainWindow?.restore();
+      if (browserWindows.mainWindow?.isMinimized()) { browserWindows.mainWindow?.restore(); }
       browserWindows.mainWindow?.focus();
     });
   }

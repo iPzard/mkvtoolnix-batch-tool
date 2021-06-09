@@ -1,4 +1,4 @@
-const { spawn } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 const getPort = require('get-port');
 const { get } = require('axios');
 
@@ -30,7 +30,7 @@ class Starter {
     });
 
     // Kill anything that might using required React port
-    spawn(`npx kill-port 3000`, spawnOptions.hideLogs);
+    spawnSync(`npx kill-port 3000`, spawnOptions.hideLogs);
 
     // Start & identify React & Electron processes
     spawn(`cross-env BROWSER=none react-scripts start`, spawnOptions.showLogs);
