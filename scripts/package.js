@@ -1,5 +1,6 @@
 const { spawnSync } = require('child_process');
 const { Builder } = require('./build');
+
 const builder = new Builder();
 
 // Define input and output directories
@@ -40,8 +41,8 @@ class Packager {
         `--out=${path('../dist/mac/setup')}`,
         `--icon=${path('../utilities/dmg/images/icon.icns')}`,
         // `--background=${path('../utilities/dmg/images/background.png')}`,
-        `--title="Example App"`,
-        `--overwrite`
+        '--title="Example App"',
+        '--overwrite'
       ].join(' '),
 
       spawn: { detached: false, shell: true, stdio: 'inherit' }
@@ -99,7 +100,7 @@ class Packager {
           banner: path('../utilities/msi/images/banner.png')
         }
       },
-      version: '2.1.3'
+      version: '2.1.4'
     });
 
     // Customized MSI template

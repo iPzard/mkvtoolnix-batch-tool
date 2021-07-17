@@ -103,11 +103,32 @@ class MKVToolNix:
 
     # Sniff out subtitle language in first 10 lines
     with open(subtitle_input_path, "r", encoding="utf8", errors="replace") as file:
-      text = "".join([file.readline() for _ in range(10)])
+      
+      # Determine extension of subtitle file
+      extension = f"{subtitle_input_path}".split('.')[-1]
 
+      """ Handle .ass files
+      These extensions have a config
+      section at the top which should be 
+      ignored when determining language
+      """
+      if extension == 'ass':
+
+        # Gets first 10 lines of "Dialogue" display text
+        subtitle_dialogue_lines = [
+          line.split('}')[1] for line in file.readlines() if "Dialogue:" in line
+        ][:10] # We just need the first 10 lines
+
+        # text sample if .ass subtitle file
+        text_sample = "".join(subtitle_dialogue_lines)
+
+      else:
+        # text for non .ass subtitle files
+        text_sample = "".join([file.readline() for _ in range(10)])
+      
     # Detected ISO 639-1 code, use und if undetermined
     try:
-      iso_639_1_code = TextBlob(text).detect_language()
+      iso_639_1_code = TextBlob(text_sample).detect_language()
     except:
       iso_639_1_code = "und"
 
@@ -116,6 +137,7 @@ class MKVToolNix:
 
     # ISO 639-1 to ISO 639-2 language code map
     language_map = {
+      "ar": {"code": "ar", "text": "Arabic"},
       "zh": {"code": "chi", "text": "Chinese"},
       "nl": {"code": "dut", "text": "Dutch"},
       "en": {"code": "eng", "text": "English"},
@@ -138,7 +160,7 @@ class MKVToolNix:
       if iso_code in language_map
       else "Undetermined"
     )
-
+    
     # Return language and ISO 639-2 code
     return {"language": language, "language_code": language_code}
 
