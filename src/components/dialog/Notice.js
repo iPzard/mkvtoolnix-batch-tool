@@ -21,7 +21,7 @@ import PropTypes from 'prop-types';
  * @tutorial - https://developer.microsoft.com/en-us/fluentui#/controls/web/dialog
  */
 
-export const Notice = (props) => {
+const Notice = (props) => {
   const { hideDialog, messageText, messageTitle, setHideDialog } = props;
 
   const dialogContentProps = {
@@ -49,13 +49,13 @@ export const Notice = (props) => {
 
   return (
     <Dialog
-      hidden={hideDialog}
-      onDismiss={toggleHideDialog}
-      dialogContentProps={dialogContentProps}
-      modalProps={modalProps}
+      hidden={ hideDialog }
+      onDismiss={ toggleHideDialog }
+      dialogContentProps={ dialogContentProps }
+      modalProps={ modalProps }
     >
       <DialogFooter>
-        <PrimaryButton onClick={toggleHideDialog} text="Okay" />
+        <PrimaryButton onClick={ toggleHideDialog } text="Okay" />
       </DialogFooter>
     </Dialog>
   );

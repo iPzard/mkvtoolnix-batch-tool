@@ -42,8 +42,7 @@ class MainPage extends Component {
       this.props.setAppState(
         { [type]: directory },
         callback && callback(directory)
-      )
-    );
+      ));
 
   // Method to update the input directory
   setInput = (path) => {
@@ -61,7 +60,7 @@ class MainPage extends Component {
   };
 
   onChangeModeToggle = (mode) => {
-    const updateSetting = this.props.updateSetting;
+    const { updateSetting } = this.props;
     const isRemoveSubtitles = mode === 'remove';
     updateSetting('isRemoveSubtitles', isRemoveSubtitles);
   };
@@ -109,9 +108,9 @@ class MainPage extends Component {
             hideDialog: false,
             loading: false,
             messageText:
-              response.error ||
-              response.warning ||
-              'Batch successfully processed without any errors or warnings.',
+              response.error
+              || response.warning
+              || 'Batch successfully processed without any errors or warnings.',
             messageTitle: response.status
           });
         },
@@ -166,7 +165,7 @@ class MainPage extends Component {
       [Boolean(isRememberOutputDir && outputDir)]: outputDir,
       [isSameAsSource]: input,
       [Boolean(isSameAsSource && input)]: input + String.raw`\*`
-    }[true];
+    }.true;
 
     // Determine if merging or removing subtitles
     const buttonIcon = isRemoveSubtitles
@@ -188,16 +187,16 @@ class MainPage extends Component {
       switch (type) {
         case 'merge':
           return isRemoveSubtitles ? (
-            <DefaultButton {...buttonProps} />
+            <DefaultButton { ...buttonProps } />
           ) : (
-            <PrimaryButton {...buttonProps} />
+            <PrimaryButton { ...buttonProps } />
           );
 
         case 'remove':
           return isRemoveSubtitles ? (
-            <PrimaryButton {...buttonProps} />
+            <PrimaryButton { ...buttonProps } />
           ) : (
-            <DefaultButton {...buttonProps} />
+            <DefaultButton { ...buttonProps } />
           );
 
         // no default
@@ -208,51 +207,56 @@ class MainPage extends Component {
       <Fragment>
         {loading ? <LoadingScreen /> : null}
         <Notice
-          hideDialog={hideDialog}
-          messageText={messageText}
-          messageTitle={messageTitle}
-          setHideDialog={setHideDialog}
+          hideDialog={ hideDialog }
+          messageText={ messageText }
+          messageTitle={ messageTitle }
+          setHideDialog={ setHideDialog }
         />
 
-        <section className={styles.home}>
+        <section className={ styles.home }>
           <InputField
             label="Source directory"
             placeholder="Select source directory"
-            setValue={setInput}
-            value={input}
+            setValue={ setInput }
+            value={ input }
           />
 
           <InputField
-            disabled={isSameAsSource}
+            disabled={ isSameAsSource }
             label="Output directory"
             placeholder="Select output directory"
-            setValue={setOutput}
-            value={outputValue}
+            setValue={ setOutput }
+            value={ outputValue }
           />
 
           <Checkbox
-            checked={isSameAsSource}
-            className={styles.checkbox}
+            checked={ isSameAsSource }
+            className={ styles.checkbox }
             label="Output same as source"
-            onChange={onChangeSameAsSource}
+            onChange={ onChangeSameAsSource }
             title="Use video source directories for output"
           />
 
-          <div className={styles['mode-settings']}>
+          <div className={ styles['mode-settings'] }>
             <Label>
-              Subtitle processing mode{' '}
-              <i>({`${buttonText.toLowerCase()} selected`})</i>
+              Subtitle processing mode
+              {' '}
+              <i>
+                (
+                {`${buttonText.toLowerCase()} subtitles`}
+                )
+              </i>
             </Label>
 
             <div>
               <SettingButton
-                onClick={() => onChangeModeToggle('merge')}
+                onClick={ () => onChangeModeToggle('merge') }
                 text="Merge"
                 title="Merge subtitles"
                 type="merge"
               />
               <SettingButton
-                onClick={() => onChangeModeToggle('remove')}
+                onClick={ () => onChangeModeToggle('remove') }
                 text="Remove"
                 title="Remove subtitles"
                 type="remove"
@@ -261,11 +265,11 @@ class MainPage extends Component {
           </div>
 
           <Footer
-            buttonIcon={buttonIcon}
-            buttonOnClick={processBatch}
-            buttonText={buttonText}
-            buttonTitle={buttonTitle}
-            disabled={isFooterDisabled}
+            buttonIcon={ buttonIcon }
+            buttonOnClick={ processBatch }
+            buttonText={ buttonText }
+            buttonTitle={ buttonTitle }
+            disabled={ isFooterDisabled }
           />
         </section>
       </Fragment>
