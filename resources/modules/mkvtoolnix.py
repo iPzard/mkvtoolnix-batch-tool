@@ -137,7 +137,7 @@ class MKVToolNix:
 
     # ISO 639-1 to ISO 639-2 language code map
     language_map = {
-      "ar": {"code": "ar", "text": "Arabic"},
+      "ar": {"code": "ara", "text": "Arabic"},
       "zh": {"code": "chi", "text": "Chinese"},
       "nl": {"code": "dut", "text": "Dutch"},
       "en": {"code": "eng", "text": "English"},
