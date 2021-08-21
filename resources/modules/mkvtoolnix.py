@@ -41,6 +41,22 @@ class MKVToolNix:
     # Iterate through subtitle paths and generate option commands
     for index, subtitle_input_path in enumerate(subtitle_input_paths):
 
+      # TODO: Issue 36
+      """
+      Check if path extension is supported. 
+      If not, convert it with ffmpeg. 
+      
+      Should create a temp file of the .srt with 
+      a unique file name (e.g., {UUID}.srt) 
+      use variable `converted_subtitle_input_path`
+
+      EXAMPLE:
+      ffmpeg -i input.z output.srt
+
+      * Should verify "remove_old" setting in 
+        app.py still works to remove old files. 
+      """
+
       # Determine subtitle language, use und if undetermined
       try:
         subtitle_language_info = self.determine_language(subtitle_input_path)
@@ -64,6 +80,13 @@ class MKVToolNix:
       subtitle_track_settings = (
         f"--track-name 0:{subtitle_track_count}{default_track_setting}"
       )
+
+
+      # TODO: Issue 36
+      """
+      Check if `converted_subtitle_input_path` exists
+      if so, use it here instead of `subtitle_input_path`
+      """
       subtitle_input_path_quoted = (
         f'"{subtitle_input_path}"'  # Wrap in quotes for spaces in dir names
       )
@@ -90,6 +113,12 @@ class MKVToolNix:
 
     # Use command in system
     subprocess.call(os_command, shell=True)
+
+    # TODO: Issue 36
+    """
+    if `converted_subtitle_input_path` exists
+    delete the temp file that was created
+    """
 
 
   """ Determine language
