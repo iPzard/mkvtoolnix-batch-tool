@@ -154,7 +154,7 @@ The following file types are supported.
 - _AVI_, _M4V_, _MKV_, _MOV_, _MP4_, _MPG_, _MPEG_, _OGG_, _OGM_, _WEBM_, _WMV_
 
 **Subtitle**:
-- _ASS_, _PGS_, _SRT_, _SSA_, _SUP_
+- _ASS_, _PGS_, _SMI_, _SRT_, _SSA_, _SUP_
 <br><br>
 
 ## 🙏 Attribution

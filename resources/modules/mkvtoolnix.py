@@ -1,6 +1,5 @@
-import chardet, os, subprocess, sys
+import chardet, ffmpeg, os, subprocess
 from textblob import TextBlob
-
 
 """ MKVToolNix:
 Wrapper for MKVToolNix to allow
@@ -37,25 +36,39 @@ class MKVToolNix:
 
     # Keep track of subtitle options
     subtitle_options = []
-
+    converted_input_paths_to_remove = []
+    
     # Iterate through subtitle paths and generate option commands
     for index, subtitle_input_path in enumerate(subtitle_input_paths):
 
-      # TODO: Issue 36
       """
-      Check if path extension is supported. 
-      If not, convert it with ffmpeg. 
-      
-      Should create a temp file of the .srt with 
-      a unique file name (e.g., {UUID}.srt) 
-      use variable `converted_subtitle_input_path`
-
-      EXAMPLE:
-      ffmpeg -i input.z output.srt
-
-      * Should verify "remove_old" setting in 
-        app.py still works to remove old files. 
+      List of incompatible but convertable 
+      extensions, new extensions must also 
+      be added to the `subtitle_file_types`
+      list in ./filewalker.py
       """
+      incompatible_convertable_extensions = ['smi'] # can add more if requests come in
+
+      # Determine extension to check compatibility
+      subtitle_extension = self.determine_extension(subtitle_input_path)
+
+      # If incompatible but convertable extension
+      if subtitle_extension in incompatible_convertable_extensions:
+        
+        # try converting the file to `.srt`
+        try:
+          converted_subtitle_input_path = f"{subtitle_input_path}.srt"
+          stream = ffmpeg.input(subtitle_input_path)
+          stream = ffmpeg.output(stream, converted_subtitle_input_path)
+          ffmpeg.run(stream)
+
+          # Update input path and push to paths to remove
+          subtitle_input_path = converted_subtitle_input_path
+          converted_input_paths_to_remove.append(subtitle_input_path)
+
+        # If issue(s) with converting, continue with original file
+        except:
+          pass
 
       # Determine subtitle language, use und if undetermined
       try:
@@ -81,12 +94,6 @@ class MKVToolNix:
         f"--track-name 0:{subtitle_track_count}{default_track_setting}"
       )
 
-
-      # TODO: Issue 36
-      """
-      Check if `converted_subtitle_input_path` exists
-      if so, use it here instead of `subtitle_input_path`
-      """
       subtitle_input_path_quoted = (
         f'"{subtitle_input_path}"'  # Wrap in quotes for spaces in dir names
       )
@@ -114,11 +121,17 @@ class MKVToolNix:
     # Use command in system
     subprocess.call(os_command, shell=True)
 
-    # TODO: Issue 36
-    """
-    if `converted_subtitle_input_path` exists
-    delete the temp file that was created
-    """
+    # Delete any converted input paths that may exist
+    if len(converted_input_paths_to_remove):
+      for converted_input_path in converted_input_paths_to_remove:
+        os.remove(converted_input_path)
+
+
+  """ Determine extension
+  Function to determine the extension of a file
+  """
+  def determine_extension(self, file_path):
+    return f"{file_path}".split('.')[-1]
 
 
   """ Determine language
@@ -134,7 +147,7 @@ class MKVToolNix:
     with open(subtitle_input_path, "r", encoding="utf8", errors="replace") as file:
       
       # Determine extension of subtitle file
-      extension = f"{subtitle_input_path}".split('.')[-1]
+      extension = self.determine_extension(subtitle_input_path)
 
       """ Handle .ass files
       These extensions have a config

@@ -60,21 +60,30 @@ class FileWalker:
           file_path = current_directory / current_subdirectory / file
           file_type = file.split(".")[-1].lower()
 
-          # Identify acceptable video & subtitle file extensions
+          # Usable video file types
           video_file_types = [
-              "avi",
-              "m4v",
-              "mkv",
-              "mov",
-              "mp4",
-              "mpg",
-              "mpeg",
-              "ogg",
-              "ogm",
-              "webm",
-              "wmv",
+            "avi",
+            "m4v",
+            "mkv",
+            "mov",
+            "mp4",
+            "mpg",
+            "mpeg",
+            "ogg",
+            "ogm",
+            "webm",
+            "wmv",
           ]
-          subtitle_file_types = ["ass", "pgs", "srt", "ssa", "sup"]
+
+          # Usable subtitle file types
+          subtitle_file_types = [
+            "ass", 
+            "pgs", 
+            "smi", 
+            "srt", 
+            "ssa", 
+            "sup"
+          ]
 
           # Determine if file has a video-related extention
           if file_type in video_file_types:
@@ -105,7 +114,6 @@ class FileWalker:
           episode.avi | episode part 2.avi
           episode.srt | episode part 2.srt
           """
-
           # convert to strings
           video_files = [str(video) for video in video_files]
 

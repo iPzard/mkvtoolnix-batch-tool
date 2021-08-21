@@ -53,8 +53,6 @@ socketio = SocketIO(app, **socketioConfig)
 Merges batch of video/subtitles
 files using user-provided options.
 """
-
-
 @app.route("/process_batch", methods=["POST"])
 def process_batch():
 
@@ -147,7 +145,7 @@ def process_batch():
   # Status, warning, and error message handling
   status = "Batch complete"
   error = (
-    "No valid directories were found using the path provided."
+    "No valid files were found in the source directory provided."
     if len(batch) == 0
     else None
   )
