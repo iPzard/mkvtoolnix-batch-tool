@@ -52,6 +52,11 @@ class FileWalker:
         # Initialize video & subtitle variables
         video_files = []
         subtitle_files = []
+        """
+        TODO: issue #37
+        Add attachment_files = []
+        """
+        
         video_file = None
 
         for file in files:
@@ -85,6 +90,12 @@ class FileWalker:
             "sup"
           ]
 
+          """
+          TODO: issue #37
+          Determine valid attachment file types
+          Add attachment_file_types = [ ... ]
+          """
+
           # Determine if file has a video-related extention
           if file_type in video_file_types:
             video_files.append(file_path)
@@ -92,6 +103,11 @@ class FileWalker:
           # Determine if file has a subtitle-related extension
           elif file_type in subtitle_file_types:
             subtitle_files.append(file_path)
+
+          """
+          TODO: issue #37
+          elif file_type in attachment_file_types:
+          """
 
         # If only one video, set it as "the" video file
         if len(video_files) == 1:
@@ -103,6 +119,11 @@ class FileWalker:
         )
         invalid_videos = len(video_files) == 0 and is_not_root_directory
         if invalid_subtitles or invalid_videos:
+          
+          """
+          TODO: issue #37
+          if not "attachements" directory:
+          """
           skipped_directories += 1
 
         # If more than one video, match with subtitles by names
@@ -203,6 +224,10 @@ class FileWalker:
             warning = f"{skipped_subtitles} subtitle {subtitle_if_plural} {subtitle_was_if_plural} not processed."
 
     # Prepare valid files and warning message (or None if none)
+    """
+    TODO: issue #37
+    include "attachments" here
+    """
     file_data = {"files": included_files, "warning": warning}
 
     # Return tuples of files

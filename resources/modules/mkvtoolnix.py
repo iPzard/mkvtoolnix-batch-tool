@@ -11,6 +11,10 @@ class MKVToolNix:
   Function to merge video and
   subtitle file(s) into an MKV
   """
+  """
+  TODO: issue #37
+  include attachments here
+  """
   def add_subtitles(
     self,
     is_remove_ads,
@@ -115,6 +119,17 @@ class MKVToolNix:
     # Combine subtitle options into command
     subtitle_commands = " ".join(subtitle_options)
 
+    
+    """
+    TODO: issue #37
+    attachment_commands = 
+    """
+
+    
+    """
+    TODO: issue #37
+    include attachment_commands in os_command
+    """
     # Finalized command for OS
     os_command = " ".join([mkv_command, video_path_info, subtitle_commands])
 
