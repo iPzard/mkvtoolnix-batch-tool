@@ -7,8 +7,8 @@ assignees: iPzard
 
 ---
 
-**✨  Describe the feature**<br />
+**✨  Describe the feature**
 A clear and concise description of the feature you want.
 
-**Additional context**<br />
+**Additional context**
 Add any other context or screenshots about the feature request here.
