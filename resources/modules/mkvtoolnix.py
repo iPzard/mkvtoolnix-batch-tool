@@ -1,5 +1,8 @@
 import chardet, ffmpeg, os, subprocess
 from textblob import TextBlob
+from . import filewalker
+
+FileWalker = filewalker.FileWalker()
 
 """ MKVToolNix:
 Wrapper for MKVToolNix to allow
@@ -54,8 +57,8 @@ class MKVToolNix:
       incompatible_convertable_extensions = ['smi'] # can add more if requests come in
 
       # Determine extension to check compatibility
-      subtitle_extension = self.determine_extension(subtitle_input_path)
-
+      subtitle_extension = FileWalker.get_path_extension(subtitle_input_path)
+      
       # If incompatible but convertable extension
       if subtitle_extension in incompatible_convertable_extensions:
         
@@ -142,13 +145,6 @@ class MKVToolNix:
         os.remove(converted_input_path)
 
 
-  """ Determine extension
-  Function to determine the extension of a file
-  """
-  def determine_extension(self, file_path):
-    return f"{file_path}".split('.')[-1]
-
-
   """ Determine language
   Function to parse text and
   determine subtitle language
@@ -162,14 +158,14 @@ class MKVToolNix:
     with open(subtitle_input_path, "r", encoding="utf8", errors="replace") as file:
       
       # Determine extension of subtitle file
-      extension = self.determine_extension(subtitle_input_path)
-
+      subtitle_extension = FileWalker.get_path_extension(subtitle_input_path)
+      
       """ Handle .ass files
       These extensions have a config
       section at the top which should be 
       ignored when determining language
       """
-      if extension == 'ass':
+      if subtitle_extension == 'ass':
 
         # Gets first 10 lines of "Dialogue" display text
         subtitle_dialogue_lines = [

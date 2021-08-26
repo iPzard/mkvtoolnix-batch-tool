@@ -1,6 +1,5 @@
 from pathlib import Path
-import os
-import re
+import os, re
 
 
 """ FileWalker:
@@ -9,6 +8,164 @@ files and use them to process
 required data
 """
 class FileWalker:
+
+  """Get unique file path:
+  Checks if path exists, if so
+  += " ({count})" to the path
+  until it doesn't.
+  """
+  def get_unique_file_path(self, path):
+    path_without_extension = self.get_path_without_extension(path)
+    path_extension = self.get_path_extension(path)
+    count = 1
+
+    while os.path.exists(path):
+      path = f"{path_without_extension} ({count}).{path_extension}"
+      count += 1
+
+    return self.get_path_without_extension(path)
+
+
+  """Get path without extension:
+  Returns entire file path excluding
+  the file extension.
+  """
+  def get_path_without_extension(self, path):
+    return os.path.splitext(path)[0]
+
+
+  """ Determine extension
+  Function to determine the 
+  extension of a file path.
+  """
+  def get_path_extension(self, path):
+    return os.path.splitext(path)[1].replace('.', '')
+
+
+  """ Get file paths
+  Gets file paths of video
+  and subtitle files to use
+  in batch process.
+  """
+  def get_file_paths(
+    self,
+    current_directory,
+    current_subdirectory,
+    current_file,
+    video_files,
+    subtitle_files
+  ):
+
+    """
+    TODO: issue #37
+    Add attachment_files = []
+    """
+
+    # Identify path and type of file
+    file_path = current_directory / current_subdirectory / current_file
+    file_type = current_file.split(".")[-1].lower()
+
+    # Usable video file types
+    video_file_types = [
+      "avi",
+      "m4v",
+      "mkv",
+      "mov",
+      "mp4",
+      "mpg",
+      "mpeg",
+      "ogg",
+      "ogm",
+      "webm",
+      "wmv",
+    ]
+
+    # Usable subtitle file types
+    subtitle_file_types = [
+      "ass", 
+      "pgs", 
+      "smi", 
+      "srt", 
+      "ssa", 
+      "sup"
+    ]
+
+    """
+    TODO: issue #37
+    Determine valid attachment file types
+    Add attachment_file_types = [ ... ]
+    """
+    # Determine if file has a video-related extention
+    if file_type in video_file_types:
+      video_files.append(file_path)
+
+    # Determine if file has a subtitle-related extension
+    elif file_type in subtitle_file_types:
+      subtitle_files.append(file_path)
+
+    return [video_files, subtitle_files]
+
+
+  """ Check file warnings:
+  Checks if any missing file 
+  or missing subtitle warning
+  messages should show.
+  """
+  def check_file_warnings(
+    self, 
+    is_remove_subtitles, 
+    skipped_directories, 
+    skipped_subtitles
+  ):
+
+    # Initialize warning
+    warning = None
+
+    # Determines whether to use singular or plural tense
+    def get_pluralization(singular, plural, variable):
+      return singular if variable == 1 else plural
+
+    # If there are skipped directories
+    if skipped_directories:
+
+      # Skipped directories warning
+      was_or_were = get_pluralization("was", "were", skipped_directories)
+      directory_or_directories = get_pluralization(
+        "directory",
+        "directories",
+        skipped_directories
+      )
+
+      # If option to remove subtitles is selected
+      if is_remove_subtitles:
+        warning = (
+          f"{skipped_directories} {directory_or_directories}"
+          f" had no video files and {was_or_were} not processed."
+        )
+      else:
+        warning = (
+          f"{skipped_directories} {directory_or_directories} had no"
+          f" video and/or subtitle files and {was_or_were} not processed."
+        )
+
+    # If there are skipped subtitles
+    if skipped_subtitles and not is_remove_subtitles:
+      was_or_were = get_pluralization("was", "were", skipped_subtitles)
+      file_or_files = get_pluralization("file", "files", skipped_subtitles)
+
+      if skipped_directories:
+        warning = (
+          f"{skipped_directories} {directory_or_directories} and "
+          f"{skipped_subtitles} subtitle {file_or_files} were not processed."
+        )
+      else:
+        warning = (
+          f"{skipped_subtitles} subtitle {file_or_files} "
+          f"{was_or_were} not processed."
+        )
+
+    return warning
+
 
   """Get files:
   returns tuples of matches
@@ -23,16 +180,12 @@ class FileWalker:
     )
 
     # Include current directory
-    video_directories.insert(0, "")  # todo .append('') instead?
+    video_directories.insert(0, "")
 
-    # Storage for (video, subtitle) tuples
-    included_files = []
-
-    # Keep track of skipped directories & subtitle files
+    # Initializing variables
+    included_files = [] # (video, subtitle) tuple list
     skipped_directories = 0
     skipped_subtitles = 0
-
-    # Initialize warning
     warning = None
 
     # Create comparable root path
@@ -57,52 +210,14 @@ class FileWalker:
         Add attachment_files = []
         """
         
-        video_file = None
-
-        for file in files:
-
-          # Identify path and type of file
-          file_path = current_directory / current_subdirectory / file
-          file_type = file.split(".")[-1].lower()
-
-          # Usable video file types
-          video_file_types = [
-            "avi",
-            "m4v",
-            "mkv",
-            "mov",
-            "mp4",
-            "mpg",
-            "mpeg",
-            "ogg",
-            "ogm",
-            "webm",
-            "wmv",
-          ]
-
-          # Usable subtitle file types
-          subtitle_file_types = [
-            "ass", 
-            "pgs", 
-            "smi", 
-            "srt", 
-            "ssa", 
-            "sup"
-          ]
-
-          """
-          TODO: issue #37
-          Determine valid attachment file types
-          Add attachment_file_types = [ ... ]
-          """
-
-          # Determine if file has a video-related extention
-          if file_type in video_file_types:
-            video_files.append(file_path)
-
-          # Determine if file has a subtitle-related extension
-          elif file_type in subtitle_file_types:
-            subtitle_files.append(file_path)
+        for current_file in files:
+          [video_files, subtitle_files] = self.get_file_paths(
+            current_directory,
+            current_subdirectory,
+            current_file,
+            video_files,
+            subtitle_files
+          )
 
           """
           TODO: issue #37
@@ -110,19 +225,21 @@ class FileWalker:
           """
 
         # If only one video, set it as "the" video file
+        video_file = None
         if len(video_files) == 1:
           video_file = video_files[0]
 
         # If no subtitle (while merging) and/or video files
-        invalid_subtitles = (
-            len(subtitle_files) == 0 and not is_remove_subtitles and is_not_root_directory
+        is_invalid_subtitles = (
+          len(subtitle_files) == 0 and not is_remove_subtitles and is_not_root_directory
         )
-        invalid_videos = len(video_files) == 0 and is_not_root_directory
-        if invalid_subtitles or invalid_videos:
+        is_invalid_videos = len(video_files) == 0 and is_not_root_directory
+        
+        if is_invalid_subtitles or is_invalid_videos:
           
           """
           TODO: issue #37
-          if not "attachements" directory:
+          if not "attachments" directory:
           """
           skipped_directories += 1
 
@@ -202,26 +319,11 @@ class FileWalker:
           skipped_directories += 1
 
         # Check if any directories were skipped
-        if skipped_directories:
-          directory_was_if_plural = "was" if skipped_directories == 1 else "were"
-          directory_if_plural = (
-              "directory" if skipped_directories == 1 else "directories"
-          )
-
-          if is_remove_subtitles:
-            warning = f"{skipped_directories} {directory_if_plural} had no video files and {directory_was_if_plural} not processed."
-          else:
-            warning = f"{skipped_directories} {directory_if_plural} had no videos and/or subtitle files and {directory_was_if_plural} not processed."
-
-        # if there are skipped subtitles, provide a warning
-        if skipped_subtitles and not is_remove_subtitles:
-          subtitle_was_if_plural = "was" if skipped_subtitles == 1 else "were"
-          subtitle_if_plural = "file" if skipped_subtitles == 1 else "files"
-
-          if skipped_directories:
-            warning = f"{skipped_directories} {directory_if_plural} and {skipped_subtitles} subtitle {subtitle_if_plural} were not processed."
-          else:
-            warning = f"{skipped_subtitles} subtitle {subtitle_if_plural} {subtitle_was_if_plural} not processed."
+        warning = self.check_file_warnings(
+          is_remove_subtitles, 
+          skipped_directories, 
+          skipped_subtitles
+        )
 
     # Prepare valid files and warning message (or None if none)
     """

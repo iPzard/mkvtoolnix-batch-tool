@@ -1,4 +1,4 @@
-import sys, os
+import os, sys
 from pathlib import PurePath
 from resources.modules import filewalker
 from resources.modules import mkvtoolnix
@@ -99,10 +99,11 @@ def process_batch():
       )[0]
 
     # Prevent duplicate file names by adding (#) to name
-    count = 1
-    while os.path.exists(video_output_path + video_output_extension):
-      video_output_path = f"{original_output_path} ({count})"
-      count += 1
+    video_output_path = FileWalker.get_unique_file_path(video_output_path + video_output_extension)
+    # count = 1
+    # while os.path.exists(video_output_path + video_output_extension):
+    #   video_output_path = f"{original_output_path} ({count})"
+    #   count += 1
 
     # Once final video path is determined, add its extension
     video_output_path += video_output_extension
