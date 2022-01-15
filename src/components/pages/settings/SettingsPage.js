@@ -17,7 +17,7 @@ import styles from 'components/pages/settings/assets/styles/SettingsPage.module.
  *
  * @memberof Pages
  */
-class SettingsPage extends Component{
+class SettingsPage extends Component {
 
   state = {
     isRememberOutputDir: false,
@@ -35,8 +35,8 @@ class SettingsPage extends Component{
       isRemoveExistingSubtitles: nextProps.settings.isRemoveExistingSubtitles,
       isRemoveOld: nextProps.settings.isRemoveOld,
       language: nextProps.settings.language
-    }
-  };
+    };
+  }
 
   // Method to toggle "subtitle language" setting
   setLanguageSetting = (event, language) => {
@@ -53,17 +53,17 @@ class SettingsPage extends Component{
     const { isRememberOutputDir, isSameAsSource } = this.props.settings;
     const outputIfNotSameAsSource = !isSameAsSource && this.props.appState.output;
 
-    if(isRememberOutputDir) {
+    if (isRememberOutputDir) {
       this.props.updateMultipleSettings({
         isRememberOutputDir: false,
         outputDir: null
       });
     }
 
-    else this.props.updateMultipleSettings({
+    else { this.props.updateMultipleSettings({
       isRememberOutputDir: true,
       outputDir: outputIfNotSameAsSource || null
-    });
+    }); }
   };
 
   render() {
@@ -115,9 +115,9 @@ class SettingsPage extends Component{
           onChange={ updateRememberOutputDir }
         />
       </section>
-    )
+    );
   }
-};
+}
 
 
 SettingsPage.propTypes = {

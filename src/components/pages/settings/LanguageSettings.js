@@ -7,8 +7,8 @@ import React from 'react';
 import { Stack } from 'office-ui-fabric-react/lib/Stack';
 import supportedLanguages from 'components/pages/settings/util/supportedLanguages';
 
-const languageOptions = [
-  { key: 'Header', text: 'Select Language', itemType: DropdownMenuItemType.Header },
+// Primary languages to select from
+const primaryLanguageOptions = [
   { key: 'chi', text: 'Chinese' },
   { key: 'dut', text: 'Dutch' },
   { key: 'eng', text: 'English' },
@@ -19,11 +19,28 @@ const languageOptions = [
   { key: 'jpn', text: 'Japanese' },
   { key: 'por', text: 'Portuguese' },
   { key: 'rus', text: 'Russian' },
-  { key: 'swe', text: 'Swedish' },
+  { key: 'swe', text: 'Swedish' }
+];
 
-  // supported languages from MKVToolNix
-  { key: 'Header', text: 'Full Language List', itemType: DropdownMenuItemType.Header },
-  ...supportedLanguages
+// Create hashmap of existing keys for reference
+const existingKeys = primaryLanguageOptions.reduce((acc, languageOption) => {
+  acc[languageOption.key] = true;
+  return acc;
+}, {});
+
+
+// Additional supported languages (from MKVToolNix)
+const additionalLanguageOptions = [
+  { key: 'additional-languages', text: 'Full Language List', itemType: DropdownMenuItemType.Header },
+  ...supportedLanguages.filter((option) => {
+    return !(option.key in existingKeys);
+  })
+];
+
+// Combine primary and additional language options
+const languageOptions = [
+  ...primaryLanguageOptions,
+  ...additionalLanguageOptions
 ];
 
 const onRenderLabel = (props) => (
@@ -59,8 +76,7 @@ const LanguageSettings = (props) => {
       return language.key[0] === event.key;
     });
 
-    if(option)
-      setLanguageSetting(event, option);
+    if (option) { setLanguageSetting(event, option); }
   };
 
   return (
