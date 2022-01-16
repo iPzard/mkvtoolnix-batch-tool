@@ -1,4 +1,4 @@
-import chardet, ffmpeg, os, subprocess
+import chardet, ffmpeg, os, re, subprocess
 from textblob import TextBlob
 from . import filewalker
 
@@ -181,6 +181,8 @@ class MKVToolNix:
       
     # Detected ISO 639-1 code, use und if undetermined
     try:
+      # remove new lines and lines that start with numbers
+      text_sample = re.sub('\n|^[0-9].*', '', text_sample, flags=re.MULTILINE)
       iso_639_1_code = TextBlob(text_sample).detect_language()
     except:
       iso_639_1_code = "und"
