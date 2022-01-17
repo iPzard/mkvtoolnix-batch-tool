@@ -232,7 +232,7 @@ class MKVToolNix:
 
     # Encoding method and method whitelist
     encoding_method = chardet.detect(rawdata)["encoding"]
-    encoding_method_whitelist = ["ascii", "ISO-8859-9", "utf8"]
+    encoding_method_whitelist = ["ascii", "ISO-8859-9", "utf8", "Windows-1252"]
 
 
     # If encoding method will cause issues, convert it to utf-8
