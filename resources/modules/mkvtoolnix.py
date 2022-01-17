@@ -179,13 +179,25 @@ class MKVToolNix:
         # text for non .ass subtitle files
         text_sample = "".join([file.readline() for _ in range(10)])
       
-    # Detected ISO 639-1 code, use und if undetermined
-    try:
-      # remove new lines and lines that start with numbers
-      text_sample = re.sub('\n|^[0-9].*', '', text_sample, flags=re.MULTILINE)
-      iso_639_1_code = TextBlob(text_sample).detect_language()
-    except:
-      iso_639_1_code = "und"
+      """ Handle .idx files
+        These extensions use image-based
+        subtitles and have the language
+        set within the file's configuration
+        options.
+      """
+      if subtitle_extension == 'idx':
+        for line in file:
+          if 'id:' in line: # find ID (lang) setting
+            iso_639_1_code = re.sub('id:\s*|,(.*)', '', line)
+
+      else:
+        # Detected ISO 639-1 code, use und if undetermined
+        try:
+          # remove new lines and lines that start with numbers
+          text_sample = re.sub('\n|^[0-9].*', '', text_sample, flags=re.MULTILINE)
+          iso_639_1_code = TextBlob(text_sample).detect_language()
+        except:
+          iso_639_1_code = "und"
 
     # Simplify ISO to base (e.g., 'zh-TW' = 'zh')
     iso_code = iso_639_1_code[0] + iso_639_1_code[1]

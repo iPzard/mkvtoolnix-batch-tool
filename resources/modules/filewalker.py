@@ -82,11 +82,13 @@ class FileWalker:
 
     # Usable subtitle file types
     subtitle_file_types = [
-      "ass", 
-      "pgs", 
-      "smi", 
-      "srt", 
-      "ssa", 
+      "ass",
+      "idx",
+      "pgs",
+      "smi",
+      "srt",
+      "ssa",
+      "sub",
       "sup"
     ]
 
