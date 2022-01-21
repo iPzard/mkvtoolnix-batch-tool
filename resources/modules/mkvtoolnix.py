@@ -1,5 +1,5 @@
 import chardet, ffmpeg, os, re, subprocess
-from textblob import TextBlob
+from langdetect import detect
 from . import filewalker
 
 FileWalker = filewalker.FileWalker()
@@ -154,7 +154,10 @@ class MKVToolNix:
     # Ensure UTF-8 encoding
     self.ensure_utf8_encoding(subtitle_input_path)
 
-    # Sniff out subtitle language in first 10 lines
+    # Length of lines to sniff for language detection
+    line_sniff_count = 100
+
+    # Sniff out subtitle language
     with open(subtitle_input_path, "r", encoding="utf8", errors="replace") as file:
       
       # Determine extension of subtitle file
@@ -167,23 +170,23 @@ class MKVToolNix:
       """
       if subtitle_extension == 'ass':
 
-        # Gets first 10 lines of "Dialogue" display text
+        # Gets sniffed lines of "Dialogue" display text
         subtitle_dialogue_lines = [
           line.split('}')[1] for line in file.readlines() if "Dialogue:" in line
-        ][:10] # We just need the first 10 lines
+        ][:line_sniff_count]
 
         # text sample if .ass subtitle file
         text_sample = "".join(subtitle_dialogue_lines)
 
       else:
         # text for non .ass subtitle files
-        text_sample = "".join([file.readline() for _ in range(10)])
+        text_sample = "".join(file.readlines())
       
       """ Handle .idx files
-        These extensions use image-based
-        subtitles and have the language
-        set within the file's configuration
-        options.
+      These extensions use image-based
+      subtitles and have the language
+      set within the file's configuration
+      options.
       """
       if subtitle_extension == 'idx':
         for line in file:
@@ -191,36 +194,51 @@ class MKVToolNix:
             iso_639_1_code = re.sub('id:\s*|,(.*)', '', line)
 
       else:
+        """
+        Remove new lines and lines that 
+        start with numbers, then split
+        into an evaluation list.
+        """
+        text_sample = re.sub(
+          '\n|^[0-9].*', '', text_sample, flags=re.MULTILINE
+        ).split(' ', line_sniff_count)[:line_sniff_count]
+        iso_639_1_code_list = []
+
         # Detected ISO 639-1 code, use und if undetermined
-        try:
-          # remove new lines and lines that start with numbers
-          text_sample = re.sub('\n|^[0-9].*', '', text_sample, flags=re.MULTILINE)
-          iso_639_1_code = TextBlob(text_sample).detect_language()
-        except:
+        for word in text_sample:     
+          try:
+            # Add detected language ISO code to list
+            iso_639_1_code_list.append(detect(word))
+            pass
+
+          # If word language cannot be detected, skip
+          except:
+            pass
+
+        """ Set ISO-639-1 code:
+        Sets to most frequently occuring
+        ISO code in the list of translated
+        words, this minimizes incorrect
+        interpretations.
+        """
+        iso_639_1_code = max(
+          set(iso_639_1_code_list),
+          key = iso_639_1_code_list.count
+        )
+
+        # Default to "und"
+        if iso_639_1_code is None:
           iso_639_1_code = "und"
 
     # Simplify ISO to base (e.g., 'zh-TW' = 'zh')
     iso_code = iso_639_1_code[0] + iso_639_1_code[1]
 
     # ISO 639-1 to ISO 639-2 language code map
-    language_map = {
-      "ar": {"code": "ara", "text": "Arabic"},
-      "zh": {"code": "chi", "text": "Chinese"},
-      "nl": {"code": "dut", "text": "Dutch"},
-      "en": {"code": "eng", "text": "English"},
-      "es": {"code": "spa", "text": "Spanish"},
-      "fr": {"code": "fre", "text": "French"},
-      "de": {"code": "ger", "text": "German"},
-      "it": {"code": "ita", "text": "Italian"},
-      "ja": {"code": "jpn", "text": "Japanese"},
-      "pt": {"code": "por", "text": "Portuguese"},
-      "ru": {"code": "rus", "text": "Russian"},
-      "sv": {"code": "swe", "text": "Swedish"},
-    }
+    language_map = self.get_supported_languages()
 
     # Return ISO 639-2 code or "und"/"Undetermined" if unsupported
     language_code = (
-      language_map[iso_code]["code"] if iso_code in language_map else "und"
+      language_map[iso_code]["key"] if iso_code in language_map else "und"
     )
     language = (
       language_map[iso_code]["text"]
@@ -321,3 +339,197 @@ class MKVToolNix:
 
     # Close file
     subtitle_file.close()
+
+
+  """ Supported languages:
+  Returns a map of MKVToolNix 
+  supported languages.
+  """
+  def get_supported_languages(self):
+    return {
+      'aa': { 'key': 'aar', 'text': 'Afar' },
+      'ab': { 'key': 'abk', 'text': 'Abkhazian' },
+      'ae': { 'key': 'ave', 'text': 'Avestan' },
+      'af': { 'key': 'afr', 'text': 'Afrikaans' },
+      'ak': { 'key': 'aka', 'text': 'Akan' },
+      'am': { 'key': 'amh', 'text': 'Amharic' },
+      'an': { 'key': 'arg', 'text': 'Aragonese' },
+      'ar': { 'key': 'ara', 'text': 'Arabic' },
+      'as': { 'key': 'asm', 'text': 'Assamese' },
+      'av': { 'key': 'ava', 'text': 'Avaric' },
+      'ay': { 'key': 'aym', 'text': 'Aymara' },
+      'az': { 'key': 'aze', 'text': 'Azerbaijani' },
+      'ba': { 'key': 'bak', 'text': 'Bashkir' },
+      'be': { 'key': 'bel', 'text': 'Belarusian' },
+      'bg': { 'key': 'bul', 'text': 'Bulgarian' },
+      'bh': { 'key': 'bih', 'text': 'Bihari languages' },
+      'bi': { 'key': 'bis', 'text': 'Bislama' },
+      'bm': { 'key': 'bam', 'text': 'Bambara' },
+      'bn': { 'key': 'ben', 'text': 'Bengali' },
+      'bo': { 'key': 'tib', 'text': 'Tibetan' },
+      'br': { 'key': 'bre', 'text': 'Breton' },
+      'bs': { 'key': 'bos', 'text': 'Bosnian' },
+      'ca': { 'key': 'cat', 'text': 'Catalan; Valencian' },
+      'ce': { 'key': 'che', 'text': 'Chechen' },
+      'ch': { 'key': 'cha', 'text': 'Chamorro' },
+      'co': { 'key': 'cos', 'text': 'Corsican' },
+      'cr': { 'key': 'cre', 'text': 'Cree' },
+      'cs': { 'key': 'cze', 'text': 'Czech' },
+      'cu': { 'key': 'chu', 'text': 'Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic' },
+      'cv': { 'key': 'chv', 'text': 'Chuvash' },
+      'cy': { 'key': 'wel', 'text': 'Welsh' },
+      'da': { 'key': 'dan', 'text': 'Danish' },
+      'de': { 'key': 'ger', 'text': 'German' },
+      'dv': { 'key': 'div', 'text': 'Divehi; Dhivehi; Maldivian' },
+      'dz': { 'key': 'dzo', 'text': 'Dzongkha' },
+      'ee': { 'key': 'ewe', 'text': 'Ewe' },
+      'el': { 'key': 'gre', 'text': 'Greek, Modern (1453-)' },
+      'en': { 'key': 'eng', 'text': 'English' },
+      'eo': { 'key': 'epo', 'text': 'Esperanto' },
+      'es': { 'key': 'spa', 'text': 'Spanish; Castilian' },
+      'et': { 'key': 'est', 'text': 'Estonian' },
+      'eu': { 'key': 'baq', 'text': 'Basque' },
+      'fa': { 'key': 'per', 'text': 'Persian' },
+      'ff': { 'key': 'ful', 'text': 'Fulah' },
+      'fi': { 'key': 'fin', 'text': 'Finnish' },
+      'fj': { 'key': 'fij', 'text': 'Fijian' },
+      'fo': { 'key': 'fao', 'text': 'Faroese' },
+      'fr': { 'key': 'fre', 'text': 'French' },
+      'fy': { 'key': 'fry', 'text': 'Western Frisian' },
+      'ga': { 'key': 'gle', 'text': 'Irish' },
+      'gd': { 'key': 'gla', 'text': 'Gaelic; Scottish Gaelic' },
+      'gl': { 'key': 'glg', 'text': 'Galician' },
+      'gn': { 'key': 'grn', 'text': 'Guarani' },
+      'gu': { 'key': 'guj', 'text': 'Gujarati' },
+      'gv': { 'key': 'glv', 'text': 'Manx' },
+      'ha': { 'key': 'hau', 'text': 'Hausa' },
+      'he': { 'key': 'heb', 'text': 'Hebrew' },
+      'hi': { 'key': 'hin', 'text': 'Hindi' },
+      'ho': { 'key': 'hmo', 'text': 'Hiri Motu' },
+      'hr': { 'key': 'hrv', 'text': 'Croatian' },
+      'ht': { 'key': 'hat', 'text': 'Haitian; Haitian Creole' },
+      'hu': { 'key': 'hun', 'text': 'Hungarian' },
+      'hy': { 'key': 'arm', 'text': 'Armenian' },
+      'hz': { 'key': 'her', 'text': 'Herero' },
+      'ia': { 'key': 'ina', 'text': 'Interlingua (International Auxiliary Language Association)' },
+      'id': { 'key': 'ind', 'text': 'Indonesian' },
+      'ie': { 'key': 'ile', 'text': 'Interlingue; Occidental' },
+      'ig': { 'key': 'ibo', 'text': 'Igbo' },
+      'ii': { 'key': 'iii', 'text': 'Sichuan Yi; Nuosu' },
+      'ik': { 'key': 'ipk', 'text': 'Inupiaq' },
+      'io': { 'key': 'ido', 'text': 'Ido' },
+      'is': { 'key': 'ice', 'text': 'Icelandic' },
+      'it': { 'key': 'ita', 'text': 'Italian' },
+      'iu': { 'key': 'iku', 'text': 'Inuktitut' },
+      'iw': { 'key': 'heb', 'text': 'Hebrew' },
+      'ja': { 'key': 'jpn', 'text': 'Japanese' },
+      'jv': { 'key': 'jav', 'text': 'Javanese' },
+      'ka': { 'key': 'geo', 'text': 'Georgian' },
+      'kg': { 'key': 'kon', 'text': 'Kongo' },
+      'ki': { 'key': 'kik', 'text': 'Kikuyu; Gikuyu' },
+      'kj': { 'key': 'kua', 'text': 'Kuanyama; Kwanyama' },
+      'kk': { 'key': 'kaz', 'text': 'Kazakh' },
+      'kl': { 'key': 'kal', 'text': 'kalaallisut; Greenlandic' },
+      'km': { 'key': 'khm', 'text': 'Central khmer' },
+      'kn': { 'key': 'kan', 'text': 'Kannada' },
+      'ko': { 'key': 'kor', 'text': 'Korean' },
+      'kr': { 'key': 'kau', 'text': 'Kanuri' },
+      'ks': { 'key': 'kas', 'text': 'Kashmiri' },
+      'ku': { 'key': 'kur', 'text': 'Kurdish' },
+      'kv': { 'key': 'kom', 'text': 'Komi' },
+      'kw': { 'key': 'cor', 'text': 'Cornish' },
+      'ky': { 'key': 'kir', 'text': 'kirghiz; Kyrgyz' },
+      'la': { 'key': 'lat', 'text': 'Latin' },
+      'lb': { 'key': 'ltz', 'text': 'Luxembourgish; Letzeburgesch' },
+      'lg': { 'key': 'lug', 'text': 'Ganda' },
+      'li': { 'key': 'lim', 'text': 'Limburgan; Limburger; Limburgish' },
+      'ln': { 'key': 'lin', 'text': 'Lingala' },
+      'lo': { 'key': 'lao', 'text': 'Lao' },
+      'lt': { 'key': 'lit', 'text': 'Lithuanian' },
+      'lu': { 'key': 'lub', 'text': 'Luba-katanga' },
+      'lv': { 'key': 'lav', 'text': 'Latvian' },
+      'mg': { 'key': 'mlg', 'text': 'Malagasy' },
+      'mh': { 'key': 'mah', 'text': 'Marshallese' },
+      'mi': { 'key': 'mao', 'text': 'Maori' },
+      'mk': { 'key': 'mac', 'text': 'Macedonian' },
+      'ml': { 'key': 'mal', 'text': 'Malayalam' },
+      'mn': { 'key': 'mon', 'text': 'Mongolian' },
+      'mr': { 'key': 'mar', 'text': 'Marathi' },
+      'ms': { 'key': 'may', 'text': 'Malay' },
+      'mt': { 'key': 'mlt', 'text': 'Maltese' },
+      'my': { 'key': 'bur', 'text': 'Burmese' },
+      'na': { 'key': 'nau', 'text': 'Nauru' },
+      'nb': { 'key': 'nob', 'text': 'Bokmål, Norwegian; Norwegian Bokmål' },
+      'nd': { 'key': 'nde', 'text': 'Ndebele, North; North Ndebele' },
+      'ne': { 'key': 'nep', 'text': 'Nepali' },
+      'ng': { 'key': 'ndo', 'text': 'Ndonga' },
+      'nl': { 'key': 'dut', 'text': 'Dutch; Flemish' },
+      'nn': { 'key': 'nno', 'text': 'Norwegian Nynorsk; Nynorsk, Norwegian' },
+      'no': { 'key': 'nor', 'text': 'Norwegian' },
+      'nr': { 'key': 'nbl', 'text': 'Ndebele, South; South Ndebele' },
+      'nv': { 'key': 'nav', 'text': 'Navajo; Navaho' },
+      'ny': { 'key': 'nya', 'text': 'Chichewa; Chewa; Nyanja' },
+      'oc': { 'key': 'oci', 'text': 'Occitan (post 1500); Provençal' },
+      'oj': { 'key': 'oji', 'text': 'Ojibwa' },
+      'om': { 'key': 'orm', 'text': 'Oromo' },
+      'or': { 'key': 'ori', 'text': 'Oriya' },
+      'os': { 'key': 'oss', 'text': 'Ossetian; Ossetic' },
+      'pa': { 'key': 'pan', 'text': 'Panjabi; Punjabi' },
+      'pi': { 'key': 'pli', 'text': 'Pali' },
+      'pl': { 'key': 'pol', 'text': 'Polish' },
+      'ps': { 'key': 'pus', 'text': 'Pushto; Pashto' },
+      'pt': { 'key': 'por', 'text': 'Portuguese' },
+      'qu': { 'key': 'que', 'text': 'Quechua' },
+      'rm': { 'key': 'roh', 'text': 'Romansh' },
+      'rn': { 'key': 'run', 'text': 'Rundi' },
+      'ro': { 'key': 'rum', 'text': 'Romanian; Moldavian; Moldovan' },
+      'ru': { 'key': 'rus', 'text': 'Russian' },
+      'rw': { 'key': 'kin', 'text': 'kinyarwanda' },
+      'sa': { 'key': 'san', 'text': 'Sanskrit' },
+      'sc': { 'key': 'srd', 'text': 'Sardinian' },
+      'sd': { 'key': 'snd', 'text': 'Sindhi' },
+      'se': { 'key': 'sme', 'text': 'Northern Sami' },
+      'sg': { 'key': 'sag', 'text': 'Sango' },
+      'si': { 'key': 'sin', 'text': 'Sinhala; Sinhalese' },
+      'sk': { 'key': 'slo', 'text': 'Slovak' },
+      'sl': { 'key': 'slv', 'text': 'Slovenian' },
+      'sm': { 'key': 'smo', 'text': 'Samoan' },
+      'sn': { 'key': 'sna', 'text': 'Shona' },
+      'so': { 'key': 'som', 'text': 'Somali' },
+      'sq': { 'key': 'alb', 'text': 'Albanian' },
+      'sr': { 'key': 'srp', 'text': 'Serbian' },
+      'ss': { 'key': 'ssw', 'text': 'Swati' },
+      'st': { 'key': 'sot', 'text': 'Sotho, Southern' },
+      'su': { 'key': 'sun', 'text': 'Sundanese' },
+      'sv': { 'key': 'swe', 'text': 'Swedish' },
+      'sw': { 'key': 'swa', 'text': 'Swahili' },
+      'ta': { 'key': 'tam', 'text': 'Tamil' },
+      'te': { 'key': 'tel', 'text': 'Telugu' },
+      'tg': { 'key': 'tgk', 'text': 'Tajik' },
+      'th': { 'key': 'tha', 'text': 'Thai' },
+      'ti': { 'key': 'tir', 'text': 'Tigrinya' },
+      'tk': { 'key': 'tuk', 'text': 'Turkmen' },
+      'tl': { 'key': 'tgl', 'text': 'Tagalog' },
+      'tn': { 'key': 'tsn', 'text': 'Tswana' },
+      'to': { 'key': 'ton', 'text': 'Tonga (Tonga Islands)' },
+      'tr': { 'key': 'tur', 'text': 'Turkish' },
+      'ts': { 'key': 'tso', 'text': 'Tsonga' },
+      'tt': { 'key': 'tat', 'text': 'Tatar' },
+      'tw': { 'key': 'twi', 'text': 'Twi' },
+      'ty': { 'key': 'tah', 'text': 'Tahitian' },
+      'ug': { 'key': 'uig', 'text': 'Uighur; Uyghur' },
+      'uk': { 'key': 'ukr', 'text': 'Ukrainian' },
+      'ur': { 'key': 'urd', 'text': 'Urdu' },
+      'uz': { 'key': 'uzb', 'text': 'Uzbek' },
+      've': { 'key': 'ven', 'text': 'Venda' },
+      'vi': { 'key': 'vie', 'text': 'Vietnamese' },
+      'vo': { 'key': 'vol', 'text': 'Volapük' },
+      'wa': { 'key': 'wln', 'text': 'Walloon' },
+      'wo': { 'key': 'wol', 'text': 'Wolof' },
+      'xh': { 'key': 'xho', 'text': 'Xhosa' },
+      'yi': { 'key': 'yid', 'text': 'Yiddish' },
+      'yo': { 'key': 'yor', 'text': 'Yoruba' },
+      'za': { 'key': 'zha', 'text': 'Zhuang; Chuang' },
+      'zh': { 'key': 'chi', 'text': 'Chinese' },
+      'zu': { 'key': 'zul', 'text': 'Zulu' },
+    }

@@ -1,47 +1,11 @@
 import { Dropdown, DropdownMenuItemType } from 'office-ui-fabric-react/lib/Dropdown';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Stack } from 'office-ui-fabric-react/lib/Stack';
-import supportedLanguages from 'components/pages/settings/util/supportedLanguages';
-
-// Primary languages to select from
-const primaryLanguageOptions = [
-  { key: 'chi', text: 'Chinese' },
-  { key: 'dut', text: 'Dutch' },
-  { key: 'eng', text: 'English' },
-  { key: 'spa', text: 'Spanish' },
-  { key: 'fre', text: 'French' },
-  { key: 'ger', text: 'German' },
-  { key: 'ita', text: 'Italian' },
-  { key: 'jpn', text: 'Japanese' },
-  { key: 'por', text: 'Portuguese' },
-  { key: 'rus', text: 'Russian' },
-  { key: 'swe', text: 'Swedish' }
-];
-
-// Create hashmap of existing keys for reference
-const existingKeys = primaryLanguageOptions.reduce((acc, languageOption) => {
-  acc[languageOption.key] = true;
-  return acc;
-}, {});
-
-
-// Additional supported languages (from MKVToolNix)
-const additionalLanguageOptions = [
-  { key: 'additional-languages', text: 'Full Language List', itemType: DropdownMenuItemType.Header },
-  ...supportedLanguages.filter((option) => {
-    return !(option.key in existingKeys);
-  })
-];
-
-// Combine primary and additional language options
-const languageOptions = [
-  ...primaryLanguageOptions,
-  ...additionalLanguageOptions
-];
+import { get } from 'utils/requests';
 
 const onRenderLabel = (props) => (
   <Stack horizontal verticalAlign="center">
@@ -71,6 +35,54 @@ const LanguageSettings = (props) => {
     setLanguageSetting
   } = props;
 
+  // Primary languages to select from
+  const primaryLanguageOptions = useMemo(() => ([
+    { key: 'chi', text: 'Chinese' },
+    { key: 'dut', text: 'Dutch' },
+    { key: 'eng', text: 'English' },
+    { key: 'spa', text: 'Spanish' },
+    { key: 'fre', text: 'French' },
+    { key: 'ger', text: 'German' },
+    { key: 'ita', text: 'Italian' },
+    { key: 'jpn', text: 'Japanese' },
+    { key: 'por', text: 'Portuguese' },
+    { key: 'rus', text: 'Russian' },
+    { key: 'swe', text: 'Swedish' }
+  ]), []);
+
+  const [languageOptions, setLanguageOptions] = useState(primaryLanguageOptions);
+
+  // Additional supported languages (from MKVToolNix)
+  useEffect(() => {
+
+    // Create hashmap of existing keys for reference
+    const existingKeys = primaryLanguageOptions.reduce((acc, languageOption) => {
+      acc[languageOption.key] = true;
+      return acc;
+    }, {});
+
+    get('supported_languages', (languages) => {
+      const additionalLanguageOptions = [
+        {
+          key: 'additional-languages',
+          text: 'Full Language List',
+          itemType: DropdownMenuItemType.Header
+        },
+
+        // Don't include existing (primary) languages
+        ...Object.values(languages).filter((option) => {
+          return !(option.key in existingKeys);
+        })
+      ];
+
+      // Combine primary and additional language options
+      setLanguageOptions([
+        ...primaryLanguageOptions,
+        ...additionalLanguageOptions
+      ]);
+    });
+  }, [primaryLanguageOptions]);
+
   const onKeyDown = (event) => {
     const option = languageOptions.find((language) => {
       return language.key[0] === event.key;
@@ -94,8 +106,8 @@ const LanguageSettings = (props) => {
 };
 
 LanguageSettings.propTypes = {
-  language: PropTypes.object,
-  setLanguageSetting: PropTypes.func
+  language: PropTypes.object.isRequired,
+  setLanguageSetting: PropTypes.func.isRequired
 };
 
 

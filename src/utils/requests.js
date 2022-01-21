@@ -19,13 +19,11 @@ const port = ipcRenderer.sendSync('get-port-number');
  * @return response data from Python/Flask service.
  * @memberof Requests
  */
-export const get = (route, callback, errorCallback) => {
+export const get = (route, callback, errorCallback = console.error) => {
   fetch(`http://localhost:${port}/${route}`)
     .then((response) => response.json())
     .then(callback)
-    .catch((error) =>
-      errorCallback ? errorCallback(error) : console.error(error)
-    );
+    .catch(errorCallback);
 };
 
 /**
@@ -46,8 +44,7 @@ export const post = (body, route, callback, errorCallback) => {
     .then((response) => response.json())
     .then(callback)
     .catch((error) =>
-      errorCallback ? errorCallback(error) : console.error(error)
-    );
+      (errorCallback ? errorCallback(error) : console.error(error)));
 };
 
 /**

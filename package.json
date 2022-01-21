@@ -73,5 +73,5 @@
     "start:react": "react-scripts start",
     "test": "react-scripts test"
   },
-  "version": "2.3.0"
+  "version": "2.3.1"
 }

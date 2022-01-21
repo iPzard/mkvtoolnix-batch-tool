@@ -49,6 +49,16 @@ if "app.py" in sys.argv[0]:
 # SocketIO
 socketio = SocketIO(app, **socketioConfig)
 
+
+""" Request merge batch:
+Merges batch of video/subtitles
+files using user-provided options.
+"""
+@app.route("/supported_languages", methods=["get"])
+def get_supported_languages():
+  return jsonify(MKVToolNix.get_supported_languages())
+
+
 """ Request merge batch:
 Merges batch of video/subtitles
 files using user-provided options.
