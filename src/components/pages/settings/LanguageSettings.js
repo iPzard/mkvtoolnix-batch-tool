@@ -88,7 +88,9 @@ const LanguageSettings = (props) => {
       return language.key[0] === event.key;
     });
 
-    if (option) { setLanguageSetting(event, option); }
+    if (option) {
+      setLanguageSetting(event, option);
+    }
   };
 
   return (

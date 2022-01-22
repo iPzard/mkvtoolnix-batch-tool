@@ -1,9 +1,8 @@
-import { Component, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { darkTheme, lightTheme, togglePalette } from 'theme/palettes';
 
 import MainPage from 'components/pages/main/MainPage';
 import Navigation from 'components/navigation/Navigation';
-import React from 'react';
 import SettingsPage from 'components/pages/settings/SettingsPage';
 import Titlebar from 'components/titlebar/Titlebar';
 import { loadTheme } from 'office-ui-fabric-react';
@@ -70,7 +69,7 @@ class App extends Component {
   render() {
     const {
       setAppState,
-      state: { input, output, page, settings, theme },
+      state: { input, output, page, settings: stateSettings, theme },
       updateMultipleSettings,
       updateSetting
     } = this;
@@ -78,7 +77,7 @@ class App extends Component {
     const componentProps = {
       appState: { input, output, theme },
       setAppState,
-      settings,
+      settings: stateSettings,
       updateMultipleSettings,
       updateSetting
     };
@@ -86,9 +85,9 @@ class App extends Component {
     return (
       <Fragment>
         <Titlebar />
-        <main className={styles.main}>
-          <Navigation {...componentProps} />
-          <PageController {...componentProps} page={page} />
+        <main className={ styles.main }>
+          <Navigation { ...componentProps } />
+          <PageController { ...componentProps } page={ page } />
         </main>
       </Fragment>
     );
@@ -104,11 +103,11 @@ function PageController(props) {
 
   switch (page) {
     case 'settings':
-      return <SettingsPage {...componentProps} />;
+      return <SettingsPage { ...componentProps } />;
 
     case 'main':
     default:
-      return <MainPage {...componentProps} />;
+      return <MainPage { ...componentProps } />;
   }
 }
 

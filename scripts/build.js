@@ -1,4 +1,5 @@
 const { spawnSync } = require('child_process');
+
 const spawnOptions = { detached: false, shell: true, stdio: 'inherit' };
 
 /**
@@ -30,6 +31,7 @@ class Builder {
     const icon = './public/favicon.ico';
 
     const options = [
+      '--collect-datas=langdetect', // langdetect module dependencies
       '--noconsole', // No shell
       '--noconfirm', // Don't confirm overwrite
       '--distpath ./resources', // Dist (out) path
@@ -46,7 +48,7 @@ class Builder {
    */
   buildReact = () => {
     console.log('Creating React distribution files...');
-    spawnSync(`react-scripts build`, spawnOptions);
+    spawnSync('react-scripts build', spawnOptions);
   }
 }
 

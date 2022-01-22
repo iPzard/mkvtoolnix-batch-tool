@@ -403,7 +403,6 @@ class MKVToolNix:
       'gu': { 'key': 'guj', 'text': 'Gujarati' },
       'gv': { 'key': 'glv', 'text': 'Manx' },
       'ha': { 'key': 'hau', 'text': 'Hausa' },
-      'he': { 'key': 'heb', 'text': 'Hebrew' },
       'hi': { 'key': 'hin', 'text': 'Hindi' },
       'ho': { 'key': 'hmo', 'text': 'Hiri Motu' },
       'hr': { 'key': 'hrv', 'text': 'Croatian' },
