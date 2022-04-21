@@ -10,13 +10,17 @@ control via Python functions
 """
 class MKVToolNix:
 
-  """Add subtitle
+  """Run OS command
   Function to merge video and
   subtitle file(s) into an MKV
   """
-  """
-  TODO: issue #37
-  include attachments here
+  def run_os_command(self, os_command):
+    subprocess.call(os_command)
+
+
+  """Add subtitle
+  Function to merge video and
+  subtitle file(s) into an MKV
   """
   def add_subtitles(
     self,
@@ -67,7 +71,7 @@ class MKVToolNix:
           converted_subtitle_input_path = f"{subtitle_input_path}.srt"
           stream = ffmpeg.input(subtitle_input_path)
           stream = ffmpeg.output(stream, converted_subtitle_input_path)
-          ffmpeg.run(stream)
+          ffmpeg.run(stream, overwrite_output=True, quiet=True)
 
           # Update input path and push to paths to remove
           subtitle_input_path = converted_subtitle_input_path
@@ -137,7 +141,7 @@ class MKVToolNix:
     os_command = " ".join([mkv_command, video_path_info, subtitle_commands])
 
     # Use command in system
-    subprocess.call(os_command, shell=True)
+    self.run_os_command(os_command)
 
     # Delete any converted input paths that may exist
     if len(converted_input_paths_to_remove):
@@ -299,7 +303,7 @@ class MKVToolNix:
     os_command = " ".join([mkv_command, video_info])
 
     # Run command
-    subprocess.call(os_command, shell=True)
+    self.run_os_command(os_command)
 
 
   """ Remove subtitle ads:
