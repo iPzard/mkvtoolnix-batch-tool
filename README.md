@@ -169,6 +169,11 @@ Code documentation for this project, created with [JSDoc](https://github.com/jsd
 For documentation on how this project uses Electron, React, and Python together, see:<br>[Electron, React & Python](https://github.com/iPzard/electron-react-python-template#readme)
 <br><br>
 
+## 🦟 Software bugs
+Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) will be exterminated as quickly as possible, be sure to include steps to reproduce so they can be spotted easily.
+<br><br>
+
+## 🐱‍💻 Contribute
 Contributions are welcomed! If you see an [open issue](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) you want to fix, here's how to contribute: 
 <br><br>
 
@@ -176,10 +181,6 @@ Contributions are welcomed! If you see an [open issue](https://github.com/iPzard
 2. Create a feature branch.
 3. Make your changes locally.
 3. Create a pull request.
-<br><br>
-
-## 🦟 Software bugs
-Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) will be exterminated as quickly as possible, be sure to include steps to reproduce so they can be spotted easily.
 <br><br>
 
 ## 🏷️ License
