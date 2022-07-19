@@ -175,7 +175,7 @@ Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolni
 
 ## 🐱‍💻 Contribute
 Contributions are welcomed! If you see an [open issue](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) you want to fix, here's how to contribute: 
-<br><br>
+<br>
 
 1. Fork the repo.
 2. Create a feature branch.
