@@ -28,8 +28,7 @@ class Settings {
   // Get all settings and return as a JavaScript object literal
   getSettings = () => {
     // If settings don't exist, set to defaults
-    if (window.localStorage.getItem('mkvtoolnix-batch-tool-settings') === null)
-      this.loadDefaultSettings();
+    if (window.localStorage.getItem('mkvtoolnix-batch-tool-settings') === null) { this.loadDefaultSettings(); }
 
     // Return object literal of settings
     return JSON.parse(
@@ -40,6 +39,7 @@ class Settings {
   // Load default settings
   loadDefaultSettings = () => {
     const settings = JSON.stringify({
+      isExtractSubtitles: false,
       isRemoveAds: false,
       isRememberOutputDir: false,
       isRemoveExistingSubtitles: false,

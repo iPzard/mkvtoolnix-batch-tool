@@ -18,3 +18,7 @@
     margin-right: 7px;
   }
 }
+
+:global(.ms-Callout.ms-Dropdown-callout) {
+  height: 110px !important;
+}

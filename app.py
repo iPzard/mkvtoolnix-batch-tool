@@ -87,7 +87,7 @@ def process_batch():
   TODO: issue #37
   attachments = batch_data["attachments"]
   """
-  
+
 
   # Communicate batch details to front end
   socketio.emit("batch_size", len(batch))
