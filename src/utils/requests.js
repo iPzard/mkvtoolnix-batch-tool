@@ -35,7 +35,7 @@ export const get = (route, callback, errorCallback = console.error) => {
  * @return response data from Python/Flask service.
  * @memberof Requests
  */
-export const post = (body, route, callback, errorCallback) => {
+export const post = (body, route, callback, errorCallback = console.error) => {
   fetch(`http://localhost:${port}/${route}`, {
     body,
     method: 'POST',
@@ -43,8 +43,7 @@ export const post = (body, route, callback, errorCallback) => {
   })
     .then((response) => response.json())
     .then(callback)
-    .catch((error) =>
-      (errorCallback ? errorCallback(error) : console.error(error)));
+    .catch(errorCallback);
 };
 
 /**

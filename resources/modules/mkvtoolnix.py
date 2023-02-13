@@ -18,7 +18,6 @@ class MKVToolNix:
   def run_os_command(self, os_command):
     subprocess.run(os_command, shell=True)
 
-
   """Add subtitle
   Function to merge video and
   subtitle file(s) into an MKV
@@ -142,7 +141,7 @@ class MKVToolNix:
     os_command = " ".join([mkv_command, video_path_info, subtitle_commands])
 
     # Use command in system
-    self.run_os_command(os_command)
+    subprocess.call(os_command, shell=True)
 
     # Delete any converted input paths that may exist
     if len(converted_input_paths_to_remove):
@@ -304,7 +303,7 @@ class MKVToolNix:
     os_command = " ".join([mkv_command, video_info])
 
     # Run command
-    self.run_os_command(os_command)
+    subprocess.call(os_command, shell=True)
 
 
   """ Extract subtitles
