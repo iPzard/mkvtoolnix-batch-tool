@@ -9,15 +9,6 @@ Wrapper for MKVToolNix to allow
 control via Python functions
 """
 class MKVToolNix:
-
-  """Run OS command
-  Function to merge video and
-  subtitle file(s) into an MKV
-  """
-  def run_os_command(self, os_command):
-    subprocess.call(os_command)
-
-
   """Add subtitle
   Function to merge video and
   subtitle file(s) into an MKV
@@ -48,13 +39,13 @@ class MKVToolNix:
     # Keep track of subtitle options
     subtitle_options = []
     converted_input_paths_to_remove = []
-    
+
     # Iterate through subtitle paths and generate option commands
     for index, subtitle_input_path in enumerate(subtitle_input_paths):
 
       """
-      List of incompatible but convertable 
-      extensions, new extensions must also 
+      List of incompatible but convertable
+      extensions, new extensions must also
       be added to the `subtitle_file_types`
       list in ./filewalker.py
       """
@@ -62,10 +53,10 @@ class MKVToolNix:
 
       # Determine extension to check compatibility
       subtitle_extension = FileWalker.get_path_extension(subtitle_input_path)
-      
+
       # If incompatible but convertable extension
       if subtitle_extension in incompatible_convertable_extensions:
-        
+
         # try converting the file to `.srt`
         try:
           converted_subtitle_input_path = f"{subtitle_input_path}.srt"
@@ -126,13 +117,13 @@ class MKVToolNix:
     # Combine subtitle options into command
     subtitle_commands = " ".join(subtitle_options)
 
-    
+
     """
     TODO: issue #37
-    attachment_commands = 
+    attachment_commands =
     """
 
-    
+
     """
     TODO: issue #37
     include attachment_commands in os_command
@@ -141,7 +132,7 @@ class MKVToolNix:
     os_command = " ".join([mkv_command, video_path_info, subtitle_commands])
 
     # Use command in system
-    self.run_os_command(os_command)
+    subprocess.call(os_command, shell=True)
 
     # Delete any converted input paths that may exist
     if len(converted_input_paths_to_remove):
@@ -163,13 +154,13 @@ class MKVToolNix:
 
     # Sniff out subtitle language
     with open(subtitle_input_path, "r", encoding="utf8", errors="replace") as file:
-      
+
       # Determine extension of subtitle file
       subtitle_extension = FileWalker.get_path_extension(subtitle_input_path)
-      
+
       """ Handle .ass files
       These extensions have a config
-      section at the top which should be 
+      section at the top which should be
       ignored when determining language
       """
       if subtitle_extension == 'ass':
@@ -185,7 +176,7 @@ class MKVToolNix:
       else:
         # text for non .ass subtitle files
         text_sample = "".join(file.readlines())
-      
+
       """ Handle .idx files
       These extensions use image-based
       subtitles and have the language
@@ -199,7 +190,7 @@ class MKVToolNix:
 
       else:
         """
-        Remove new lines and lines that 
+        Remove new lines and lines that
         start with numbers, then split
         into an evaluation list.
         """
@@ -209,7 +200,7 @@ class MKVToolNix:
         iso_639_1_code_list = []
 
         # Detected ISO 639-1 code, use und if undetermined
-        for word in text_sample:     
+        for word in text_sample:
           try:
             # Add detected language ISO code to list
             iso_639_1_code_list.append(detect(word))
@@ -249,7 +240,7 @@ class MKVToolNix:
       if iso_code in language_map
       else "Undetermined"
     )
-    
+
     # Return language and ISO 639-2 code
     return {"language": language, "language_code": language_code}
 
@@ -303,7 +294,7 @@ class MKVToolNix:
     os_command = " ".join([mkv_command, video_info])
 
     # Run command
-    self.run_os_command(os_command)
+    subprocess.call(os_command, shell=True)
 
 
   """ Remove subtitle ads:
@@ -346,7 +337,7 @@ class MKVToolNix:
 
 
   """ Supported languages:
-  Returns a map of MKVToolNix 
+  Returns a map of MKVToolNix
   supported languages.
   """
   def get_supported_languages(self):
