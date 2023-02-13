@@ -15,7 +15,7 @@ class MKVToolNix:
   subtitle file(s) into an MKV
   """
   def run_os_command(self, os_command):
-    subprocess.call(os_command)
+    subprocess.call(os_command, shell=True)
 
 
   """Add subtitle

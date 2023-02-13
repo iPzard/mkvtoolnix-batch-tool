@@ -76,6 +76,7 @@ def process_batch():
   is_remove_existing_subtitles = settings["isRemoveExistingSubtitles"]
   is_remove_old = settings["isRemoveOld"]
   is_remove_subtitles = settings["isRemoveSubtitles"]
+  is_extract_subtitles = settings["isExtractSubtitles"]
   is_same_as_source = settings["isSameAsSource"]
   language = settings["language"]
 

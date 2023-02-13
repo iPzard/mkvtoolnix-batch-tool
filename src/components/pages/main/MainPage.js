@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 
-import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
@@ -29,6 +28,8 @@ import styles from 'components/pages/main/assets/styles/MainPage.module.scss';
  * @property {function} updateSetting - Function to update a single setting at a time.
  *
  * @memberof Pages
+ * @todo
+ * Move hardcoded styles to ./assets/MainPage.module.scss
  */
 class MainPage extends Component {
   state = {
@@ -159,7 +160,6 @@ class MainPage extends Component {
         appState: { input, output },
         settings: {
           isRememberOutputDir,
-          isRemoveSubtitles,
           isSameAsSource,
           outputDir
         }
@@ -277,6 +277,11 @@ class MainPage extends Component {
     );
   }
 }
+
+MainPage.defaultProps = {
+  updateMultipleSettings: undefined,
+  updateSetting: undefined
+};
 
 MainPage.propTypes = {
   appState: PropTypes.object.isRequired,
