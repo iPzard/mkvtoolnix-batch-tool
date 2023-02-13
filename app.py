@@ -81,14 +81,19 @@ def process_batch():
   language = settings["language"]
 
   # Get batch of files to process
-  batch_data = FileWalker.get_files(input_directory, is_remove_subtitles)
+  batch_data = FileWalker.get_files(
+    input_directory,
+    is_extract_subtitles,
+    is_remove_subtitles
+  )
+
   batch = batch_data["files"]
   warning = batch_data["warning"]
+
   """
   TODO: issue #37
   attachments = batch_data["attachments"]
   """
-
 
   # Communicate batch details to front end
   socketio.emit("batch_size", len(batch))
@@ -111,6 +116,7 @@ def process_batch():
 
     # Prevent duplicate file names by adding (#) to name
     video_output_path = FileWalker.get_unique_file_path(video_output_path + video_output_extension)
+
     # count = 1
     # while os.path.exists(video_output_path + video_output_extension):
     #   video_output_path = f"{original_output_path} ({count})"
@@ -125,6 +131,11 @@ def process_batch():
     # If "remove" subtitles
     if is_remove_subtitles:
       MKVToolNix.remove_subtitles(video_input_path, video_output_path)
+
+    # If "extract" subtitles
+    elif is_extract_subtitles:
+      MKVToolNix.extract_subtitles(video_input_path)
+
 
     # If "merge" subtitles
     else:

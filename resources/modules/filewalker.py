@@ -35,7 +35,7 @@ class FileWalker:
 
 
   """ Determine extension
-  Function to determine the 
+  Function to determine the
   extension of a file path.
   """
   def get_path_extension(self, path):
@@ -109,14 +109,14 @@ class FileWalker:
 
 
   """ Check file warnings:
-  Checks if any missing file 
+  Checks if any missing file
   or missing subtitle warning
   messages should show.
   """
   def check_file_warnings(
-    self, 
-    is_remove_subtitles, 
-    skipped_directories, 
+    self,
+    is_remove_subtitles,
+    skipped_directories,
     skipped_subtitles
   ):
 
@@ -174,7 +174,13 @@ class FileWalker:
   including video and subtitle
   absolute paths
   """
-  def get_files(self, directory, is_remove_subtitles):
+  def get_files(
+    self,
+    directory,
+    is_extract_subtitles,
+    is_remove_subtitles
+  ):
+    is_only_video_files = is_remove_subtitles or is_extract_subtitles
 
     # Directories (and only directories) to look for videos in
     video_directories = list(
@@ -211,7 +217,7 @@ class FileWalker:
         TODO: issue #37
         Add attachment_files = []
         """
-        
+
         for current_file in files:
           [video_files, subtitle_files] = self.get_file_paths(
             current_directory,
@@ -233,12 +239,12 @@ class FileWalker:
 
         # If no subtitle (while merging) and/or video files
         is_invalid_subtitles = (
-          len(subtitle_files) == 0 and not is_remove_subtitles and is_not_root_directory
+          len(subtitle_files) == 0 and not is_only_video_files and is_not_root_directory
         )
         is_invalid_videos = len(video_files) == 0 and is_not_root_directory
-        
+
         if is_invalid_subtitles or is_invalid_videos:
-          
+
           """
           TODO: issue #37
           if not "attachments" directory:
@@ -246,8 +252,7 @@ class FileWalker:
           skipped_directories += 1
 
         # If more than one video, match with subtitles by names
-        elif len(video_files) > 1 and not is_remove_subtitles:
-
+        elif len(video_files) > 1 and not is_only_video_files:
           """
           Sorting these by length (reverse order)
           to solve edge cases such as:
@@ -307,8 +312,8 @@ class FileWalker:
           elif len(subtitle_files):
             skipped_subtitles += len(subtitle_files)
 
-        # If user is removing subtitles, just get (all) videos
-        elif len(video_files) and is_remove_subtitles:
+        # If user is removing/extracting subtitles, just get (all) videos
+        elif len(video_files) and is_only_video_files:
           for video in video_files:
             included_files.append((video, None))
 
@@ -317,13 +322,13 @@ class FileWalker:
           included_files.append((video_file, subtitle_files))
 
         # Otherwise skip directory and provide warning about it
-        elif is_remove_subtitles and is_not_root_directory:
+        elif is_only_video_files and is_not_root_directory:
           skipped_directories += 1
 
         # Check if any directories were skipped
         warning = self.check_file_warnings(
-          is_remove_subtitles, 
-          skipped_directories, 
+          is_only_video_files,
+          skipped_directories,
           skipped_subtitles
         )
 

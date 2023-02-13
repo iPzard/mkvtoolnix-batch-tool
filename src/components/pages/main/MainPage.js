@@ -261,6 +261,7 @@ class MainPage extends Component {
                 }
               ] }
               placeholder="Select mode"
+              selectedKey={ this.state.processingOption.key }
               styles={ { dropdown: { width: 280 } } }
             />
           </div>

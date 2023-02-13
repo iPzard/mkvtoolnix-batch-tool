@@ -1,6 +1,7 @@
 import chardet, ffmpeg, os, re, subprocess
 from langdetect import detect
 from . import filewalker
+import fese
 
 FileWalker = filewalker.FileWalker()
 
@@ -15,7 +16,7 @@ class MKVToolNix:
   subtitle file(s) into an MKV
   """
   def run_os_command(self, os_command):
-    subprocess.call(os_command, shell=True)
+    subprocess.run(os_command, shell=True)
 
 
   """Add subtitle
@@ -304,6 +305,17 @@ class MKVToolNix:
 
     # Run command
     self.run_os_command(os_command)
+
+
+  """ Extract subtitles
+  Function to extract existing
+  subtitles
+  """
+  def extract_subtitles(self, video_input_path):
+    video = fese.FFprobeVideoContainer(str(video_input_path))
+    subtitles = video.get_subtitles()
+    paths = video.extract_subtitles(subtitles)
+    print(paths)
 
 
   """ Remove subtitle ads:
