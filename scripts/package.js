@@ -75,7 +75,8 @@ class Packager {
         '--win32',
         '--out',
         './dist/windows',
-        '--overwrite'
+        '--overwrite',
+        '--debug'
       ].join(' '),
 
       spawn: { detached: false, shell: true, stdio: 'inherit' }
