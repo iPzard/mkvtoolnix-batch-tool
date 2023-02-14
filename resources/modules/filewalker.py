@@ -115,7 +115,7 @@ class FileWalker:
   """
   def check_file_warnings(
     self,
-    is_remove_subtitles,
+    is_only_video_files,
     skipped_directories,
     skipped_subtitles
   ):
@@ -139,7 +139,7 @@ class FileWalker:
       )
 
       # If option to remove subtitles is selected
-      if is_remove_subtitles:
+      if is_only_video_files:
         warning = (
           f"{skipped_directories} {directory_or_directories}"
           f" had no video files and {was_or_were} not processed."
@@ -151,7 +151,7 @@ class FileWalker:
         )
 
     # If there are skipped subtitles
-    if skipped_subtitles and not is_remove_subtitles:
+    if skipped_subtitles and not is_only_video_files:
       was_or_were = get_pluralization("was", "were", skipped_subtitles)
       file_or_files = get_pluralization("file", "files", skipped_subtitles)
 
@@ -177,10 +177,8 @@ class FileWalker:
   def get_files(
     self,
     directory,
-    is_extract_subtitles,
-    is_remove_subtitles
+    is_only_video_files
   ):
-    is_only_video_files = is_remove_subtitles or is_extract_subtitles
 
     # Directories (and only directories) to look for videos in
     video_directories = list(

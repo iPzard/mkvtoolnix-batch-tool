@@ -72,19 +72,19 @@ def process_batch():
   settings = request.json["settings"]
 
   # User settings from request body
+  language = settings["language"]
   is_remove_ads = settings["isRemoveAds"]
   is_remove_existing_subtitles = settings["isRemoveExistingSubtitles"]
   is_remove_old = settings["isRemoveOld"]
   is_remove_subtitles = settings["isRemoveSubtitles"]
   is_extract_subtitles = settings["isExtractSubtitles"]
   is_same_as_source = settings["isSameAsSource"]
-  language = settings["language"]
+  is_only_video_files = is_extract_subtitles or is_remove_subtitles
 
   # Get batch of files to process
   batch_data = FileWalker.get_files(
     input_directory,
-    is_extract_subtitles,
-    is_remove_subtitles
+    is_only_video_files
   )
 
   batch = batch_data["files"]
@@ -134,8 +134,8 @@ def process_batch():
 
     # If "extract" subtitles
     elif is_extract_subtitles:
-      MKVToolNix.extract_subtitles(video_input_path)
-
+      subtitle_output_directory = None if is_same_as_source else output_directory
+      MKVToolNix.extract_subtitles(video_input_path, subtitle_output_directory)
 
     # If "merge" subtitles
     else:
@@ -156,7 +156,7 @@ def process_batch():
       )
 
     # If remove old, delete original files and directory (if empty after)
-    if is_remove_old:
+    if is_remove_old and not is_extract_subtitles:
       video_directory = PurePath(video_input_path).parent
 
       # Delete old video file
@@ -166,7 +166,7 @@ def process_batch():
       os.rename(video_output_path, f"{original_output_path}.mkv")
 
       # Delete all old subtitle files
-      if subtitle_input_paths is not None: # e.g., not "remove" mode
+      if subtitle_input_paths is not None: # Possible edge cases
         for subtitle_input_path in subtitle_input_paths:
           os.remove(subtitle_input_path)
 

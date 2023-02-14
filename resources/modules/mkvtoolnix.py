@@ -310,12 +310,14 @@ class MKVToolNix:
   Function to extract existing
   subtitles
   """
-  def extract_subtitles(self, video_input_path):
+  def extract_subtitles(self, video_input_path, subtitle_output_directory):
     video = fese.FFprobeVideoContainer(str(video_input_path))
     subtitles = video.get_subtitles()
-    paths = video.extract_subtitles(subtitles)
-    print(paths)
-
+    video.extract_subtitles(
+      subtitles,
+      custom_dir=subtitle_output_directory,
+      overwrite=False
+    )
 
   """ Remove subtitle ads:
   Function to remove common
