@@ -1,7 +1,7 @@
 import chardet, ffmpeg, os, re, subprocess
+from fese import FFprobeVideoContainer
 from langdetect import detect
 from . import filewalker
-import fese
 
 FileWalker = filewalker.FileWalker()
 
@@ -16,7 +16,8 @@ class MKVToolNix:
   subtitle file(s) into an MKV
   """
   def run_os_command(self, os_command):
-    subprocess.run(os_command, shell=True)
+    subprocess.call(os_command, shell=True)
+
 
   """Add subtitle
   Function to merge video and
@@ -141,7 +142,7 @@ class MKVToolNix:
     os_command = " ".join([mkv_command, video_path_info, subtitle_commands])
 
     # Use command in system
-    subprocess.call(os_command, shell=True)
+    self.run_os_command(os_command)
 
     # Delete any converted input paths that may exist
     if len(converted_input_paths_to_remove):
@@ -303,21 +304,23 @@ class MKVToolNix:
     os_command = " ".join([mkv_command, video_info])
 
     # Run command
-    subprocess.call(os_command, shell=True)
+    self.run_os_command(os_command)
 
 
   """ Extract subtitles
   Function to extract existing
   subtitles
   """
+  # TODO look into pysubs2 or subtitletools instead, see chat
   def extract_subtitles(self, video_input_path, subtitle_output_directory):
-    video = fese.FFprobeVideoContainer(str(video_input_path))
+    video = FFprobeVideoContainer(str(video_input_path))
     subtitles = video.get_subtitles()
     video.extract_subtitles(
       subtitles,
       custom_dir=subtitle_output_directory,
       overwrite=False
     )
+
 
   """ Remove subtitle ads:
   Function to remove common

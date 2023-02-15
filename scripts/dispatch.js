@@ -53,7 +53,7 @@ function buildApp() {
  */
 function cleanProject() {
   const cleaner = new Cleaner();
-  const getPath = (file) => path.join(__dirname, '..', file);
+  const getPath = (...path) => path.join(__dirname, '..', ...path);
 
   // Files to remove during cleaning
   [

@@ -45,6 +45,11 @@ class MainPage extends Component {
     }
   };
 
+  componentDidMount() {
+    // Ensure default mode is set (merge)
+    this.onChangeModeToggle();
+  }
+
   // Generic method to update directories
   setDirectory = (type, callback) =>
     getDirectory((directory) =>

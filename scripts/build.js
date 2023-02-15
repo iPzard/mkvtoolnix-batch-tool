@@ -31,14 +31,14 @@ class Builder {
     const icon = './public/favicon.ico';
 
     const options = [
-      '--collect-datas=langdetect', // langdetect module dependencies
-      '--noconsole', // No shell
+      '--collect-all=fese',
+      '--collect-datas=langdetect', // module dependencies
+      // '--noconsole', // No shell
       '--noconfirm', // Don't confirm overwrite
       '--distpath ./resources', // Dist (out) path
       `--icon ${icon}` // Icon to use
     ].join(' ');
-    // TODO: Check if python is installed.. If not, prompt user
-    // "Python is required but not installed, install it? (y/n)"
+
     spawnSync(`pyinstaller ${options} ${app}`, spawnOptions);
   }
 
