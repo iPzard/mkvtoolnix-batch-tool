@@ -33,7 +33,6 @@ class Builder {
     const options = [
       '--collect-datas=langdetect', // module dependencies
       '--noconsole', // No shell
-      '-w',
       '--noconfirm', // Don't confirm overwrite
       '--distpath ./resources', // Dist (out) path
       `--icon ${icon}` // Icon to use

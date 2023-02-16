@@ -17,21 +17,14 @@ class MKVToolNix:
   def run_os_command(self, os_command):
     subprocess.call(os_command, shell=True)
 
+  """FFmpeg probe hi-jack
+  Customized arguments to Popen to
+  prevent console flashes after
+  compiled with PyInstaller
+  """
   def ffmpeg_probe(self, video_input_path):
       command = ['ffprobe', '-show_format', '-show_streams', '-of', 'json']
       command += [video_input_path]
-
-      # with open("stdout.txt", mode="w", encoding="utf-8") as stdout_file, \
-      #     open("stderr.txt", mode="w", encoding="utf-8") as stderr_file:
-      #     subprocess.call(
-      #       command,
-      #       shell=True,
-      #       stdout=stdout_file,
-      #       stderr=stderr_file
-      #     )
-
-      # with open("stdout.txt", mode="r", encoding="utf-8") as stdout_file:
-      #   return json.load(stdout_file)
 
       process = subprocess.Popen(
         command,
@@ -46,7 +39,12 @@ class MKVToolNix:
 
       return json.loads(out.decode('utf-8'))
 
-
+  """FFmpeg run hi-jack
+  Uses argument compiler from
+  library but alternate sub-
+  process method to run command
+  to prevent console flashes.
+  """
   def ffmpeg_run(self, stream):
     os_command = ffmpeg.compile(stream, 'ffmpeg', overwrite_output=True)
 
@@ -342,7 +340,7 @@ class MKVToolNix:
 
   """ Extract subtitles
   Function to extract existing
-  subtitles
+  subtitles from videos
   """
   def extract_subtitles(self, video_input_path, subtitle_output_directory):
     if subtitle_output_directory is None:
