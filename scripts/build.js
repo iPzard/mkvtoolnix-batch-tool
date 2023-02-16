@@ -31,9 +31,9 @@ class Builder {
     const icon = './public/favicon.ico';
 
     const options = [
-      '--collect-all=fese',
       '--collect-datas=langdetect', // module dependencies
-      // '--noconsole', // No shell
+      '--noconsole', // No shell
+      '-w',
       '--noconfirm', // Don't confirm overwrite
       '--distpath ./resources', // Dist (out) path
       `--icon ${icon}` // Icon to use

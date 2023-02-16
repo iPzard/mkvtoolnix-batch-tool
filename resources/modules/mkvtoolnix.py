@@ -1,5 +1,4 @@
-import chardet, ffmpeg, os, re, subprocess
-from fese import FFprobeVideoContainer
+import chardet, ffmpeg, json, os, re, subprocess
 from langdetect import detect
 from . import filewalker
 
@@ -18,6 +17,40 @@ class MKVToolNix:
   def run_os_command(self, os_command):
     subprocess.call(os_command, shell=True)
 
+  def ffmpeg_probe(self, video_input_path):
+      command = ['ffprobe', '-show_format', '-show_streams', '-of', 'json']
+      command += [video_input_path]
+
+      # with open("stdout.txt", mode="w", encoding="utf-8") as stdout_file, \
+      #     open("stderr.txt", mode="w", encoding="utf-8") as stderr_file:
+      #     subprocess.call(
+      #       command,
+      #       shell=True,
+      #       stdout=stdout_file,
+      #       stderr=stderr_file
+      #     )
+
+      # with open("stdout.txt", mode="r", encoding="utf-8") as stdout_file:
+      #   return json.load(stdout_file)
+
+      process = subprocess.Popen(
+        command,
+        shell=True,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+      )
+      out, err = process.communicate()
+      if process.returncode != 0:
+          raise Exception(f"ffprobe error: {err}")
+
+      return json.loads(out.decode('utf-8'))
+
+
+  def ffmpeg_run(self, stream):
+    os_command = ffmpeg.compile(stream, 'ffmpeg', overwrite_output=True)
+
+    return self.run_os_command(os_command)
 
   """Add subtitle
   Function to merge video and
@@ -311,15 +344,48 @@ class MKVToolNix:
   Function to extract existing
   subtitles
   """
-  # TODO look into pysubs2 or subtitletools instead, see chat
   def extract_subtitles(self, video_input_path, subtitle_output_directory):
-    video = FFprobeVideoContainer(str(video_input_path))
-    subtitles = video.get_subtitles()
-    video.extract_subtitles(
-      subtitles,
-      custom_dir=subtitle_output_directory,
-      overwrite=False
-    )
+    if subtitle_output_directory is None:
+      subtitle_output_directory = os.path.dirname(video_input_path)
+
+    probe = self.ffmpeg_probe(video_input_path)
+
+    subtitle_streams = [stream for stream in probe['streams'] if stream['codec_type'] == 'subtitle']
+    print(subtitle_streams)
+
+    # Keep track of the number of streams extracted for each language
+    lang_counts = {}
+
+    for stream in subtitle_streams:
+      # Set the language code and subtitle type based on the subtitle stream tags
+      tags = stream.get('tags', {})
+      language_code = tags.get('language', 'und')
+      subtitle_type = tags.get('title', 'default')
+
+      # Increment the stream count for this language
+      lang_counts[language_code] = lang_counts.get(language_code, 0) + 1
+      lang_count_curr = f"{lang_counts[language_code]:02}"
+
+      # Map the subtitle type to the appropriate subtitle file suffix
+      type_map = {'forced': 'forced', 'SDH': 'sdh'}
+      type = type_map.get(subtitle_type, '')
+
+      # Configure suffix and extension
+      suffix = ".".join(filter(None, [language_code, lang_count_curr, type]))
+      extension = 'srt'
+
+      # Set the output file name
+      output_file = os.path.join(
+        subtitle_output_directory,
+        f"{os.path.splitext(os.path.basename(video_input_path))[0]}.{suffix}.{extension}"
+      )
+
+      # Extract the subtitle stream
+      stream = ffmpeg.input(video_input_path)
+      stream = ffmpeg.output(stream, output_file, **{'c:s': 'srt', 'map': f'0:s:{stream["index"]}?'})
+
+      self.ffmpeg_run(stream)
+
 
 
   """ Remove subtitle ads:
