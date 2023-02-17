@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 
-import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
+import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
+import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 
 import LoadingScreen from 'components/pages/main/LoadingScreen';
@@ -27,14 +28,27 @@ import styles from 'components/pages/main/assets/styles/MainPage.module.scss';
  * @property {function} updateSetting - Function to update a single setting at a time.
  *
  * @memberof Pages
+ * @todo
+ * Move hardcoded styles to ./assets/MainPage.module.scss
  */
 class MainPage extends Component {
   state = {
     hideDialog: true,
     loading: false,
     messageText: '',
-    messageTitle: ''
+    messageTitle: '',
+    processingOption: {
+      data: { icon: 'FabricSyncFolder' },
+      key: 'merge',
+      text: 'Merge',
+      title: 'Merge subtitles into video files'
+    }
   };
+
+  componentDidMount() {
+    // Ensure default mode is set (merge)
+    this.onChangeModeToggle();
+  }
 
   // Generic method to update directories
   setDirectory = (type, callback) =>
@@ -59,10 +73,18 @@ class MainPage extends Component {
     } else this.setDirectory('output');
   };
 
-  onChangeModeToggle = (mode) => {
-    const { updateSetting } = this.props;
-    const isRemoveSubtitles = mode === 'remove';
-    updateSetting('isRemoveSubtitles', isRemoveSubtitles);
+  /**
+   * @todo - add extract info
+   */
+  onChangeModeToggle = (option) => {
+    const { updateMultipleSettings } = this.props;
+    const isRemoveSubtitles = option === 'remove';
+    const isExtractSubtitles = option === 'extract';
+
+    updateMultipleSettings({
+      isExtractSubtitles,
+      isRemoveSubtitles
+    });
   };
 
   // Method to update "Same as source" option for output
@@ -143,7 +165,6 @@ class MainPage extends Component {
         appState: { input, output },
         settings: {
           isRememberOutputDir,
-          isRemoveSubtitles,
           isSameAsSource,
           outputDir
         }
@@ -167,40 +188,17 @@ class MainPage extends Component {
       [Boolean(isSameAsSource && input)]: input + String.raw`\*`
     }.true;
 
-    // Determine if merging or removing subtitles
-    const buttonIcon = isRemoveSubtitles
-      ? 'FabricUnsyncFolder'
-      : 'FabricSyncFolder';
 
-    // Determine button text
-    const buttonText = isRemoveSubtitles ? 'Remove' : 'Merge';
-
-    // Determine button title
-    const buttonTitle = isRemoveSubtitles
-      ? 'Remove subtitles'
-      : 'Merge subtitles';
-
-    // Determine button types for settings
-    const SettingButton = (props) => {
-      const { type, ...buttonProps } = props;
-
-      switch (type) {
-        case 'merge':
-          return isRemoveSubtitles ? (
-            <DefaultButton { ...buttonProps } />
-          ) : (
-            <PrimaryButton { ...buttonProps } />
-          );
-
-        case 'remove':
-          return isRemoveSubtitles ? (
-            <PrimaryButton { ...buttonProps } />
-          ) : (
-            <DefaultButton { ...buttonProps } />
-          );
-
-        // no default
-      }
+    const onRenderOption = (option) => {
+      return (
+        <div style={ { display: 'flex' } } title={ option.data.title }>
+          <Icon
+            iconName={ option.data.icon }
+            title={ option.data.icon }
+          />
+          <span style={ { marginLeft: 6, paddingBottom: 5 } }>{option.text}</span>
+        </div>
+      );
     };
 
     return (
@@ -240,35 +238,44 @@ class MainPage extends Component {
           <div className={ styles['mode-settings'] }>
             <Label>
               Subtitle processing mode
-              {' '}
-              <i>
-                (
-                {`${buttonText.toLowerCase()} subtitles`}
-                )
-              </i>
             </Label>
-
-            <div>
-              <SettingButton
-                onClick={ () => onChangeModeToggle('merge') }
-                text="Merge"
-                title="Merge subtitles"
-                type="merge"
-              />
-              <SettingButton
-                onClick={ () => onChangeModeToggle('remove') }
-                text="Remove"
-                title="Remove subtitles"
-                type="remove"
-              />
-            </div>
+            <Dropdown
+              onChange={ (event, option) => {
+                this.setState({ processingOption: option },
+                  () => onChangeModeToggle(option.key));
+              } }
+              onRenderOption={ onRenderOption }
+              options={ [
+                {
+                  data: { icon: 'FabricSyncFolder' },
+                  key: 'merge',
+                  text: 'Merge',
+                  title: 'Merge subtitles into video files'
+                },
+                {
+                  data: { icon: 'FabricUnsyncFolder' },
+                  key: 'remove',
+                  text: 'Remove',
+                  title: 'Remove subtitles from video files'
+                },
+                {
+                  data: { icon: 'FabricFormLibrary' },
+                  key: 'extract',
+                  text: 'Extract',
+                  title: 'Extract subtitles from video files'
+                }
+              ] }
+              placeholder="Select mode"
+              selectedKey={ this.state.processingOption.key }
+              styles={ { dropdown: { width: 280 } } }
+            />
           </div>
 
           <Footer
-            buttonIcon={ buttonIcon }
+            buttonIcon={ this.state.processingOption.data.icon }
             buttonOnClick={ processBatch }
-            buttonText={ buttonText }
-            buttonTitle={ buttonTitle }
+            buttonText={ this.state.processingOption.text }
+            buttonTitle={ this.state.processingOption.title }
             disabled={ isFooterDisabled }
           />
         </section>
@@ -276,6 +283,11 @@ class MainPage extends Component {
     );
   }
 }
+
+MainPage.defaultProps = {
+  updateMultipleSettings: undefined,
+  updateSetting: undefined
+};
 
 MainPage.propTypes = {
   appState: PropTypes.object.isRequired,

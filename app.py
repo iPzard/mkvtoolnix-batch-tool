@@ -72,22 +72,28 @@ def process_batch():
   settings = request.json["settings"]
 
   # User settings from request body
+  language = settings["language"]
   is_remove_ads = settings["isRemoveAds"]
   is_remove_existing_subtitles = settings["isRemoveExistingSubtitles"]
   is_remove_old = settings["isRemoveOld"]
   is_remove_subtitles = settings["isRemoveSubtitles"]
+  is_extract_subtitles = settings["isExtractSubtitles"]
   is_same_as_source = settings["isSameAsSource"]
-  language = settings["language"]
+  is_only_video_files = is_extract_subtitles or is_remove_subtitles
 
   # Get batch of files to process
-  batch_data = FileWalker.get_files(input_directory, is_remove_subtitles)
+  batch_data = FileWalker.get_files(
+    input_directory,
+    is_only_video_files
+  )
+
   batch = batch_data["files"]
   warning = batch_data["warning"]
+
   """
   TODO: issue #37
   attachments = batch_data["attachments"]
   """
-  
 
   # Communicate batch details to front end
   socketio.emit("batch_size", len(batch))
@@ -110,6 +116,7 @@ def process_batch():
 
     # Prevent duplicate file names by adding (#) to name
     video_output_path = FileWalker.get_unique_file_path(video_output_path + video_output_extension)
+
     # count = 1
     # while os.path.exists(video_output_path + video_output_extension):
     #   video_output_path = f"{original_output_path} ({count})"
@@ -124,6 +131,11 @@ def process_batch():
     # If "remove" subtitles
     if is_remove_subtitles:
       MKVToolNix.remove_subtitles(video_input_path, video_output_path)
+
+    # If "extract" subtitles
+    elif is_extract_subtitles:
+      subtitle_output_directory = None if is_same_as_source else output_directory
+      MKVToolNix.extract_subtitles(video_input_path, subtitle_output_directory)
 
     # If "merge" subtitles
     else:
@@ -144,7 +156,7 @@ def process_batch():
       )
 
     # If remove old, delete original files and directory (if empty after)
-    if is_remove_old:
+    if is_remove_old and not is_extract_subtitles:
       video_directory = PurePath(video_input_path).parent
 
       # Delete old video file

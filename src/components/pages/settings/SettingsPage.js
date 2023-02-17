@@ -97,7 +97,7 @@ class SettingsPage extends Component {
         <Checkbox
           checked={ isRemoveOld }
           className={ styles.checkbox }
-          label="Remove old video and subtitle files from source directory when finished"
+          label="Remove original files when merging or removing subtitles"
           onChange={ () => toggleSetting('isRemoveOld') }
         />
 
