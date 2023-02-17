@@ -8,7 +8,7 @@
 > <br><br>
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/8584126/108663926-81612880-7486-11eb-87d4-23bb3f821f16.gif" />
+  <img src="https://user-images.githubusercontent.com/8584126/219522181-3630c16c-67db-448d-b466-482f0017d94a.gif" />
 </p>
 <br>
 
@@ -174,7 +174,7 @@ Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolni
 <br><br>
 
 ## 🐱‍💻 Contribute
-Contributions are welcomed! If you see an [open issue](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) you want to fix, here's how to contribute: 
+Contributions are welcomed! If you see an [open issue](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) you want to fix, here's how to contribute:
 <br>
 
 1. Fork the repo.
