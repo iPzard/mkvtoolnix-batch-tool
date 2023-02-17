@@ -89,7 +89,8 @@ class FileWalker:
       "srt",
       "ssa",
       "sub",
-      "sup"
+      "sup",
+      "vtt"
     ]
 
     """
