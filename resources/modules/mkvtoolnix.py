@@ -85,18 +85,18 @@ class MKVToolNix:
     for index, subtitle_input_path in enumerate(subtitle_input_paths):
 
       """
-      List of incompatible but convertable
+      List of incompatible but convertible
       extensions, new extensions must also
       be added to the `subtitle_file_types`
       list in ./filewalker.py
       """
-      incompatible_convertable_extensions = ['smi'] # can add more if requests come in
+      incompatible_convertible_extensions = ['smi'] # can add more if requests come in
 
       # Determine extension to check compatibility
       subtitle_extension = FileWalker.get_path_extension(subtitle_input_path)
 
-      # If incompatible but convertable extension
-      if subtitle_extension in incompatible_convertable_extensions:
+      # If incompatible but convertible extension
+      if subtitle_extension in incompatible_convertible_extensions:
 
         # try converting the file to `.srt`
         try:

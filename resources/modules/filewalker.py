@@ -269,9 +269,23 @@ class FileWalker:
           # Keep track of processed videos to see if dir is used
           videos_processed = 0
 
-          # Helper method to retreive file name without extension
+          # Helper method to retrieve file name without extension
           def remove_extension(file_name):
             return re.sub(r'\.\w{2,4}$', '', os.path.basename(file_name))
+
+          # Removes suffix (including ext) from file names
+          def remove_suffix(file_name):
+            """
+            Removes potential attributes one by one
+            from the end of the string if found. ex:
+            "video.eng.forced.01.srt" ⟶ "video"
+            """
+            output_name = remove_extension(file_name) #ext
+            output_name = re.sub(r'\.[0-9]{2,3}$', '', output_name) #count
+            output_name = re.sub(r'\.(forced|shd)$', '', output_name) #type
+            output_name = re.sub(r'\.[a-zA-Z-]{2,5}$', '', output_name) #language
+
+            return output_name
 
           # Iterate through videos and look for matching subtitles
           for video in video_files:
@@ -283,7 +297,7 @@ class FileWalker:
             matching_subtitles = [
                 subtitle_file
                 for subtitle_file in subtitle_files
-                if video_name in remove_extension(subtitle_file)
+                if video_name in remove_suffix(subtitle_file)
             ]
 
             # If there are matching subtitle files
