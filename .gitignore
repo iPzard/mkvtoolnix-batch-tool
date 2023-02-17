@@ -24,6 +24,10 @@ yarn-error.log*
 /dist
 app/
 
+# resources
+resources/app.exe
+*.pyo
+
 # misc
 .DS_Store
 .env.local

@@ -1,4 +1,4 @@
-import chardet, ffmpeg, os, re, subprocess
+import chardet, ffmpeg, json, os, re, subprocess
 from langdetect import detect
 from . import filewalker
 
@@ -9,6 +9,47 @@ Wrapper for MKVToolNix to allow
 control via Python functions
 """
 class MKVToolNix:
+
+  """Run OS command
+  Function to merge video and
+  subtitle file(s) into an MKV
+  """
+  def run_os_command(self, os_command):
+    subprocess.call(os_command, shell=True)
+
+  """FFmpeg probe hi-jack
+  Customized arguments to Popen to
+  prevent console flashes after
+  compiled with PyInstaller
+  """
+  def ffmpeg_probe(self, video_input_path):
+      command = ['ffprobe', '-show_format', '-show_streams', '-of', 'json']
+      command += [video_input_path]
+
+      process = subprocess.Popen(
+        command,
+        shell=True,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+      )
+      out, err = process.communicate()
+      if process.returncode != 0:
+          raise Exception(f"ffprobe error: {err}")
+
+      return json.loads(out.decode('utf-8'))
+
+  """FFmpeg run hi-jack
+  Uses argument compiler from
+  library but alternate sub-
+  process method to run command
+  to prevent console flashes.
+  """
+  def ffmpeg_run(self, stream):
+    os_command = ffmpeg.compile(stream, 'ffmpeg', overwrite_output=True)
+
+    return self.run_os_command(os_command)
+
   """Add subtitle
   Function to merge video and
   subtitle file(s) into an MKV
@@ -44,18 +85,18 @@ class MKVToolNix:
     for index, subtitle_input_path in enumerate(subtitle_input_paths):
 
       """
-      List of incompatible but convertable
+      List of incompatible but convertible
       extensions, new extensions must also
       be added to the `subtitle_file_types`
       list in ./filewalker.py
       """
-      incompatible_convertable_extensions = ['smi'] # can add more if requests come in
+      incompatible_convertible_extensions = ['smi'] # can add more if requests come in
 
       # Determine extension to check compatibility
       subtitle_extension = FileWalker.get_path_extension(subtitle_input_path)
 
-      # If incompatible but convertable extension
-      if subtitle_extension in incompatible_convertable_extensions:
+      # If incompatible but convertible extension
+      if subtitle_extension in incompatible_convertible_extensions:
 
         # try converting the file to `.srt`
         try:
@@ -132,7 +173,7 @@ class MKVToolNix:
     os_command = " ".join([mkv_command, video_path_info, subtitle_commands])
 
     # Use command in system
-    subprocess.call(os_command, shell=True)
+    self.run_os_command(os_command)
 
     # Delete any converted input paths that may exist
     if len(converted_input_paths_to_remove):
@@ -294,7 +335,55 @@ class MKVToolNix:
     os_command = " ".join([mkv_command, video_info])
 
     # Run command
-    subprocess.call(os_command, shell=True)
+    self.run_os_command(os_command)
+
+
+  """ Extract subtitles
+  Function to extract existing
+  subtitles from videos
+  """
+  def extract_subtitles(self, video_input_path, subtitle_output_directory):
+    if subtitle_output_directory is None:
+      subtitle_output_directory = os.path.dirname(video_input_path)
+
+    probe = self.ffmpeg_probe(video_input_path)
+
+    subtitle_streams = [stream for stream in probe['streams'] if stream['codec_type'] == 'subtitle']
+    print(subtitle_streams)
+
+    # Keep track of the number of streams extracted for each language
+    lang_counts = {}
+
+    for stream in subtitle_streams:
+      # Set the language code and subtitle type based on the subtitle stream tags
+      tags = stream.get('tags', {})
+      language_code = tags.get('language', 'und')
+      subtitle_type = tags.get('title', 'default')
+
+      # Increment the stream count for this language
+      lang_counts[language_code] = lang_counts.get(language_code, 0) + 1
+      lang_count_curr = f"{lang_counts[language_code]:02}"
+
+      # Map the subtitle type to the appropriate subtitle file suffix
+      type_map = {'forced': 'forced', 'SDH': 'sdh'}
+      type = type_map.get(subtitle_type, '')
+
+      # Configure suffix and extension
+      suffix = ".".join(filter(None, [language_code, lang_count_curr, type]))
+      extension = 'srt'
+
+      # Set the output file name
+      output_file = os.path.join(
+        subtitle_output_directory,
+        f"{os.path.splitext(os.path.basename(video_input_path))[0]}.{suffix}.{extension}"
+      )
+
+      # Extract the subtitle stream
+      stream = ffmpeg.input(video_input_path)
+      stream = ffmpeg.output(stream, output_file, **{'c:s': 'srt', 'map': f'0:s:{stream["index"]}?'})
+
+      self.ffmpeg_run(stream)
+
 
 
   """ Remove subtitle ads:

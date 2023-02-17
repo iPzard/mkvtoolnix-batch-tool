@@ -75,7 +75,8 @@ class Packager {
         '--win32',
         '--out',
         './dist/windows',
-        '--overwrite'
+        '--overwrite',
+        '--debug'
       ].join(' '),
 
       spawn: { detached: false, shell: true, stdio: 'inherit' }
@@ -100,7 +101,7 @@ class Packager {
           banner: path('../utilities/msi/images/banner.png')
         }
       },
-      version: '2.3.2'
+      version: '2.4.0'
     });
 
     // Customized MSI template
