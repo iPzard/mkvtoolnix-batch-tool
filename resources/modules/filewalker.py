@@ -26,7 +26,7 @@ class FileWalker:
     return self.get_path_without_extension(path)
 
 
-  """Get path without extension:
+  """ Get path without extension:
   Returns entire file path excluding
   the file extension.
   """
@@ -40,6 +40,66 @@ class FileWalker:
   """
   def get_path_extension(self, path):
     return os.path.splitext(path)[1].replace('.', '')
+
+
+  """ Determines file name
+  Takes string of file name
+  and returns with extension
+  removed from the string
+  """
+  def remove_extension(self, file_name):
+    return re.sub(r'\.\w{2,4}$', '', os.path.basename(file_name))
+
+
+  """ Determines file name
+  Takes string of file name
+  and returns with suffix
+  removed from the string
+  """
+  def remove_suffix_data(self, file_name):
+    """
+    Removes potential attributes one by one
+    from the end of the string if found. ex:
+    "video.eng.forced.01.srt" ⟶ "video"
+    """
+    output_name = self.remove_extension(file_name) #ext
+    output_name = re.sub(r'\.[0-9]{2,3}$', '', output_name) #count
+    output_name = re.sub(r'\.(forced|shd)$', '', output_name) #type
+    output_name = re.sub(r'\.[a-zA-Z]{2}$', '', output_name) #language
+
+    return output_name
+
+
+  """ Get suffix details
+  Returns dictionary of the
+  suffix data included in
+  the file name
+  """
+  def get_suffix_data(self, file_name):
+    # Determine suffix string
+    video_name = self.remove_suffix_data(file_name)
+    suffix = file_name.replace(video_name, "")
+    pattern = re.compile(r"""
+      ^ # Start of string
+      (?P<lang>\.[a-z]{2})? # Optional language code
+      (?P<type>\.[a-z]+)? # Optional file type
+      (?P<lang_count>\.\d{2,3})? # Optional language count
+      $ # End of string
+    """, re.VERBOSE)
+
+    # Create map of suffix data
+    match = re.match(pattern, suffix)
+    suffix_match = match.groupdict() if match else {}
+    suffix_data = {k: v[1:] for k, v in suffix_match.items() if v}
+
+    # Update empty keys to equal `None`
+    suffix_keys = ["lang", "type", "lang_count"]
+    for key in suffix_keys:
+      if key not in suffix_data:
+        suffix_data[key] = None
+
+    # ex: suffix_data = { 'lang': 'eng', 'lang_count': '01', 'type': None }
+    return suffix_data
 
 
   """ Get file paths
@@ -270,35 +330,18 @@ class FileWalker:
           # Keep track of processed videos to see if dir is used
           videos_processed = 0
 
-          # Helper method to retrieve file name without extension
-          def remove_extension(file_name):
-            return re.sub(r'\.\w{2,4}$', '', os.path.basename(file_name))
-
-          # Removes suffix (including ext) from file names
-          def remove_suffix(file_name):
-            """
-            Removes potential attributes one by one
-            from the end of the string if found. ex:
-            "video.eng.forced.01.srt" ⟶ "video"
-            """
-            output_name = remove_extension(file_name) #ext
-            output_name = re.sub(r'\.[0-9]{2,3}$', '', output_name) #count
-            output_name = re.sub(r'\.(forced|shd)$', '', output_name) #type
-            output_name = re.sub(r'\.[a-zA-Z-]{2,5}$', '', output_name) #language
-
-            return output_name
 
           # Iterate through videos and look for matching subtitles
           for video in video_files:
 
             # Exact file name of video without extension
-            video_name = remove_extension(video)
+            video_name = self.remove_extension(video)
 
             # List of subtitles that include the video name in their name
             matching_subtitles = [
                 subtitle_file
                 for subtitle_file in subtitle_files
-                if video_name in remove_suffix(subtitle_file)
+                if video_name in self.remove_suffix_data(subtitle_file)
             ]
 
             # If there are matching subtitle files

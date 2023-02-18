@@ -17,27 +17,30 @@ class MKVToolNix:
   def run_os_command(self, os_command):
     subprocess.call(os_command, shell=True)
 
+
   """FFmpeg probe hi-jack
   Customized arguments to Popen to
   prevent console flashes after
   compiled with PyInstaller
   """
   def ffmpeg_probe(self, video_input_path):
-      command = ['ffprobe', '-show_format', '-show_streams', '-of', 'json']
-      command += [video_input_path]
+    command = ['ffprobe', '-show_format', '-show_streams', '-of', 'json']
+    command += [video_input_path]
 
-      process = subprocess.Popen(
-        command,
-        shell=True,
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
-      )
-      out, err = process.communicate()
-      if process.returncode != 0:
-          raise Exception(f"ffprobe error: {err}")
+    process = subprocess.Popen(
+      command,
+      shell=True,
+      stdin=subprocess.PIPE,
+      stdout=subprocess.PIPE,
+      stderr=subprocess.PIPE
+    )
+    out, err = process.communicate()
 
-      return json.loads(out.decode('utf-8'))
+    if process.returncode != 0:
+      raise Exception(f"ffprobe error: {err}")
+
+    return json.loads(out.decode('utf-8'))
+
 
   """FFmpeg run hi-jack
   Uses argument compiler from
@@ -49,6 +52,7 @@ class MKVToolNix:
     os_command = ffmpeg.compile(stream, 'ffmpeg', overwrite_output=True)
 
     return self.run_os_command(os_command)
+
 
   """Add subtitle
   Function to merge video and
@@ -158,17 +162,6 @@ class MKVToolNix:
     # Combine subtitle options into command
     subtitle_commands = " ".join(subtitle_options)
 
-
-    """
-    TODO: issue #37
-    attachment_commands =
-    """
-
-
-    """
-    TODO: issue #37
-    include attachment_commands in os_command
-    """
     # Finalized command for OS
     os_command = " ".join([mkv_command, video_path_info, subtitle_commands])
 
@@ -276,6 +269,7 @@ class MKVToolNix:
     language_code = (
       language_map[iso_code]["key"] if iso_code in language_map else "und"
     )
+
     language = (
       language_map[iso_code]["text"]
       if iso_code in language_map
@@ -349,16 +343,21 @@ class MKVToolNix:
     probe = self.ffmpeg_probe(video_input_path)
 
     subtitle_streams = [stream for stream in probe['streams'] if stream['codec_type'] == 'subtitle']
-    print(subtitle_streams)
 
     # Keep track of the number of streams extracted for each language
     lang_counts = {}
+    lang_map = self.get_supported_languages()
 
     for stream in subtitle_streams:
       # Set the language code and subtitle type based on the subtitle stream tags
       tags = stream.get('tags', {})
-      language_code = tags.get('language', 'und')
       subtitle_type = tags.get('title', 'default')
+
+      # Set language code from iso-639-2 to iso-639-2
+      language_code = tags.get('language', 'und')
+      for code, data in lang_map.items():
+          if data['key'] == language_code:
+              language_code = code
 
       # Increment the stream count for this language
       lang_counts[language_code] = lang_counts.get(language_code, 0) + 1
