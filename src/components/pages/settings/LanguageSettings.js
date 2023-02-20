@@ -37,6 +37,7 @@ const LanguageSettings = (props) => {
 
   // Primary languages to select from
   const primaryLanguageOptions = useMemo(() => ([
+    { key: 'unset', text: 'None' },
     { key: 'chi', text: 'Chinese' },
     { key: 'dut', text: 'Dutch' },
     { key: 'eng', text: 'English' },

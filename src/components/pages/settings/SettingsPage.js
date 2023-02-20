@@ -24,7 +24,7 @@ class SettingsPage extends Component {
     isRemoveAds: false,
     isRemoveExistingSubtitles: false,
     isRemoveOld: false,
-    language: { key: 'eng', text: 'English' }
+    language: { key: 'unset', text: 'None' }
   };
 
   // Keep component up-to-date w/latest props
