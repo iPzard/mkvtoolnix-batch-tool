@@ -17,27 +17,30 @@ class MKVToolNix:
   def run_os_command(self, os_command):
     subprocess.call(os_command, shell=True)
 
+
   """FFmpeg probe hi-jack
   Customized arguments to Popen to
   prevent console flashes after
   compiled with PyInstaller
   """
   def ffmpeg_probe(self, video_input_path):
-      command = ['ffprobe', '-show_format', '-show_streams', '-of', 'json']
-      command += [video_input_path]
+    command = ['ffprobe', '-show_format', '-show_streams', '-of', 'json']
+    command += [video_input_path]
 
-      process = subprocess.Popen(
-        command,
-        shell=True,
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
-      )
-      out, err = process.communicate()
-      if process.returncode != 0:
-          raise Exception(f"ffprobe error: {err}")
+    process = subprocess.Popen(
+      command,
+      shell=True,
+      stdin=subprocess.PIPE,
+      stdout=subprocess.PIPE,
+      stderr=subprocess.PIPE
+    )
+    out, err = process.communicate()
 
-      return json.loads(out.decode('utf-8'))
+    if process.returncode != 0:
+      raise Exception(f"ffprobe error: {err}")
+
+    return json.loads(out.decode('utf-8'))
+
 
   """FFmpeg run hi-jack
   Uses argument compiler from
@@ -49,6 +52,7 @@ class MKVToolNix:
     os_command = ffmpeg.compile(stream, 'ffmpeg', overwrite_output=True)
 
     return self.run_os_command(os_command)
+
 
   """Add subtitle
   Function to merge video and
@@ -63,7 +67,6 @@ class MKVToolNix:
     video_input_path,
     video_output_path,
   ):
-
     # MKVToolNix command to use
     mkvtoolnix = os.path.abspath("resources/mkvtoolnix")
     mkv_command = f"cd {mkvtoolnix} && mkvmerge -o"
@@ -82,7 +85,24 @@ class MKVToolNix:
     converted_input_paths_to_remove = []
 
     # Iterate through subtitle paths and generate option commands
-    for index, subtitle_input_path in enumerate(subtitle_input_paths):
+    for _index, subtitle_input_path in enumerate(subtitle_input_paths):
+      # Determine if subtitle presets exist
+      subtitle_file_name = os.path.basename(subtitle_input_path)
+      subtitle_presets = FileWalker.get_presets_from_suffix(subtitle_file_name)
+
+      # Configure settings
+      is_hearing_impaired = subtitle_presets["is_hearing_impaired"]
+      is_forced_track = subtitle_presets["is_forced_track"]
+      language_code = subtitle_presets["language_code"]
+      language = None
+
+      # Set language code name if supported, else set language_code to None
+      if language_code is not None:
+        all_languages = self.get_supported_languages()
+        if language_code in all_languages:
+          language = all_languages[language_code]["text"] # name of language (e.g., English)
+        else:
+          language_code = None # Unsupported
 
       """
       List of incompatible but convertible
@@ -121,36 +141,50 @@ class MKVToolNix:
           "language": "Undetermined",
           "language_code": "und",
         }
-      subtitle_language_code = subtitle_language_info["language_code"]
-      subtitle_language = subtitle_language_info["language"]
-      is_default_language_track = subtitle_language is default_language_track
 
-      # Determine if subtitles should play automatically (is default track)
-      default_track_setting = (
-        " --default-track 0:true" if is_default_language_track else ""
-      )
+      # Configure subtitle settings (language, etc..)
+      subtitle_language_code = language_code or subtitle_language_info["language_code"]
+      subtitle_language = language or subtitle_language_info["language"]
+      is_default_language_track = subtitle_language is default_language_track
+      is_default_track = subtitle_presets["is_default_track"] or is_default_language_track
+      subtitle_language_setting = f"--language 0:{subtitle_language_code}"
 
       # Subtitle language, track name, and path
-      subtitle_track_count = f"0{index + 1}" if index < 9 else index + 1
-      subtitle_language_setting = f"--language 0:{subtitle_language_code}"
-      subtitle_track_settings = (
-        f"--track-name 0:{subtitle_track_count}{default_track_setting}"
-      )
+      flag_boolean_map = { False: 'false', True: 'true' }
+      is_default_track_flag = flag_boolean_map[is_default_track]
+      is_forced_track_flag = flag_boolean_map[is_forced_track]
+      is_hearing_impaired_flag = flag_boolean_map[is_hearing_impaired]
 
-      subtitle_input_path_quoted = (
-        f'"{subtitle_input_path}"'  # Wrap in quotes for spaces in dir names
-      )
+      # Configure track settings based on presets
+      subtitle_track_settings = ' '.join([
+        f"--default-track 0:{is_default_track_flag}",
+        f"--forced-track 0:{is_forced_track_flag}",
+        f"--hearing-impaired-flag 0:{is_hearing_impaired_flag}",
+      ])
+
+      # Determine if special track name is needed
+      special_suffixes = [
+        '[Default]' if is_default_track else '',
+        '[Forced]' if is_forced_track else '',
+        '[Hearing Impaired]' if is_hearing_impaired else ''
+      ]
+      special_subtitle_track_name = ' '.join(special_suffixes).strip()
+
+      # Update track settings if needed
+      if special_subtitle_track_name:
+        subtitle_track_settings += f' --track-name 0:"{special_subtitle_track_name}"'
 
       # If user wants advertisements removed from subtitle files
       if is_remove_ads:
         self.remove_subtitles_ads(subtitle_input_path)
 
+      # Update subtitle options with new data
       subtitle_options.append(
         " ".join(
           [
             subtitle_language_setting,
-            subtitle_track_settings,
-            subtitle_input_path_quoted,
+            subtitle_track_settings.strip(),
+            f'"{subtitle_input_path}"', # Wrap in quotes for spaces in dir names,
           ]
         )
       )
@@ -158,17 +192,6 @@ class MKVToolNix:
     # Combine subtitle options into command
     subtitle_commands = " ".join(subtitle_options)
 
-
-    """
-    TODO: issue #37
-    attachment_commands =
-    """
-
-
-    """
-    TODO: issue #37
-    include attachment_commands in os_command
-    """
     # Finalized command for OS
     os_command = " ".join([mkv_command, video_path_info, subtitle_commands])
 
@@ -227,7 +250,7 @@ class MKVToolNix:
       if subtitle_extension == 'idx':
         for line in file:
           if 'id:' in line: # find ID (lang) setting
-            iso_639_1_code = re.sub('id:\s*|,(.*)', '', line)
+            iso_639_2_code = re.sub('id:\s*|,(.*)', '', line)
 
       else:
         """
@@ -235,47 +258,30 @@ class MKVToolNix:
         start with numbers, then split
         into an evaluation list.
         """
-        text_sample = re.sub(
-          '\n|^[0-9].*', '', text_sample, flags=re.MULTILINE
-        ).split(' ', line_sniff_count)[:line_sniff_count]
-        iso_639_1_code_list = []
+        # Replace new lines with space
+        text_sample = re.sub('\n', ' ', text_sample)
 
-        # Detected ISO 639-1 code, use und if undetermined
-        for word in text_sample:
-          try:
-            # Add detected language ISO code to list
-            iso_639_1_code_list.append(detect(word))
-            pass
+        # Remove lines that start with numbers and `-->`
+        text_sample = ' '.join(word for word in text_sample.split() if not re.match('^[0-9]|^.*--\>', word))
 
-          # If word language cannot be detected, skip
-          except:
-            pass
+        # Join words back into a single string and keep only the first `line_sniff_count` words
+        text_sample = ' '.join(text_sample.split()[:line_sniff_count])
 
-        """ Set ISO-639-1 code:
-        Sets to most frequently occuring
-        ISO code in the list of translated
-        words, this minimizes incorrect
-        interpretations.
-        """
-        iso_639_1_code = max(
-          set(iso_639_1_code_list),
-          key = iso_639_1_code_list.count
-        )
+        # Update iso-639-2 code
+        iso_639_2_code = detect(text_sample) or 'und' # Detected ISO 639-1 code, use und if undetermined
 
-        # Default to "und"
-        if iso_639_1_code is None:
-          iso_639_1_code = "und"
 
     # Simplify ISO to base (e.g., 'zh-TW' = 'zh')
-    iso_code = iso_639_1_code[0] + iso_639_1_code[1]
+    iso_code = iso_639_2_code[0] + iso_639_2_code[1]
 
     # ISO 639-1 to ISO 639-2 language code map
     language_map = self.get_supported_languages()
 
-    # Return ISO 639-2 code or "und"/"Undetermined" if unsupported
+    # Return ISO 639-1 code or "und"/"Undetermined" if unsupported
     language_code = (
       language_map[iso_code]["key"] if iso_code in language_map else "und"
     )
+
     language = (
       language_map[iso_code]["text"]
       if iso_code in language_map
@@ -343,46 +349,76 @@ class MKVToolNix:
   subtitles from videos
   """
   def extract_subtitles(self, video_input_path, subtitle_output_directory):
-    if subtitle_output_directory is None:
-      subtitle_output_directory = os.path.dirname(video_input_path)
+    try:
+      # Use video input path as default output directory
+      if not subtitle_output_directory:
+        subtitle_output_directory = os.path.dirname(video_input_path)
 
-    probe = self.ffmpeg_probe(video_input_path)
+      # Get subtitle streams from the video using FFmpeg probe
+      probe = self.ffmpeg_probe(video_input_path)
+      subtitle_streams = [stream for stream in probe['streams'] if stream['codec_type'] == 'subtitle']
 
-    subtitle_streams = [stream for stream in probe['streams'] if stream['codec_type'] == 'subtitle']
-    print(subtitle_streams)
+      # Keep track of streams extracted for each language
+      language_counts = {}
+      lang_map = self.get_supported_languages()
 
-    # Keep track of the number of streams extracted for each language
-    lang_counts = {}
+      # Method to get language code from language map
+      def get_language_code(tags, lang_map):
+        return next((code for code, data in lang_map.items() if data['key'] == tags.get('language', 'und')), 'und')
 
-    for stream in subtitle_streams:
-      # Set the language code and subtitle type based on the subtitle stream tags
-      tags = stream.get('tags', {})
-      language_code = tags.get('language', 'und')
-      subtitle_type = tags.get('title', 'default')
+      # Remember stream count for each language
+      for stream in subtitle_streams:
+        tags = stream.get('tags', {})
+        language_code = get_language_code(tags, lang_map)
+        language_counts[language_code] = language_counts.get(
+          language_code,
+          {'total': 0, 'current': 1}
+        )
 
-      # Increment the stream count for this language
-      lang_counts[language_code] = lang_counts.get(language_code, 0) + 1
-      lang_count_curr = f"{lang_counts[language_code]:02}"
+        # Update total count for each subtitle of given language
+        language_counts[language_code]['total'] += 1
 
-      # Map the subtitle type to the appropriate subtitle file suffix
-      type_map = {'forced': 'forced', 'SDH': 'sdh'}
-      type = type_map.get(subtitle_type, '')
+      # Loop over the subtitle streams and extract them
+      for stream in subtitle_streams:
+        tags = stream.get('tags', {})
+        language_code = get_language_code(tags, lang_map)
+        disposition = stream.get('disposition', {})
+        language_count = language_counts[language_code]
 
-      # Configure suffix and extension
-      suffix = ".".join(filter(None, [language_code, lang_count_curr, type]))
-      extension = 'srt'
+        suffix_data = [
+          ['default' if disposition.get('default', 0) else ''],
+          ['forced' if disposition.get('forced', 0) else ''],
+          ['sdh' if disposition.get('hearing_impaired', 0) else ''],
+          [language_code],
+          [f"{language_count['current']:02}" if language_count['total'] > 1 else '']
+        ]
+        suffix_data = [x for sub in suffix_data for x in sub]
+        suffix = '.'.join(filter(None, suffix_data))
 
-      # Set the output file name
-      output_file = os.path.join(
-        subtitle_output_directory,
-        f"{os.path.splitext(os.path.basename(video_input_path))[0]}.{suffix}.{extension}"
-      )
+        # Set the extension for the output file name
+        extension = 'srt'
 
-      # Extract the subtitle stream
-      stream = ffmpeg.input(video_input_path)
-      stream = ffmpeg.output(stream, output_file, **{'c:s': 'srt', 'map': f'0:s:{stream["index"]}?'})
+        # Set the output file name
+        output_file = os.path.join(
+          subtitle_output_directory,
+          f"{os.path.splitext(os.path.basename(video_input_path))[0]}.{suffix}.{extension}"
+        )
 
-      self.ffmpeg_run(stream)
+
+        # Extract the subtitle stream
+        stream = ffmpeg.input(video_input_path)
+        stream = ffmpeg.output(
+            stream,
+            output_file,
+            **{'c:s': 'srt', 'map': f'0:s:2?'}
+        )
+
+        # Run the FFmpeg command to extract the subtitle stream
+        self.ffmpeg_run(stream)
+
+    except Exception as err:
+      raise Exception(f"Error extracting subtitles: {err}")
+
 
 
 
