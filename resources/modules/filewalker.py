@@ -63,9 +63,9 @@ class FileWalker:
     "video.eng.forced.01.srt" ⟶ "video"
     """
     output_name = self.remove_extension(file_name) #ext
-    output_name = re.sub(r'\.[0-9]{2,3}$', '', output_name) #count
-    output_name = re.sub(r'\.(forced|shd)$', '', output_name) #type
-    output_name = re.sub(r'\.[a-zA-Z]{2}$', '', output_name) #language
+    output_name = re.sub(r'\.[0-9]{2,3}', '', output_name) #count
+    output_name = re.sub(r'\.(default|forced|sdh|hearing-impaired)', '', output_name) #track flags
+    output_name = re.sub(r'\.[a-zA-Z]{2}', '', output_name) #language
 
     return output_name
 
@@ -75,30 +75,63 @@ class FileWalker:
   suffix data included in
   the file name
   """
-  def get_suffix_data(self, file_name):
+  def get_presets_from_suffix(self, file_name):
     # Determine suffix string
     video_name = self.remove_suffix_data(file_name)
     suffix = file_name.replace(video_name, "")
+    suffix = self.remove_extension(suffix)
+
+    # Create capture groups for suffix data
     pattern = re.compile(r"""
-      ^ # Start of string
-      (?P<lang>\.[a-z]{2})? # Optional language code
-      (?P<type>\.[a-z]+)? # Optional file type
-      (?P<lang_count>\.\d{2,3})? # Optional language count
-      $ # End of string
+      (?:
+        (?P<is_default_track>\.default)|
+        (?P<is_forced_track>\.forced)|
+        (?P<is_hearing_impaired>\.(sdh|hearing-impaired))
+      )* # Optional flags
+      (?P<language_code>\.[a-z]{2}(?=\.|$)) # Language code
+      (?P<language_count>\.\d{2,3})? # Subtitle language count
     """, re.VERBOSE)
 
     # Create map of suffix data
     match = re.match(pattern, suffix)
     suffix_match = match.groupdict() if match else {}
-    suffix_data = {k: v[1:] for k, v in suffix_match.items() if v}
+    suffix_data = {
+      k: v[1:]
+      for k, v in suffix_match.items() if v
+    }
 
-    # Update empty keys to equal `None`
-    suffix_keys = ["lang", "type", "lang_count"]
-    for key in suffix_keys:
+    # Suffix keys to set as booleans
+    suffix_key_booleans = [
+      "is_default_track",
+      "is_forced_track",
+      "is_hearing_impaired"
+    ]
+
+    # Suffix keys to keep as raw values
+    suffix_key_raw_values = [
+      "language_code",
+      "language_count"
+    ]
+
+    # Update booleans to boolean value
+    for key in suffix_key_booleans:
+      suffix_data[key] = key in suffix_data
+
+    # Update non-existing raw values to None
+    for key in suffix_key_raw_values:
       if key not in suffix_data:
         suffix_data[key] = None
 
-    # ex: suffix_data = { 'lang': 'eng', 'lang_count': '01', 'type': None }
+    # Example output
+    """
+    suffix_data = {
+      'is_default_track': True,
+      'is_hearing_impaired': True,
+      'is_forced_track': False,
+      'language_code': 'en',
+      'language_count': '01',
+    }
+    """
     return suffix_data
 
 
@@ -115,12 +148,6 @@ class FileWalker:
     video_files,
     subtitle_files
   ):
-
-    """
-    TODO: issue #37
-    Add attachment_files = []
-    """
-
     # Identify path and type of file
     file_path = current_directory / current_subdirectory / current_file
     file_type = current_file.split(".")[-1].lower()
@@ -153,11 +180,6 @@ class FileWalker:
       "vtt"
     ]
 
-    """
-    TODO: issue #37
-    Determine valid attachment file types
-    Add attachment_file_types = [ ... ]
-    """
     # Determine if file has a video-related extention
     if file_type in video_file_types:
       video_files.append(file_path)
@@ -272,10 +294,6 @@ class FileWalker:
         # Initialize video & subtitle variables
         video_files = []
         subtitle_files = []
-        """
-        TODO: issue #37
-        Add attachment_files = []
-        """
 
         for current_file in files:
           [video_files, subtitle_files] = self.get_file_paths(
@@ -285,11 +303,6 @@ class FileWalker:
             video_files,
             subtitle_files
           )
-
-          """
-          TODO: issue #37
-          elif file_type in attachment_file_types:
-          """
 
         # If only one video, set it as "the" video file
         video_file = None
@@ -303,11 +316,6 @@ class FileWalker:
         is_invalid_videos = len(video_files) == 0 and is_not_root_directory
 
         if is_invalid_subtitles or is_invalid_videos:
-
-          """
-          TODO: issue #37
-          if not "attachments" directory:
-          """
           skipped_directories += 1
 
         # If more than one video, match with subtitles by names
@@ -329,7 +337,6 @@ class FileWalker:
 
           # Keep track of processed videos to see if dir is used
           videos_processed = 0
-
 
           # Iterate through videos and look for matching subtitles
           for video in video_files:
@@ -389,10 +396,6 @@ class FileWalker:
         )
 
     # Prepare valid files and warning message (or None if none)
-    """
-    TODO: issue #37
-    include "attachments" here
-    """
     file_data = {"files": included_files, "warning": warning}
 
     # Return tuples of files

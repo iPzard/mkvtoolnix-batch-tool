@@ -90,11 +90,6 @@ def process_batch():
   batch = batch_data["files"]
   warning = batch_data["warning"]
 
-  """
-  TODO: issue #37
-  attachments = batch_data["attachments"]
-  """
-
   # Communicate batch details to front end
   socketio.emit("batch_size", len(batch))
 
@@ -141,10 +136,6 @@ def process_batch():
     else:
       default_language_track = language["text"]
 
-      """
-      TODO: issue #37
-      include attachments here
-      """
       # Process batch
       MKVToolNix.add_subtitles(
         is_remove_ads,
