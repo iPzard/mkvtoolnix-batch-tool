@@ -99,6 +99,22 @@ The language of each subtitle file is determined automatically by parsing throug
 </pre>
 <br>
 
+**Example (e.g., overrides):**
+<pre>
+  <code>
+    📂Movies
+    ┣ 📂Resident Evil (2002)
+    ┃ ┣ 📺Resident Evil (2002) [1080p].mp4
+    ┃ ┣ 📜Resident Evil (2002) [1080p].sdh.srt 👈 <b>Set hearing impaired</b>
+    ┃ ┣ 📜Resident Evil (2002) [1080p].hearing-impaired.srt 👈 <b>Set hearing impaired (alt option)</b>
+    ┃ ┣ 📜Resident Evil (2002) [1080p].forced.srt 👈 <b>Set forced track</b>
+    ┃ ┣ 📜Resident Evil (2002) [1080p].default.srt 👈 <b>Set default track</b>
+    ┃ ┗ 📜Subtitles Evil (2002) [1080p].nl.srt 👈 <b>Override language using a supported ISO 639-1 language code</b>
+    ┃ ┗ 📜Subtitles Evil (2002) [1080p].default.forced.sdh.es.srt 👈 <b>Set multiple overrides</b>
+  </code>
+</pre>
+<br>
+
 ## 🪓 Removing subtitles
 When removing subtitles, each directory and/or subdirectory contain at least one video file will be processed, others will be skipped. Other non-video files may be included and will be ignored.<br><br>
 

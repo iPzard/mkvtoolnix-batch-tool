@@ -81,57 +81,19 @@ class FileWalker:
     suffix = file_name.replace(video_name, "")
     suffix = self.remove_extension(suffix)
 
-    # Create capture groups for suffix data
-    pattern = re.compile(r"""
-      (?:
-        (?P<is_default_track>\.default)|
-        (?P<is_forced_track>\.forced)|
-        (?P<is_hearing_impaired>\.(sdh|hearing-impaired))
-      )* # Optional flags
-      (?P<language_code>\.[a-z]{2}(?=\.|$)) # Language code
-      (?P<language_count>\.\d{2,3})? # Subtitle language count
-    """, re.VERBOSE)
-
-    # Create map of suffix data
-    match = re.match(pattern, suffix)
-    suffix_match = match.groupdict() if match else {}
+    # Initialize suffix data
     suffix_data = {
-      k: v[1:]
-      for k, v in suffix_match.items() if v
+      "is_default_track": bool(re.search(r'\.default($|\.)', suffix)),
+      "is_forced_track": bool(re.search(r'\.forced($|\.)', suffix)),
+      "is_hearing_impaired": bool(re.search(r'\.(sdh|hearing-impaired)($|\.)', suffix)),
     }
 
-    # Suffix keys to set as booleans
-    suffix_key_booleans = [
-      "is_default_track",
-      "is_forced_track",
-      "is_hearing_impaired"
-    ]
+    # Update language code & count
+    language_code = re.search(r'(?<=\.)[a-z]{2}($|\.)', suffix)
+    language_count = re.search(r'(?<=\.)[0-9]{2,3}$', suffix)
+    suffix_data["language_code"] = language_code.group(0) if language_code else None
+    suffix_data["language_count"] = language_count.group(0) if language_count else None
 
-    # Suffix keys to keep as raw values
-    suffix_key_raw_values = [
-      "language_code",
-      "language_count"
-    ]
-
-    # Update booleans to boolean value
-    for key in suffix_key_booleans:
-      suffix_data[key] = key in suffix_data
-
-    # Update non-existing raw values to None
-    for key in suffix_key_raw_values:
-      if key not in suffix_data:
-        suffix_data[key] = None
-
-    # Example output
-    """
-    suffix_data = {
-      'is_default_track': True,
-      'is_hearing_impaired': True,
-      'is_forced_track': False,
-      'language_code': 'en',
-      'language_count': '01',
-    }
-    """
     return suffix_data
 
 
