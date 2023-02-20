@@ -19,7 +19,7 @@ MKVToolNix Batch Tool works on Windows 32-bit (x86) and Windows 64-bit (x64) ope
 ## 🔨 Merging subtitles
 When there's only one video file per subdirectory, all subtitle files in that same subdirectory will be merged into the video, regardless of the subtitle file's name. However, when there are multiple videos in a subdirectory, videos will only be merged with subtitle files that contain the video's full name within <i>(or as)</i> the subtitle file name, less the extension.\
 \
-The language of each subtitle file is determined automatically by parsing through text in the files as they're being merged, the language that matches your <b>Default language track</b> from the settings page <i>(defaults to English)</i> will be set as the default subtitle track on your merged video(s).<br><br>
+The language of each subtitle file is determined automatically <i>(unless using an override as shown below)</i> by parsing through text in the files as they're being merged, the language that matches your <b>Default language track</b> from the settings page <i>(defaults to English)</i> will be set as the default subtitle track on your merged video(s).<br><br>
 
 **Example (e.g., movies):**
 
