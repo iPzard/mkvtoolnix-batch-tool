@@ -22,7 +22,9 @@ export const app = {
     socket.once('disconnect', () => {
       setTimeout(() => {
         ipcRenderer.send('app-restart', options);
-        socket.connect();
+        setTimeout(() => {
+          socket.connect();
+        }, app.reconnectionDelay);
       }, app.reconnectionDelay);
     });
 

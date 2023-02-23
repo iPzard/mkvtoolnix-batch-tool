@@ -63,6 +63,10 @@ class Builder {
   buildReact = () => {
     // eslint-disable-next-line no-console
     console.log('Creating React distribution files...');
+
+    // Set the GENERATE_SOURCEMAP environment variable to false
+    process.env.GENERATE_SOURCEMAP = 'false';
+
     spawnSync('react-scripts build', spawnOptions);
   }
 }

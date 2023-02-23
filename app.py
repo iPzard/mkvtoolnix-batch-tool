@@ -18,7 +18,13 @@ FileWalker = filewalker.FileWalker()
 MKVToolNix = mkvtoolnix.MKVToolNix()
 app = Flask(__name__)
 app_config = {"host": "0.0.0.0", "port": int(sys.argv[1])}
-socketioConfig = {"async_mode": "threading"}
+socketioConfig = {
+  "async_mode": "threading",
+  "cookie": None, # Disable Flask's session cookie
+  "session_cookie": True, # Use a custom session cookie
+  "session_cookie_secure": True, # Set the Secure flag
+  "session_cookie_samesite": "None" # Set the SameSite attribute
+}
 
 """
 -------------------------- DEVELOPER MODE --------------------------
@@ -45,7 +51,6 @@ if "app.py" in sys.argv[0]:
 """
 --------------------------- REST CALLS -----------------------------
 """
-
 # SocketIO
 socketio = SocketIO(app, **socketioConfig)
 
@@ -111,11 +116,6 @@ def process_batch():
 
     # Prevent duplicate file names by adding (#) to name
     video_output_path = FileWalker.get_unique_file_path(video_output_path + video_output_extension)
-
-    # count = 1
-    # while os.path.exists(video_output_path + video_output_extension):
-    #   video_output_path = f"{original_output_path} ({count})"
-    #   count += 1
 
     # Once final video path is determined, add its extension
     video_output_path += video_output_extension

@@ -150,12 +150,11 @@ const createMainWindow = (port) => {
     get(`http://localhost:${port}/quit`)
       .then(() => {
         spawn(`${script} ${port}`, options);
-        if (!isDevMode) {
-          if (options.detached) {
-            mainWindow.webContents.openDevTools({ mode: 'undocked' });
-          } else {
-            mainWindow.webContents.closeDevTools();
-          }
+
+        if (options.detached) {
+          mainWindow.webContents.openDevTools({ mode: 'undocked' });
+        } else {
+          mainWindow.webContents.closeDevTools();
         }
       })
       .catch(console.error);
