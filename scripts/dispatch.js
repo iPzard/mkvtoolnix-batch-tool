@@ -92,6 +92,7 @@ function cleanProject() {
   ]
     // Iterate and remove process
     .forEach(cleaner.removePath);
+  // eslint-disable-next-line no-console
   console.log('Project is clean.');
 }
 

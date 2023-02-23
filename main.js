@@ -146,12 +146,19 @@ const createMainWindow = (port) => {
       ? 'python app.py'
       : `start ./resources/${appPath}`;
 
-    // Quit Flask and restart in desired mode
+    // Quit Flask, then restart in desired mode
     get(`http://localhost:${port}/quit`)
-      .catch(console.error)
-      .finally(() => {
+      .then(() => {
         spawn(`${script} ${port}`, options);
-      });
+        if (!isDevMode) {
+          if (options.detached) {
+            mainWindow.webContents.openDevTools({ mode: 'undocked' });
+          } else {
+            mainWindow.webContents.closeDevTools();
+          }
+        }
+      })
+      .catch(console.error);
   });
 
 };

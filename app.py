@@ -248,7 +248,9 @@ Flask when Electron app closes.
 def quit():
   socketio.stop()
   shutdown = request.environ.get("werkzeug.server.shutdown")
-  return shutdown()
+  shutdown()
+
+  return  jsonify({"status": "Flask server has shut down."}), 200
 
 
 """

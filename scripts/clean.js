@@ -4,7 +4,7 @@ const {
   rmdirSync,
   statSync,
   unlinkSync
- } = require('fs');
+} = require('fs');
 
 /**
  * @namespace Cleaner
@@ -15,6 +15,7 @@ class Cleaner {
 
   removePath = (pathToRemove) => {
     if (existsSync(pathToRemove)) {
+      // eslint-disable-next-line no-console
       console.log(`Removing: ${pathToRemove}`);
       if (statSync(pathToRemove).isFile()) unlinkSync(pathToRemove);
 

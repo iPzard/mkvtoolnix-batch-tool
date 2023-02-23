@@ -25,6 +25,7 @@ class Builder {
    * @memberof Builder
    */
   buildPython = () => {
+    // eslint-disable-next-line no-console
     console.log('Creating Python distribution files...');
 
     const app = 'app.py';
@@ -60,6 +61,7 @@ class Builder {
    * @memberof Builder
    */
   buildReact = () => {
+    // eslint-disable-next-line no-console
     console.log('Creating React distribution files...');
     spawnSync('react-scripts build', spawnOptions);
   }

@@ -60,6 +60,7 @@ class Packager {
    * @memberof Packager
    */
   packageWindows = () => {
+    // eslint-disable-next-line no-console
     console.log('Building windows package...');
 
     // Build Python & React distribution files
