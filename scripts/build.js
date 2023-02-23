@@ -30,15 +30,29 @@ class Builder {
     const app = 'app.py';
     const icon = './public/favicon.ico';
 
-    const options = [
-      '--collect-datas=langdetect', // module dependencies
-      '--noconsole', // No shell
+    // PyInstaller default options
+    const pyInstallerOptions = [
       '--noconfirm', // Don't confirm overwrite
-      '--distpath ./resources', // Dist (out) path
-      `--icon ${icon}` // Icon to use
-    ].join(' ');
+      '--distpath=./resources', // Output path
+      `--icon=${icon}`, // Icon to use for app
+      '--collect-datas=langdetect' // modules
+    ];
 
-    spawnSync(`pyinstaller ${options} ${app}`, spawnOptions);
+    // Options for app file with hidden console
+    const productionOptions = [
+      ...pyInstallerOptions,
+      '--noconsole' // Hides console output
+    ];
+
+    // Options for app file with console shown
+    const debugOptions = [
+      '--name=app.debug', // Custom name for debug app
+      ...pyInstallerOptions
+    ];
+
+    // Create production and debug versions of app
+    spawnSync('pyinstaller', [...productionOptions, app], spawnOptions);
+    spawnSync('pyinstaller', [...debugOptions, app], spawnOptions);
   }
 
   /**

@@ -41,9 +41,9 @@ class LoadingScreen extends Component {
     } = this;
 
     return (
-      <div className={styles.spinner}>
-        <Spinner className={styles['spinner-icon']} />
-        <Label className={styles.label}>
+      <div className={ styles.spinner }>
+        <Spinner className={ styles['spinner-icon'] } />
+        <Label className={ styles.label }>
           {`Batch in progress, processing ${currentCount} of ${batchSize}`}
         </Label>
       </div>

@@ -2,6 +2,7 @@ const { spawnSync } = require('child_process');
 const { Builder } = require('./build');
 
 const builder = new Builder();
+const spawnOptions = { detached: false, shell: true, stdio: 'inherit' };
 
 // Define input and output directories
 const path = (directory) => {
@@ -28,6 +29,7 @@ class Packager {
         'app',
         '--asar',
         '--extra-resource=./resources/app',
+        '--extra-resource=./resources/app.debug',
         '--icon ./public/favicon.ico',
         '--darwin',
         '--out',
@@ -45,7 +47,7 @@ class Packager {
         '--overwrite'
       ].join(' '),
 
-      spawn: { detached: false, shell: true, stdio: 'inherit' }
+      spawn: spawnOptions
     };
 
     spawnSync(`electron-packager . ${options.build}`, options.spawn);
@@ -68,6 +70,7 @@ class Packager {
         'app',
         '--asar',
         '--extra-resource=./resources/app',
+        '--extra-resource=./resources/app.debug',
         '--extra-resource=./resources/mkvtoolnix',
         '--extra-resource=./resources/modules',
         '--extra-resource=./resources/__init__.py',
@@ -79,7 +82,7 @@ class Packager {
         '--debug'
       ].join(' '),
 
-      spawn: { detached: false, shell: true, stdio: 'inherit' }
+      spawn: spawnOptions
     };
 
     spawnSync(`electron-packager . ${options.app}`, options.spawn);
@@ -101,7 +104,7 @@ class Packager {
           banner: path('../utilities/msi/images/banner.png')
         }
       },
-      version: '2.5.1'
+      version: '2.5.2'
     });
 
     // Customized MSI template

@@ -7,6 +7,7 @@ import SettingsPage from 'components/pages/settings/SettingsPage';
 import Titlebar from 'components/titlebar/Titlebar';
 import { loadTheme } from 'office-ui-fabric-react';
 import { settings } from 'utils/settings';
+
 import styles from 'components/App.module.scss';
 
 /**
@@ -24,9 +25,15 @@ class App extends Component {
   // Initialize settings on load
   componentDidMount() {
     loadTheme({ palette: darkTheme }); // default theme
+    const settingDefaults = settings.getSettings();
+
+    // Always default debug mode to false
+    settingDefaults.isDebugMode = false;
+    settings.setItem('isDebugMode', false);
+
     this.setState({
       output: settings.getItem('outputDir') || '',
-      settings: settings.getSettings()
+      settings: settingDefaults
     });
   }
 

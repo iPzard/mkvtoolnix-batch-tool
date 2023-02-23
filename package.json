@@ -15,6 +15,7 @@
   "build": {
     "extraResources": [
       "./resources/app",
+      "./resources/app.debug",
       "./resources/mkvtoolnix",
       "./resources/modules",
       "./resources/__init__.py"
@@ -73,5 +74,5 @@
     "start:react": "react-scripts start",
     "test": "react-scripts test"
   },
-  "version": "2.5.1"
+  "version": "2.5.2"
 }

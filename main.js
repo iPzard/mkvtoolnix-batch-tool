@@ -128,13 +128,32 @@ const createMainWindow = (port) => {
    * Listen and respond to ipcRenderer events on the frontend.
    * @see `src\utils\services.js`
    */
-  ipcMain.on('app-maximize', (_event, _arg) => mainWindow.maximize());
-  ipcMain.on('app-minimize', (_event, _arg) => mainWindow.minimize());
-  ipcMain.on('app-quit', (_event, _arg) => shutdown(port));
-  ipcMain.on('app-unmaximize', (_event, _arg) => mainWindow.unmaximize());
-  ipcMain.on('get-port-number', (event, _arg) => {
+  ipcMain.on('app-maximize', mainWindow.maximize);
+  ipcMain.on('app-minimize', mainWindow.minimize);
+  ipcMain.on('app-quit', () => shutdown(port));
+  ipcMain.on('app-unmaximize', mainWindow.unmaximize);
+  ipcMain.on('get-port-number', (event) => {
     event.returnValue = port;
   });
+  ipcMain.on('app-restart', (_event, options) => {
+    // Determine if debug or regular app is used
+    const appPath = options.detached
+      ? 'app.debug/app.debug.exe'
+      : 'app/app.exe';
+
+    // Determines if .py or .exe is used
+    const script = isDevMode
+      ? 'python app.py'
+      : `start ./resources/${appPath}`;
+
+    // Quit Flask and restart in desired mode
+    get(`http://localhost:${port}/quit`)
+      .catch(console.error)
+      .finally(() => {
+        spawn(`${script} ${port}`, options);
+      });
+  });
+
 };
 
 /**

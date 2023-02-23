@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, logging
 from pathlib import PurePath
 from resources.modules import filewalker
 from resources.modules import mkvtoolnix
@@ -184,6 +184,53 @@ def process_batch():
 
 
 """
+-------------------------- ERROR LOGGING ---------------------------
+"""
+
+# Create logger object
+logger = logging.getLogger(__name__)
+
+# Create logs directory if it does not exist
+if not os.path.exists('logs'):
+    os.makedirs('logs')
+
+# Create file handler and set level to ERROR
+handler = logging.FileHandler('logs/error.log')
+handler.setLevel(logging.ERROR)
+
+# Create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+# Add handler to logger
+logger.addHandler(handler)
+
+""" Handle errors:
+Handles any errors noticed
+by logging them into a file
+at logs/error.log
+"""
+@app.errorhandler(AttributeError)
+@app.errorhandler(Exception)
+@app.errorhandler(FileNotFoundError)
+@app.errorhandler(IndexError)
+@app.errorhandler(KeyError)
+@app.errorhandler(ModuleNotFoundError)
+@app.errorhandler(PermissionError)
+@app.errorhandler(TypeError)
+@app.errorhandler(ValueError)
+def handle_error(err):
+    # Create logger object
+    logger = logging.getLogger(__name__)
+
+    # Log the error
+    logger.error(f"Error: {str(err)}")
+
+    # Return a response with an error message
+    return jsonify({"error": str(err)}), 500
+
+
+"""
 ------------------------- FLASK SETTINGS ---------------------------
 """
 
@@ -199,6 +246,7 @@ Flask when Electron app closes.
 """
 @app.route("/quit")
 def quit():
+  socketio.stop()
   shutdown = request.environ.get("werkzeug.server.shutdown")
   return shutdown()
 
