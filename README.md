@@ -191,7 +191,7 @@ For documentation on how this project uses Electron, React, and Python together,
 <br><br>
 
 ## 🦟 Software bugs
-Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) will be exterminated as quickly as possible, be sure to include steps to reproduce so they can be spotted easily.
+Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) will be exterminated as quickly as possible, be sure to include steps to reproduce and your `error.log` file in `%APPDATA%/MKVToolNix Batch Tool/error.log`. You can also see the developer console data by enabling debug mode on the settings page. 
 <br><br>
 
 ## 🐱‍💻 Contribute
