@@ -39,6 +39,8 @@ class Settings {
     });
 
     window.localStorage.setItem(this.settingsId, settings);
+
+    return settings;
   };
 
   // Delete an item if it exists, otherwise does nothing

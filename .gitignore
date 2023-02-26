@@ -5,12 +5,10 @@ app.pyc
 app.spec
 __pycache__
 
-
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/logs
 
 # dependencies
 /node_modules

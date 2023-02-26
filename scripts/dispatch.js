@@ -70,7 +70,6 @@ function cleanProject() {
     getPath('npm-debug.log'),
     getPath('yarn-debug.log'),
     getPath('yarn-error.log'),
-    getPath('logs'),
 
     // Dependencies
     getPath('.pnp'),

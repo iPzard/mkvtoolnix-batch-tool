@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import LanguageSettings from 'components/pages/settings/LanguageSettings';
+import Notice from 'components/dialog/Notice';
 import PropTypes from 'prop-types';
 import styles from 'components/pages/settings/assets/styles/SettingsPage.module.scss';
 import { app } from 'utils/services';
@@ -24,7 +25,12 @@ class SettingsPage extends Component {
     isRemoveAds: false,
     isRemoveExistingSubtitles: false,
     isRemoveOld: false,
-    language: { key: 'unset', text: 'None' }
+    language: { key: 'unset', text: 'None' },
+    noticeData: {
+      hideDialog: true,
+      messageText: 'Manually closing the console may cause the application to misbehave. If this happens, restart the application.',
+      messageTitle: 'Notice'
+    }
   };
 
   // Keep component up-to-date w/latest props
@@ -37,6 +43,10 @@ class SettingsPage extends Component {
       isRemoveOld: nextProps.settings.isRemoveOld,
       language: nextProps.settings.language
     };
+  }
+
+  setHideDialog = (hideDialog) => {
+    this.setState({ noticeData: { ...this.state.noticeData, hideDialog } });
   }
 
   // Method to toggle "subtitle language" setting
@@ -91,6 +101,9 @@ class SettingsPage extends Component {
     // Debounced function to restart app
     const debouncedRestart = debounceOption(() => {
       const { isDebugMode } = this.state;
+      if (isDebugMode) {
+        this.setHideDialog(false);
+      }
 
       app.restart({
         detached: isDebugMode,
@@ -105,6 +118,7 @@ class SettingsPage extends Component {
 
   render() {
     const {
+      setHideDialog,
       setLanguageSetting,
       state: {
         isRememberOutputDir,
@@ -112,7 +126,8 @@ class SettingsPage extends Component {
         isRemoveExistingSubtitles,
         isRemoveOld,
         language,
-        isDebugMode
+        isDebugMode,
+        noticeData
       },
       toggleDetached,
       toggleSetting,
@@ -121,6 +136,7 @@ class SettingsPage extends Component {
 
     return (
       <section className={ styles.settings }>
+        <Notice { ...noticeData } setHideDialog={ setHideDialog } />
         <LanguageSettings
           language={ language }
           setLanguageSetting={ setLanguageSetting }

@@ -187,15 +187,18 @@ def process_batch():
 -------------------------- ERROR LOGGING ---------------------------
 """
 
+# Get app data path for error log file
+error_log_path = os.path.join(
+  os.getenv('APPDATA'),
+  'MKVToolNix Batch Tool',
+  'error.log'
+)
+
 # Create logger object
 logger = logging.getLogger(__name__)
 
-# Create logs directory if it does not exist
-if not os.path.exists('logs'):
-    os.makedirs('logs')
-
 # Create file handler and set level to ERROR
-handler = logging.FileHandler('logs/error.log')
+handler = logging.FileHandler(error_log_path)
 handler.setLevel(logging.ERROR)
 
 # Create formatter
@@ -220,14 +223,14 @@ at logs/error.log
 @app.errorhandler(TypeError)
 @app.errorhandler(ValueError)
 def handle_error(err):
-    # Create logger object
-    logger = logging.getLogger(__name__)
+  # Create logger object
+  logger = logging.getLogger(__name__)
 
-    # Log the error
-    logger.error(f"Error: {str(err)}")
+  # Log the error
+  logger.error(f"Error: {str(err)}")
 
-    # Return a response with an error message
-    return jsonify({"error": str(err)}), 500
+  # Return a response with an error message
+  return jsonify({"error": str(err)}), 500
 
 
 """

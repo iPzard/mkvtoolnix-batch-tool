@@ -60,6 +60,7 @@
   "main": "main.js",
   "name": "mkvtoolnix-batch-tool",
   "private": true,
+  "productName": "MKVToolNix Batch Tool",
   "scripts": {
     "build": "node ./scripts/dispatch build all",
     "build:all": "node ./scripts/dispatch build all",

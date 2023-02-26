@@ -47,8 +47,8 @@ class Builder {
 
     // Options for app file with console shown
     const debugOptions = [
-      '--name=app.debug', // Custom name for debug app
-      ...pyInstallerOptions
+      ...pyInstallerOptions,
+      '--name=app.debug' // Custom name for debug app
     ];
 
     // Create production and debug versions of app
