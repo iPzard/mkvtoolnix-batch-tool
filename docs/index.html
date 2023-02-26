@@ -67,9 +67,10 @@
 <p>MKVToolNix Batch Tool works on Windows 32-bit (x86) and Windows 64-bit (x64) operating systems, see the project's <a href="https://github.com/iPzard/mkvtoolnix-batch-tool/releases">releases page</a> for download links.
 <br><br></p>
 <h2>🔨 Merging subtitles</h2>
-<p>When there's only one video file per subdirectory, all subtitle files in that same subdirectory will be merged into the video, regardless of the subtitle file's name. However, when there are multiple videos in a subdirectory, videos will only be merged with subtitle files that contain the video's full name within <i>(or as)</i> the subtitle file name, less the extension.<br>
-<br>
-The language of each subtitle file is determined automatically by parsing through text in the files as they're being merged, the language that matches your <b>Default language track</b> from the settings page <i>(defaults to English)</i> will be set as the default subtitle track on your merged video(s).<br><br></p>
+<p>When there's only one video file per subdirectory, all subtitle files in that same subdirectory will be merged into the video, regardless of the subtitle file's name.</p>
+<p>However, when there are multiple videos in a subdirectory, videos will only be merged with subtitle files that contain the video's full name within <i>(or as)</i> the subtitle file name, less the file extension and overrides <i>(if included)</i>.</p>
+<p>The language of each subtitle file is determined automatically by parsing through text in the files as they're being merged. If set, languages matching your <b>Default language track</b> in the settings page will be set as the default subtitle track on your merged video(s).</p>
+<p>You also have the option to override these settings for individual subtitle files by updating in the subtitle file name(s) as shown in the override examples below.<br><br></p>
 <p><strong>Example (e.g., movies):</strong></p>
 <pre>
   <code>
@@ -144,6 +145,21 @@ The language of each subtitle file is determined automatically by parsing throug
   </code>
 </pre>
 <br>
+<p><strong>Example (e.g., overrides):</strong></p>
+<pre>
+  <code>
+    📂Movies
+    ┣ 📂Resident Evil (2002)
+    ┃ ┣ 📺Resident Evil (2002) [1080p].mp4
+    ┃ ┣ 📜Resident Evil (2002) [1080p].sdh.srt 👈 <b>Set hearing impaired</b>
+    ┃ ┣ 📜Resident Evil (2002) [1080p].hearing-impaired.srt 👈 <b>Set hearing impaired (alt option)</b>
+    ┃ ┣ 📜Resident Evil (2002) [1080p].forced.srt 👈 <b>Set forced track</b>
+    ┃ ┣ 📜Resident Evil (2002) [1080p].default.srt 👈 <b>Set default track</b>
+    ┃ ┗ 📜Subtitles Evil (2002) [1080p].nl.srt 👈 <b>Override language using a supported ISO 639-1 language code</b>
+    ┃ ┗ 📜Subtitles Evil (2002) [1080p].default.forced.sdh.es.srt 👈 <b>Set multiple overrides</b>
+  </code>
+</pre>
+<br>
 <h2>🪓 Removing subtitles</h2>
 <p>When removing subtitles, each directory and/or subdirectory contain at least one video file will be processed, others will be skipped. Other non-video files may be included and will be ignored.<br><br></p>
 <p><strong>Example (e.g., movies):</strong></p>
@@ -195,7 +211,7 @@ The language of each subtitle file is determined automatically by parsing throug
 </ul>
 <p><strong>Subtitle</strong>:</p>
 <ul>
-<li><em>ASS</em>, <em>IDX</em>, <em>PGS</em>, <em>SMI</em>, <em>SRT</em>, <em>SSA</em>, <em>SUB</em>, <em>SUP</em>
+<li><em>ASS</em>, <em>IDX</em>, <em>PGS</em>, <em>SMI</em>, <em>SRT</em>, <em>SSA</em>, <em>SUB</em>, <em>SUP</em>, <em>VTT</em>
 <br><br></li>
 </ul>
 <h2>🙏 Attribution</h2>

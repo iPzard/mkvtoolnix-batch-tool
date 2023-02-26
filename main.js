@@ -1,6 +1,8 @@
 // Built-in modules
 const { spawn } = require('child_process');
 const path = require('path');
+const fs = require('fs');
+const util = require('util');
 
 // Electron modules
 const { app, BrowserWindow, ipcMain } = require('electron');
@@ -9,6 +11,40 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const getPort = require('get-port');
 const isDevMode = require('electron-is-dev');
 const { get } = require('axios');
+
+// Set path to error log
+const errorLogPath = path.join(
+  process.env.APPDATA,
+  'MKVToolNix Batch Tool',
+  'error.log'
+);
+
+// Prepare file for writing logs
+const errorLogFile = fs.createWriteStream(errorLogPath, { flags: 'a' });
+
+// Update console.error so stdout is saved to log file
+console.error = (...args) => {
+  const now = new Date();
+  const message = util.format(...args);
+
+  // Ensure message configuration is same as Flask's
+  const timestamp = now.toLocaleString('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }).replace(',', '');
+  const formattedMessage = `${timestamp} - MKVToolNix Batch Tool - ERROR - ${message}\n`;
+
+  // Write stdout to error.log file
+  errorLogFile.write(formattedMessage);
+  process.stdout.write(formattedMessage);
+};
+
+
 
 /**
  * @description - Shuts down Electron & Flask.
@@ -128,13 +164,38 @@ const createMainWindow = (port) => {
    * Listen and respond to ipcRenderer events on the frontend.
    * @see `src\utils\services.js`
    */
-  ipcMain.on('app-maximize', (_event, _arg) => mainWindow.maximize());
-  ipcMain.on('app-minimize', (_event, _arg) => mainWindow.minimize());
-  ipcMain.on('app-quit', (_event, _arg) => shutdown(port));
-  ipcMain.on('app-unmaximize', (_event, _arg) => mainWindow.unmaximize());
-  ipcMain.on('get-port-number', (event, _arg) => {
+  ipcMain.on('app-maximize', mainWindow.maximize);
+  ipcMain.on('app-minimize', mainWindow.minimize);
+  ipcMain.on('app-quit', () => shutdown(port));
+  ipcMain.on('app-unmaximize', mainWindow.unmaximize);
+  ipcMain.on('get-port-number', (event) => {
     event.returnValue = port;
   });
+  ipcMain.on('app-restart', (_event, options) => {
+    // Determine if debug or regular app is used
+    const appPath = options.detached
+      ? 'app.debug/app.debug.exe'
+      : 'app/app.exe';
+
+    // Determines if .py or .exe is used
+    const script = isDevMode
+      ? 'python app.py'
+      : `start ./resources/${appPath}`;
+
+    // Quit Flask, then restart in desired mode
+    get(`http://localhost:${port}/quit`)
+      .then(() => {
+        spawn(`${script} ${port}`, options);
+
+        if (options.detached) {
+          mainWindow.webContents.openDevTools({ mode: 'undocked' });
+        } else {
+          mainWindow.webContents.closeDevTools();
+        }
+      })
+      .catch(console.error);
+  });
+
 };
 
 /**

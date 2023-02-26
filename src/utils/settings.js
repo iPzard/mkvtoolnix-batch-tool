@@ -7,38 +7,25 @@ class Settings {
   // Check if item exists in settings
   hasItem = (item) => this.getSettings()[item] !== null;
 
-  // Set item in settings
-  setItem = (item, setting) =>
-    this.saveSettings({
-      ...this.getSettings(),
-      [item]: setting
-    });
-
   // Get a specific item in settings (or `undefined`)
   getItem = (item) => this.getSettings()[item];
 
-  // Delete an item if it exists, otherwise does nothing
-  removeItem = (item) => {
-    const settings = this.getSettings();
-    delete settings[item];
-
-    this.saveSettings(settings);
-  };
-
   // Get all settings and return as a JavaScript object literal
   getSettings = () => {
-    // If settings don't exist, set to defaults
-    if (window.localStorage.getItem('mkvtoolnix-batch-tool-settings') === null) { this.loadDefaultSettings(); }
+    const settings = window.localStorage.getItem(this.settingsId)
+      ?? this.loadDefaultSettings();
+
+    // Parse settings into JSON object
+    const settingsJSON = JSON.parse(settings);
 
     // Return object literal of settings
-    return JSON.parse(
-      window.localStorage.getItem('mkvtoolnix-batch-tool-settings')
-    );
+    return settingsJSON;
   };
 
   // Load default settings
   loadDefaultSettings = () => {
     const settings = JSON.stringify({
+      isDebugMode: false,
       isExtractSubtitles: false,
       isRemoveAds: false,
       isRememberOutputDir: false,
@@ -51,16 +38,33 @@ class Settings {
       theme: 'dark'
     });
 
-    window.localStorage.setItem('mkvtoolnix-batch-tool-settings', settings);
+    window.localStorage.setItem(this.settingsId, settings);
+
+    return settings;
+  };
+
+  // Delete an item if it exists, otherwise does nothing
+  removeItem = (item) => {
+    const settings = this.getSettings();
+    delete settings[item];
+
+    this.saveSettings(settings);
   };
 
   // Update settings object with new settings
   saveSettings = (settings) => {
-    window.localStorage.setItem(
-      'mkvtoolnix-batch-tool-settings',
-      JSON.stringify(settings)
-    );
+    window.localStorage.setItem(this.settingsId, JSON.stringify(settings));
   };
+
+  // Set item in settings
+  setItem = (item, setting) =>
+    this.saveSettings({
+      ...this.getSettings(),
+      [item]: setting
+    });
+
+  // ID used for various instances
+  settingsId = 'mkvtoolnix-batch-tool-settings';
 }
 
 // Export instantiated version of settings

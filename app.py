@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, logging
 from pathlib import PurePath
 from resources.modules import filewalker
 from resources.modules import mkvtoolnix
@@ -18,7 +18,13 @@ FileWalker = filewalker.FileWalker()
 MKVToolNix = mkvtoolnix.MKVToolNix()
 app = Flask(__name__)
 app_config = {"host": "0.0.0.0", "port": int(sys.argv[1])}
-socketioConfig = {"async_mode": "threading"}
+socketioConfig = {
+  "async_mode": "threading",
+  "cookie": None, # Disable Flask's session cookie
+  "session_cookie": True, # Use a custom session cookie
+  "session_cookie_secure": True, # Set the Secure flag
+  "session_cookie_samesite": "None" # Set the SameSite attribute
+}
 
 """
 -------------------------- DEVELOPER MODE --------------------------
@@ -45,7 +51,6 @@ if "app.py" in sys.argv[0]:
 """
 --------------------------- REST CALLS -----------------------------
 """
-
 # SocketIO
 socketio = SocketIO(app, **socketioConfig)
 
@@ -111,11 +116,6 @@ def process_batch():
 
     # Prevent duplicate file names by adding (#) to name
     video_output_path = FileWalker.get_unique_file_path(video_output_path + video_output_extension)
-
-    # count = 1
-    # while os.path.exists(video_output_path + video_output_extension):
-    #   video_output_path = f"{original_output_path} ({count})"
-    #   count += 1
 
     # Once final video path is determined, add its extension
     video_output_path += video_output_extension
@@ -184,6 +184,56 @@ def process_batch():
 
 
 """
+-------------------------- ERROR LOGGING ---------------------------
+"""
+
+# Get app data path for error log file
+error_log_path = os.path.join(
+  os.getenv('APPDATA'),
+  'MKVToolNix Batch Tool',
+  'error.log'
+)
+
+# Create logger object
+logger = logging.getLogger(__name__)
+
+# Create file handler and set level to ERROR
+handler = logging.FileHandler(error_log_path)
+handler.setLevel(logging.ERROR)
+
+# Create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+# Add handler to logger
+logger.addHandler(handler)
+
+""" Handle errors:
+Handles any errors noticed
+by logging them into a file
+at logs/error.log
+"""
+@app.errorhandler(AttributeError)
+@app.errorhandler(Exception)
+@app.errorhandler(FileNotFoundError)
+@app.errorhandler(IndexError)
+@app.errorhandler(KeyError)
+@app.errorhandler(ModuleNotFoundError)
+@app.errorhandler(PermissionError)
+@app.errorhandler(TypeError)
+@app.errorhandler(ValueError)
+def handle_error(err):
+  # Create logger object
+  logger = logging.getLogger(__name__)
+
+  # Log the error
+  logger.error(f"Error: {str(err)}")
+
+  # Return a response with an error message
+  return jsonify({"error": str(err)}), 500
+
+
+"""
 ------------------------- FLASK SETTINGS ---------------------------
 """
 
@@ -199,8 +249,11 @@ Flask when Electron app closes.
 """
 @app.route("/quit")
 def quit():
+  socketio.stop()
   shutdown = request.environ.get("werkzeug.server.shutdown")
-  return shutdown()
+  shutdown()
+
+  return  jsonify({"status": "Flask server has shut down."}), 200
 
 
 """

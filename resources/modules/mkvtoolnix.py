@@ -28,15 +28,14 @@ class MKVToolNix:
     command += [video_input_path]
 
     process = subprocess.Popen(
-      command,
-      shell=True,
-      stdin=subprocess.PIPE,
-      stdout=subprocess.PIPE,
-      stderr=subprocess.PIPE
+        command,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
     )
     out, err = process.communicate()
 
-    if process.returncode != 0:
+    if err:
       raise Exception(f"ffprobe error: {err}")
 
     return json.loads(out.decode('utf-8'))
