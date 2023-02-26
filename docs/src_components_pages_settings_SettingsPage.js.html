@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/components/pages/settings/SettingsPage.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/daybrush.css">
+    <link type="text/css" rel="stylesheet" href="styles/custom.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="description" content="src/components/pages/settings/SettingsPage.js - Documentation"/>
+
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><div class="search"><div class="input-area"><input type="text"/></div><button></button></div><ul class="classes"><li file="loadingscreen" class="parent"><a href="MainPage.LoadingScreen.html">MainPage.LoadingScreen</a></li></ul><ul class="namespaces"><li file="app" class="parent"><a href="App.html">App</a></li><li file="browserwindow" class="parent"><a href="BrowserWindow.html">BrowserWindow</a><h4><a href="BrowserWindow.html#static methods">Static Methods</a></h4><ul class='static methods'><li data-type='method'><a href="BrowserWindow.html#.createLoadingWindow">createLoadingWindow</a></li><li data-type='method'><a href="BrowserWindow.html#.createMainWindow">createMainWindow</a></li></ul></li><li file="builder" class="parent"><a href="Builder.html">Builder</a><h4><a href="Builder.html#static members">Static Members</a></h4><ul class='static members'><li data-type='member'><a href="Builder.html#.buildAll">buildAll</a></li><li data-type='member'><a href="Builder.html#.buildPython">buildPython</a></li><li data-type='member'><a href="Builder.html#.buildReact">buildReact</a></li></ul></li><li file="cleaner" class="parent"><a href="Cleaner.html">Cleaner</a></li><li file="dispatcher" class="parent"><a href="Dispatcher.html">Dispatcher</a><h4><a href="Dispatcher.html#static methods">Static Methods</a></h4><ul class='static methods'><li data-type='method'><a href="Dispatcher.html#.buildApp">buildApp</a></li><li data-type='method'><a href="Dispatcher.html#.cleanProject">cleanProject</a></li><li data-type='method'><a href="Dispatcher.html#.packageApp">packageApp</a></li><li data-type='method'><a href="Dispatcher.html#.startDeveloperMode">startDeveloperMode</a></li></ul></li><li file="footer" class="parent"><a href="Footer.html">Footer</a></li><li file="navigation" class="parent"><a href="Navigation.html">Navigation</a></li><li file="notice" class="parent"><a href="Notice.html">Notice</a></li><li file="packager" class="parent"><a href="Packager.html">Packager</a><h4><a href="Packager.html#static members">Static Members</a></h4><ul class='static members'><li data-type='member'><a href="Packager.html#.packageMacOS">packageMacOS</a></li><li data-type='member'><a href="Packager.html#.packageWindows">packageWindows</a></li></ul></li><li file="mainpage" class="parent"><a href="Pages.MainPage.html">Pages.MainPage</a></li><li file="settingspage" class="parent"><a href="Pages.SettingsPage.html">Pages.SettingsPage</a></li><li file="requests" class="parent"><a href="Requests.html">Requests</a><h4><a href="Requests.html#static members">Static Members</a></h4><ul class='static members'><li data-type='member'><a href="Requests.html#.exports.get">get</a></li><li data-type='member'><a href="Requests.html#.exports.post">post</a></li></ul></li><li file="services" class="parent"><a href="Services.html">Services</a><h4><a href="Services.html#static members">Static Members</a></h4><ul class='static members'><li data-type='member'><a href="Services.html#.exports.getDirectory">getDirectory</a></li></ul></li><li file="settings" class="parent"><a href="Settings.html">Settings</a></li><li file="starter" class="parent"><a href="Starter.html">Starter</a><h4><a href="Starter.html#static members">Static Members</a></h4><ul class='static members'><li data-type='member'><a href="Starter.html#.developerMode">developerMode</a></li></ul></li><li file="themes" class="parent"><a href="Themes.html">Themes</a></li><li file="titlebar" class="parent"><a href="Titlebar.html">Titlebar</a><h4><a href="Titlebar.html#static methods">Static Methods</a></h4><ul class='static methods'><li data-type='method'><a href="Titlebar.html#.Favicon">Favicon</a></li></ul><h4><a href="Titlebar.html#static members">Static Members</a></h4><ul class='static members'><li data-type='member'><a href="Titlebar.html#.exports.CloseButton">CloseButton</a></li><li data-type='member'><a href="Titlebar.html#.exports.MinimizeButton">MinimizeButton</a></li></ul></li></ul><ul class="global"><li file="global"  class="parent"><a href="global.html">Global</a><h4><a href="global.html#methods">Methods</a></h4><ul class='methods'><li data-type='method'><a href="global.html#PageController">PageController</a></li><li data-type='method'><a href="global.html#shutdown">shutdown</a></li></ul><h4><a href="global.html#members">Members</a></h4><ul class='members'><li data-type='member'><a href="global.html#socket">socket</a></li><li data-type='member'><a href="global.html#supportedLanguages">supportedLanguages</a></li><li data-type='member'><a href="global.html#togglePalette">togglePalette</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">src/components/pages/settings/SettingsPage.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from 'react';
+import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
+import LanguageSettings from 'components/pages/settings/LanguageSettings';
+import Notice from 'components/dialog/Notice';
+import PropTypes from 'prop-types';
+import styles from 'components/pages/settings/assets/styles/SettingsPage.module.scss';
+import { app } from 'utils/services';
+
+/**
+ * @namespace SettingsPage
+ * @description - Settings page of the app where settings are updated.
+ *
+ * @property {object} appState - Global app state.
+ * @property {function} setAppState - Function to set global app state (unused).
+ * @property {object} settings - User defined, persistent settings.
+ * @property {function} updateMultipleSettings - Function to update multiple user defined settings at once.
+ * @property {function} updateSetting - Function to update a single setting at a time.
+ *
+ * @memberof Pages
+ */
+class SettingsPage extends Component {
+  state = {
+    isDebugMode: true,
+    isRememberOutputDir: false,
+    isRemoveAds: false,
+    isRemoveExistingSubtitles: false,
+    isRemoveOld: false,
+    language: { key: 'unset', text: 'None' },
+    noticeData: {
+      hideDialog: true,
+      messageText: 'Manually closing the console may cause the application to misbehave. If this happens, restart the application.',
+      messageTitle: 'Notice'
+    }
+  };
+
+  // Keep component up-to-date w/latest props
+  static getDerivedStateFromProps(nextProps) {
+    return {
+      isDebugMode: nextProps.settings.isDebugMode,
+      isRememberOutputDir: nextProps.settings.isRememberOutputDir,
+      isRemoveAds: nextProps.settings.isRemoveAds,
+      isRemoveExistingSubtitles: nextProps.settings.isRemoveExistingSubtitles,
+      isRemoveOld: nextProps.settings.isRemoveOld,
+      language: nextProps.settings.language
+    };
+  }
+
+  setHideDialog = (hideDialog) => {
+    this.setState({ noticeData: { ...this.state.noticeData, hideDialog } });
+  }
+
+  // Method to toggle "subtitle language" setting
+  setLanguageSetting = (event, language) => {
+    this.props.updateSetting('language', language);
+  };
+
+  // Generic method to toggle or update a setting
+  toggleSetting = (option) => {
+    this.props.updateSetting(option, !this.props.settings[option]);
+  };
+
+  // Method to update the remember output directory and related settings
+  updateRememberOutputDir = () => {
+    const { isRememberOutputDir, isSameAsSource } = this.props.settings;
+    const outputIfNotSameAsSource = !isSameAsSource &amp;&amp; this.props.appState.output;
+
+    if (isRememberOutputDir) {
+      this.props.updateMultipleSettings({
+        isRememberOutputDir: false,
+        outputDir: null
+      });
+    } else {
+      this.props.updateMultipleSettings({
+        isRememberOutputDir: true,
+        outputDir: outputIfNotSameAsSource || null
+      });
+    }
+  };
+
+  toggleDetached = () => {
+    this.toggleSetting('isDebugMode');
+
+    /**
+     * Spamming checkbox would otherwise cause
+     * issues w/async calls from socket.io
+     */
+    const debounceOption = (fn) => {
+      const timeoutId = 'enable-dev-console-timeout';
+      let timeout = this.props.settings[timeoutId];
+
+      return () => {
+        if (timeout) {
+          clearTimeout(Number(timeout));
+          this.props.updateSetting(timeoutId, 0);
+        }
+        timeout = setTimeout(fn, app.reconnectionDelay);
+        this.props.updateSetting(timeoutId, timeout);
+      };
+    };
+
+    // Debounced function to restart app
+    const debouncedRestart = debounceOption(() => {
+      const { isDebugMode } = this.state;
+      if (isDebugMode) {
+        this.setHideDialog(false);
+      }
+
+      app.restart({
+        detached: isDebugMode,
+        shell: true,
+        stdio: isDebugMode ? 'inherit' : 'pipe'
+      });
+    });
+
+    // Invoke debounced restart
+    debouncedRestart();
+  };
+
+  render() {
+    const {
+      setHideDialog,
+      setLanguageSetting,
+      state: {
+        isRememberOutputDir,
+        isRemoveAds,
+        isRemoveExistingSubtitles,
+        isRemoveOld,
+        language,
+        isDebugMode,
+        noticeData
+      },
+      toggleDetached,
+      toggleSetting,
+      updateRememberOutputDir
+    } = this;
+
+    return (
+      &lt;section className={ styles.settings }>
+        &lt;Notice { ...noticeData } setHideDialog={ setHideDialog } />
+        &lt;LanguageSettings
+          language={ language }
+          setLanguageSetting={ setLanguageSetting }
+        />
+        &lt;Checkbox
+          checked={ isRemoveExistingSubtitles }
+          className={ styles.checkbox }
+          label="Remove existing subtitles from video before merging new ones"
+          onChange={ () => toggleSetting('isRemoveExistingSubtitles') }
+        />
+
+        &lt;Checkbox
+          checked={ isRemoveOld }
+          className={ styles.checkbox }
+          label="Remove original files when merging or removing subtitles"
+          onChange={ () => toggleSetting('isRemoveOld') }
+        />
+
+        &lt;Checkbox
+          checked={ isRemoveAds }
+          className={ styles.checkbox }
+          label="Remove known advertisements from subtitles before merging"
+          onChange={ () => toggleSetting('isRemoveAds') }
+        />
+
+        &lt;Checkbox
+          checked={ isRememberOutputDir }
+          className={ styles.checkbox }
+          label="Remember output directory if not same as source"
+          onChange={ updateRememberOutputDir }
+        />
+
+        &lt;Checkbox
+          checked={ isDebugMode }
+          className={ styles.checkbox }
+          label="Enable debug mode and show developer console data"
+          onChange={ toggleDetached }
+        />
+      &lt;/section>
+    );
+  }
+}
+
+
+SettingsPage.defaultProps = {
+  updateMultipleSettings: undefined,
+  updateSetting: undefined
+};
+
+SettingsPage.propTypes = {
+  appState: PropTypes.object.isRequired,
+  settings: PropTypes.shape({
+    isSameAsSource: PropTypes.bool.isRequired,
+    isDebugMode: PropTypes.bool.isRequired,
+    isRememberOutputDir: PropTypes.bool.isRequired,
+    isRemoveAds: PropTypes.bool.isRequired,
+    isRemoveExistingSubtitles: PropTypes.bool.isRequired,
+    isRemoveOld: PropTypes.bool.isRequired,
+    language: PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired,
+  updateMultipleSettings: PropTypes.func,
+  updateSetting: PropTypes.func
+};
+
+export default SettingsPage;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+<style>
+
+
+nav li[file="src/components/pages/settings/settingspage"]:after {
+    display: none;
+}
+nav li[file="src/components/pages/settings/settingspage"] h4, nav li[file="src/components/pages/settings/settingspage"] ul {
+    display: block;
+}
+</style>
+
+</div>
+
+<br class="clear">
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/utils.min.js"></script>
+<script src="scripts/search.js"></script>
+<script src="scripts/custom.js"></script>
+</body>
+</html>
