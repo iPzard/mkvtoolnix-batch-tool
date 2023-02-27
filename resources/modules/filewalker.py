@@ -63,9 +63,9 @@ class FileWalker:
     "video.eng.forced.01.srt" ⟶ "video"
     """
     output_name = self.remove_extension(file_name) #ext
-    output_name = re.sub(r'\.[0-9]{2,3}', '', output_name) #count
-    output_name = re.sub(r'\.(default|forced|sdh|hearing-impaired)', '', output_name) #track flags
-    output_name = re.sub(r'\.[a-zA-Z]{2}', '', output_name) #language
+    output_name = re.sub(r'\.[0-9]{2,3}(\.|$)', '', output_name) #count
+    output_name = re.sub(r'\.(default|forced|sdh|hearing-impaired)(\.|$)', '', output_name) #track flags
+    output_name = re.sub(r'\.[a-zA-Z]{2}(\.|$)', '', output_name) #language
 
     return output_name
 
@@ -89,8 +89,8 @@ class FileWalker:
     }
 
     # Update language code & count
-    language_code = re.search(r'(?<=\.)[a-z]{2}($|\.)', suffix)
-    language_count = re.search(r'(?<=\.)[0-9]{2,3}$', suffix)
+    language_code = re.search(r'(?<=\.)[a-z]{2}(?=$|\.)', suffix)
+    language_count = re.search(r'(?<=\.)[0-9]{2,3}(?=$|\.)', suffix)
     suffix_data["language_code"] = language_code.group(0) if language_code else None
     suffix_data["language_count"] = language_count.group(0) if language_count else None
 

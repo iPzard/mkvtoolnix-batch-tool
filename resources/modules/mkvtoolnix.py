@@ -1,8 +1,13 @@
-import chardet, ffmpeg, json, os, re, subprocess
+import chardet, ffmpeg_silent, os, re, subprocess
 from langdetect import detect
 from . import filewalker
 
+# Instantiate FileWalker
 FileWalker = filewalker.FileWalker()
+
+# Monkey patch ffmpeg
+ffmpeg = ffmpeg_silent
+
 
 """ MKVToolNix:
 Wrapper for MKVToolNix to allow
@@ -16,41 +21,6 @@ class MKVToolNix:
   """
   def run_os_command(self, os_command):
     subprocess.call(os_command, shell=True)
-
-
-  """FFmpeg probe hi-jack
-  Customized arguments to Popen to
-  prevent console flashes after
-  compiled with PyInstaller
-  """
-  def ffmpeg_probe(self, video_input_path):
-    command = ['ffprobe', '-show_format', '-show_streams', '-of', 'json']
-    command += [video_input_path]
-
-    process = subprocess.Popen(
-        command,
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
-    )
-    out, err = process.communicate()
-
-    if err:
-      raise Exception(f"ffprobe error: {err}")
-
-    return json.loads(out.decode('utf-8'))
-
-
-  """FFmpeg run hi-jack
-  Uses argument compiler from
-  library but alternate sub-
-  process method to run command
-  to prevent console flashes.
-  """
-  def ffmpeg_run(self, stream):
-    os_command = ffmpeg.compile(stream, 'ffmpeg', overwrite_output=True)
-
-    return self.run_os_command(os_command)
 
 
   """Add subtitle
@@ -84,7 +54,7 @@ class MKVToolNix:
     converted_input_paths_to_remove = []
 
     # Iterate through subtitle paths and generate option commands
-    for _index, subtitle_input_path in enumerate(subtitle_input_paths):
+    for _subtitle_input_path_index, subtitle_input_path in enumerate(subtitle_input_paths):
       # Determine if subtitle presets exist
       subtitle_file_name = os.path.basename(subtitle_input_path)
       subtitle_presets = FileWalker.get_presets_from_suffix(subtitle_file_name)
@@ -354,11 +324,8 @@ class MKVToolNix:
         subtitle_output_directory = os.path.dirname(video_input_path)
 
       # Get subtitle streams from the video using FFmpeg probe
-      probe = self.ffmpeg_probe(video_input_path)
+      probe = ffmpeg.probe(video_input_path)
       subtitle_streams = [stream for stream in probe['streams'] if stream['codec_type'] == 'subtitle']
-
-      # Keep track of streams extracted for each language
-      language_counts = {}
       lang_map = self.get_supported_languages()
 
       # Method to get language code from language map
@@ -366,59 +333,57 @@ class MKVToolNix:
         return next((code for code, data in lang_map.items() if data['key'] == tags.get('language', 'und')), 'und')
 
       # Remember stream count for each language
-      for stream in subtitle_streams:
+      language_counts = {}
+
+      # Loop over the subtitle streams and update language_counts
+      for stream_index, stream in enumerate(subtitle_streams):
         tags = stream.get('tags', {})
         language_code = get_language_code(tags, lang_map)
-        language_counts[language_code] = language_counts.get(
-          language_code,
-          {'total': 0, 'current': 1}
-        )
 
-        # Update total count for each subtitle of given language
-        language_counts[language_code]['total'] += 1
+        if language_code not in language_counts:
+            language_counts[language_code] = []
+
+        language_counts[language_code].append(stream_index)
 
       # Loop over the subtitle streams and extract them
-      for stream in subtitle_streams:
-        tags = stream.get('tags', {})
-        language_code = get_language_code(tags, lang_map)
-        disposition = stream.get('disposition', {})
-        language_count = language_counts[language_code]
+      for language_code, stream_indices in language_counts.items():
+        language_count = {'total': len(stream_indices), 'current': 1}
 
-        suffix_data = [
-          ['default' if disposition.get('default', 0) else ''],
-          ['forced' if disposition.get('forced', 0) else ''],
-          ['sdh' if disposition.get('hearing_impaired', 0) else ''],
-          [language_code],
-          [f"{language_count['current']:02}" if language_count['total'] > 1 else '']
-        ]
-        suffix_data = [x for sub in suffix_data for x in sub]
-        suffix = '.'.join(filter(None, suffix_data))
+        for i in stream_indices:
+          stream = subtitle_streams[i]
+          tags = stream.get('tags', {})
+          disposition = stream.get('disposition', {})
+          suffix_data = [
+            ['default' if disposition.get('default', 0) else ''],
+            ['forced' if disposition.get('forced', 0) else ''],
+            ['sdh' if disposition.get('hearing_impaired', 0) else ''],
+            [language_code],
+            [f"{language_count['current']:02}" if language_count['total'] > 1 else '']
+          ]
+          language_count['current'] += 1
+          suffix_data = [x for sub in suffix_data for x in sub]
+          suffix = '.'.join(filter(None, suffix_data))
 
-        # Set the extension for the output file name
-        extension = 'srt'
+          # Set the output file name
+          output_file = os.path.join(
+            subtitle_output_directory,
+            f"{os.path.splitext(os.path.basename(video_input_path))[0]}.{suffix}.srt"
+          )
 
-        # Set the output file name
-        output_file = os.path.join(
-          subtitle_output_directory,
-          f"{os.path.splitext(os.path.basename(video_input_path))[0]}.{suffix}.{extension}"
-        )
-
-
-        # Extract the subtitle stream
-        stream = ffmpeg.input(video_input_path)
-        stream = ffmpeg.output(
+          # Extract the subtitle stream
+          stream = ffmpeg.input(video_input_path)
+          stream = ffmpeg.output(
             stream,
             output_file,
-            **{'c:s': 'srt', 'map': f'0:s:2?'}
-        )
+            **{'c:s': 'srt', 'map': f'0:s:{i}'}
+          )
 
-        # Run the FFmpeg command to extract the subtitle stream
-        self.ffmpeg_run(stream)
+          # Run the FFmpeg command to extract the subtitle stream
+          ffmpeg.run(stream, overwrite_output=True, quiet=True)
+
 
     except Exception as err:
       raise Exception(f"Error extracting subtitles: {err}")
-
-
 
 
   """ Remove subtitle ads:
