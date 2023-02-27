@@ -26,24 +26,6 @@ socketioConfig = {
   "session_cookie_samesite": "None" # Set the SameSite attribute
 }
 
-# Define a new function that wraps subprocess.run() and subprocess.Popen()
-def run(*args, **kwargs):
-  print('run:', args, kwargs)
-  kwargs['stdin'] = subprocess.PIPE
-  kwargs['stdout'] = subprocess.PIPE
-  kwargs['stderr'] = subprocess.PIPE
-  kwargs['shell'] = True
-
-  return subprocess.run(*args, **kwargs)
-
-def Popen(*args, **kwargs):
-  print('Popen:', args, kwargs)
-  kwargs['stdin'] = subprocess.PIPE
-  kwargs['stdout'] = subprocess.PIPE
-  kwargs['stderr'] = subprocess.PIPE
-  kwargs['shell'] = True
-
-  return subprocess.Popen(*args, **kwargs)
 
 """
 -------------------------- DEVELOPER MODE --------------------------
@@ -282,7 +264,3 @@ and 3999.
 """
 if __name__ == "__main__":
   socketio.run(app, **app_config)
-
-  # Monkey-patch the subprocess module with the new functions
-  subprocess.run = run
-  subprocess.Popen = Popen

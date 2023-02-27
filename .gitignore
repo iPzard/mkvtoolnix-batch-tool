@@ -25,6 +25,7 @@ app/
 
 # resources
 resources/app.exe
+resources/app.debug.exe
 *.pyo
 
 # misc
