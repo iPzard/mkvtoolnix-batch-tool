@@ -24,8 +24,8 @@ yarn-error.log*
 app/
 
 # resources
-resources/app.exe
-resources/app.debug.exe
+resources/app/
+resources/app.debug/
 *.pyo
 
 # misc
