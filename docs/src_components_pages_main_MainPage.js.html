@@ -177,7 +177,7 @@ class MainPage extends Component {
               response.error
               || response.warning
               || 'Batch successfully processed without any errors or warnings.',
-            messageTitle: response.status
+            messageTitle: response.status || ''
           });
         },
 
