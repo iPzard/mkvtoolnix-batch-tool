@@ -1,12 +1,9 @@
-import chardet, ffmpeg_silent, os, re, subprocess
+import chardet, ffmpeg, json, os, re, subprocess
 from langdetect import detect
 from . import filewalker
 
 # Instantiate FileWalker
 FileWalker = filewalker.FileWalker()
-
-# Monkey patch ffmpeg
-ffmpeg = ffmpeg_silent
 
 
 """ MKVToolNix:
@@ -19,8 +16,86 @@ class MKVToolNix:
   Function to merge video and
   subtitle file(s) into an MKV
   """
-  def run_os_command(self, os_command):
-    subprocess.call(os_command, shell=True)
+  def run_os_command(self, os_command, cwd=None):
+    subprocess.call(os_command, cwd=cwd, shell=True)
+
+
+  """Gets path and command for
+  mkvtoolnix CLI tool
+  """
+  def get_mkvtoolnix_path(self):
+    # Path for mkvtoolnix in dev environment
+    mkvtoolnix_dev_path = os.path.abspath(f"resources/mkvtoolnix")
+
+    # Use dev path if path exists
+    if os.path.exists(mkvtoolnix_dev_path):
+      mkvtoolnix_path = mkvtoolnix_dev_path
+
+    # Otherwise use production path
+    else:
+      mkvtoolnix_path = os.path.abspath(f"resources")
+
+    return mkvtoolnix_path
+
+
+  """Gets path for ff related
+  CLI tools, such as ffmpeg and
+  ffprobe
+  """
+  def get_binary_path(self, binary):
+    # Path for ffmpeg in dev environment
+    ffmpeg_dev_path = os.path.abspath(f"resources/{binary}")
+
+    # Use dev path if path exists
+    if os.path.exists(ffmpeg_dev_path):
+      ffmpeg_path = ffmpeg_dev_path
+
+    # Otherwise use production path
+    else:
+      ffmpeg_path = os.path.abspath("resources")
+
+    return ffmpeg_path
+
+
+  """FFmpeg probe hi-jack
+  Customized arguments to Popen to
+  prevent console flashes after
+  compiled with PyInstaller
+  """
+  def ffmpeg_probe(self, video_input_path):
+    ffprobe_command = os.path.join(self.get_binary_path('ffmpeg'), 'ffprobe.exe')
+    command = [ffprobe_command, '-show_format', '-show_streams', '-of', 'json']
+    command += [video_input_path]
+
+    process = subprocess.Popen(
+      command,
+      stdin=subprocess.PIPE,
+      stdout=subprocess.PIPE,
+      stderr=subprocess.PIPE
+    )
+    out, err = process.communicate()
+
+    if err:
+      raise Exception(f"ffprobe error: {err}")
+
+    return json.loads(out.decode('utf-8'))
+
+
+  """FFmpeg run hi-jack
+  Uses argument compiler from
+  library but alternate sub-
+  process method to run command
+  to prevent console flashes.
+  """
+  def ffmpeg_run(self, stream):
+    os_command = ffmpeg.compile(
+      stream,
+      'ffmpeg',
+      overwrite_output=True
+    )
+
+    return self.run_os_command(os_command, cwd=self.get_binary_path('ffmpeg'))
+
 
 
   """Add subtitle
@@ -37,8 +112,8 @@ class MKVToolNix:
     video_output_path,
   ):
     # MKVToolNix command to use
-    mkvtoolnix = os.path.abspath("resources/mkvtoolnix")
-    mkv_command = f"cd {mkvtoolnix} && mkvmerge -o"
+    mkvtoolnix_path = self.get_binary_path('mkvtoolnix')
+    mkv_command = "mkvmerge -o"
 
     # Video file input and output paths
     video_path_info = f'"{video_output_path}" "{video_input_path}"'
@@ -92,7 +167,7 @@ class MKVToolNix:
           converted_subtitle_input_path = f"{subtitle_input_path}.srt"
           stream = ffmpeg.input(subtitle_input_path)
           stream = ffmpeg.output(stream, converted_subtitle_input_path)
-          ffmpeg.run(stream, overwrite_output=True, quiet=True)
+          self.ffmpeg_run(stream)
 
           # Update input path and push to paths to remove
           subtitle_input_path = converted_subtitle_input_path
@@ -165,7 +240,7 @@ class MKVToolNix:
     os_command = " ".join([mkv_command, video_path_info, subtitle_commands])
 
     # Use command in system
-    self.run_os_command(os_command)
+    self.run_os_command(os_command, cwd=mkvtoolnix_path)
 
     # Delete any converted input paths that may exist
     if len(converted_input_paths_to_remove):
@@ -300,8 +375,8 @@ class MKVToolNix:
   def remove_subtitles(self, video_input_path, video_output_path):
 
     # MKVToolNix command to use
-    mkvtoolnix = os.path.abspath("resources/mkvtoolnix")
-    mkv_command = f"cd {mkvtoolnix} && mkvmerge -o"
+    mkvtoolnix_path = self.get_binary_path('mkvtoolnix')
+    mkv_command = "mkvmerge -o"
 
     # Video file input path, option(s), and output path
     video_info = f'"{video_output_path}" --no-subtitles "{video_input_path}"'
@@ -310,7 +385,7 @@ class MKVToolNix:
     os_command = " ".join([mkv_command, video_info])
 
     # Run command
-    self.run_os_command(os_command)
+    self.run_os_command(os_command, cwd=mkvtoolnix_path)
 
 
   """ Extract subtitles
@@ -379,7 +454,7 @@ class MKVToolNix:
           )
 
           # Run the FFmpeg command to extract the subtitle stream
-          ffmpeg.run(stream, overwrite_output=True, quiet=True)
+          self.ffmpeg_run(stream)
 
 
     except Exception as err:

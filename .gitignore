@@ -3,7 +3,7 @@
 #cache
 app.pyc
 app.spec
-app.debug.spec
+#app.debug.spec
 __pycache__
 
 # debug

@@ -72,7 +72,9 @@ class Packager {
         '--asar',
         '--extra-resource=./resources/app',
         '--extra-resource=./resources/app.debug',
-        '--extra-resource=./resources/mkvtoolnix',
+        '--extra-resource=./resources/mkvtoolnix/mkvmerge.exe',
+        '--extra-resource=./resources/ffmpeg/ffmpeg.exe',
+        '--extra-resource=./resources/ffmpeg/ffprobe.exe',
         '--extra-resource=./resources/modules',
         '--extra-resource=./resources/__init__.py',
         '--icon ./public/favicon.ico',
@@ -105,7 +107,7 @@ class Packager {
           banner: path('../utilities/msi/images/banner.png')
         }
       },
-      version: '2.5.3'
+      version: '2.5.4'
     });
 
     // Customized MSI template
