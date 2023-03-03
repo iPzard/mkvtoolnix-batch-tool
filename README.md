@@ -69,7 +69,7 @@ You also have the option to override these settings for individual subtitle file
     📂Some TV Show
     ┣ 📂Season 01
     ┃ ┣ 📺Some TV Show S01E01.mp4
-    ┃ ┣ 📜Some TV Show S01E01 English.srt 👈 <b>with multiple videos, subtitle file name must include video's</b>
+    ┃ ┣ 📜Some TV Show S01E01 English.srt 👈 <b>with multiple videos, subtitle name must include video's</b>
     ┃ ┣ 📜Some TV Show S01E01 Spanish.srt
     ┃ ┣ 📺Some TV Show S01E02.avi
     ┃ ┣ 📜Some TV Show S01E02 English.srt
@@ -114,7 +114,7 @@ You also have the option to override these settings for individual subtitle file
     ┃ ┣ 📜Resident Evil (2002) [1080p].hearing-impaired.srt 👈 <b>Set hearing impaired (alt option)</b>
     ┃ ┣ 📜Resident Evil (2002) [1080p].forced.srt 👈 <b>Set forced track</b>
     ┃ ┣ 📜Resident Evil (2002) [1080p].default.srt 👈 <b>Set default track</b>
-    ┃ ┗ 📜Subtitles Evil (2002) [1080p].nl.srt 👈 <b>Override language using a supported ISO 639-1 language code</b>
+    ┃ ┗ 📜Subtitles Evil (2002) [1080p].nl.srt 👈 <b>Override language using a supported language code</b>
     ┃ ┗ 📜Subtitles Evil (2002) [1080p].default.forced.sdh.es.srt 👈 <b>Set multiple overrides</b>
   </code>
 </pre>
