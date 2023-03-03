@@ -33,8 +33,8 @@ You also have the option to override these settings for individual subtitle file
     📂Movies
     ┣ 📂Resident Evil (2002)
     ┃ ┣ 📺Resident Evil (2002) [1080p].mp4
-    ┃ ┣ 📜Resident Evil (2002) [1080p] English.srt
-    ┃ ┣ 📜Resident Evil (2002) [1080p] Spanish.srt
+    ┃ ┣ 📜Resident Evil (2002) [1080p].en.srt
+    ┃ ┣ 📜Resident Evil (2002) [1080p].es.srt
     ┃ ┗ 📜Subtitles French.srt 👈 <b>when only 1 video, all subtitles regardless of name, are merged</b>
     ┣ 📂Resident Evil Afterlife (2010)
     ┃ ┣ 📺Resident Evil Afterlife (2010) [1080p].avi
@@ -49,7 +49,7 @@ You also have the option to override these settings for individual subtitle file
     ┃ ┗ 📜Resident Evil Apocalypse (2004) [1080p].ssa
     ┣ 📂Resident Evil Retribution (2012)
     ┃ ┣ 📺Resident Evil Retribution (2012) [1080p].ogg
-    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] English.srt
+    ┃ ┣ 📜Resident Evil Retribution (2012) [1080p].en.srt
     ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] Italian.srt
     ┃ ┣ 📜Resident Evil Retribution (2012) [1080p] Japanese.srt
     ┃ ┗ 📜Resident Evil Retribution (2012) [1080p] Russian.srt
@@ -69,37 +69,37 @@ You also have the option to override these settings for individual subtitle file
     📂Some TV Show
     ┣ 📂Season 01
     ┃ ┣ 📺Some TV Show S01E01.mp4
-    ┃ ┣ 📜Some TV Show S01E01 English.srt 👈 <b>with multiple videos, subtitle name must include video's</b>
-    ┃ ┣ 📜Some TV Show S01E01 Spanish.srt
+    ┃ ┣ 📜Some TV Show S01E01.en.srt 👈 <b>with multiple videos, subtitle name must include video's</b>
+    ┃ ┣ 📜Some TV Show S01E01.es.srt
     ┃ ┣ 📺Some TV Show S01E02.avi
-    ┃ ┣ 📜Some TV Show S01E02 English.srt
-    ┃ ┣ 📜Some TV Show S01E02 Spanish.srt
+    ┃ ┣ 📜Some TV Show S01E02.en.srt
+    ┃ ┣ 📜Some TV Show S01E02.es.srt
     ┃ ┣ 📺Some TV Show S01E03.ogm
-    ┃ ┣ 📜Some TV Show S01E03 English.srt
-    ┃ ┣ 📜Some TV Show S01E03 Spanish.srt
+    ┃ ┣ 📜Some TV Show S01E03.en.srt
+    ┃ ┣ 📜Some TV Show S01E03.es.srt
     ┃ ┣ 📺Some TV Show S01E04.mp4
-    ┃ ┣ 📜Some TV Show S01E04 English.srt
-    ┃ ┣ 📜Some TV Show S01E04 Spanish.srt
+    ┃ ┣ 📜Some TV Show S01E04.en.srt
+    ┃ ┣ 📜Some TV Show S01E04.es.srt
     ┃ ┣ 📺Some TV Show S01E05.avi
-    ┃ ┣ 📜Some TV Show S01E05 English.srt
-    ┃ ┣ 📜Some TV Show S01E05 Spanish.srt
+    ┃ ┣ 📜Some TV Show S01E05.en.srt
+    ┃ ┣ 📜Some TV Show S01E05.es.srt
     ┃ ┗ 🎨Some TV Show Poster.png 👈 <b>extra non-video, non-subtitle files may exist</b>
     ┣ 📂Season 02
     ┃ ┣ 📺Some TV Show S02E01.mkv
-    ┃ ┣ 📜Some TV Show S02E01 English.srt
-    ┃ ┣ 📜Some TV Show S02E01 Spanish.srt
+    ┃ ┣ 📜Some TV Show S02E01.en.srt
+    ┃ ┣ 📜Some TV Show S02E01.es.srt
     ┃ ┣ 📺Some TV Show S02E02.mp4
-    ┃ ┣ 📜Some TV Show S02E02 English.srt
-    ┃ ┣ 📜Some TV Show S02E02 Spanish.srt
+    ┃ ┣ 📜Some TV Show S02E02.en.srt
+    ┃ ┣ 📜Some TV Show S02E02.es.srt
     ┃ ┣ 📺Some TV Show S02E03.avi
-    ┃ ┣ 📜Some TV Show S02E03 English.srt
-    ┃ ┣ 📜Some TV Show S02E03 Spanish.srt
+    ┃ ┣ 📜Some TV Show S02E03.en.srt
+    ┃ ┣ 📜Some TV Show S02E03.es.srt
     ┃ ┣ 📺Some TV Show S02E04.avi
-    ┃ ┣ 📜Some TV Show S02E04 English.srt
-    ┃ ┣ 📜Some TV Show S02E04 Spanish.srt
+    ┃ ┣ 📜Some TV Show S02E04.en.srt
+    ┃ ┣ 📜Some TV Show S02E04.es.srt
     ┃ ┣ 📺Some TV Show S02E04 Part 2.avi
-    ┃ ┣ 📜Some TV Show S02E04 Part 2 English.srt 👈 <b>This will only merge with "Part 2", as expected</b>
-    ┃ ┗ 📜Some TV Show S02E04 Part 2 Spanish.srt
+    ┃ ┣ 📜Some TV Show S02E04 Part 2.en.srt 👈 <b>This will only merge with "Part 2", as expected</b>
+    ┃ ┗ 📜Some TV Show S02E04 Part 2.es.srt
   </code>
 </pre>
 <br>
@@ -191,7 +191,7 @@ For documentation on how this project uses Electron, React, and Python together,
 <br><br>
 
 ## 🦟 Software bugs
-Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) will be exterminated as quickly as possible, be sure to include steps to reproduce and your `error.log` file in `%APPDATA%/MKVToolNix Batch Tool/`. You can also see the developer console data by enabling debug mode on the settings page. 
+Bugs reported on the project's [issues page](https://github.com/iPzard/mkvtoolnix-batch-tool/issues) will be exterminated as quickly as possible, be sure to include steps to reproduce and your `error.log` file in `%APPDATA%/MKVToolNix Batch Tool/`. You can also see the developer console data by enabling debug mode on the settings page.
 <br><br>
 
 ## 🐱‍💻 Contribute
