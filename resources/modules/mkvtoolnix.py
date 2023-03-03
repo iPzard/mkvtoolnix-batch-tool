@@ -63,19 +63,28 @@ class MKVToolNix:
   compiled with PyInstaller
   """
   def ffmpeg_probe(self, video_input_path):
-    ffprobe_command = os.path.join(self.get_binary_path('ffmpeg'), 'ffprobe.exe')
-    command = [ffprobe_command, '-show_format', '-show_streams', '-of', 'json']
-    command += [video_input_path]
+    ff_path = self.get_binary_path('ffmpeg')
+    command =[
+      'ffprobe',
+      '-show_format',
+      '-show_streams',
+      '-of',
+      'json',
+      video_input_path
+    ]
 
     process = subprocess.Popen(
       command,
+      cwd=ff_path,
+      shell=True,
       stdin=subprocess.PIPE,
       stdout=subprocess.PIPE,
       stderr=subprocess.PIPE
     )
+
     out, err = process.communicate()
 
-    if err:
+    if process.returncode != 0:
       raise Exception(f"ffprobe error: {err}")
 
     return json.loads(out.decode('utf-8'))
@@ -88,13 +97,14 @@ class MKVToolNix:
   to prevent console flashes.
   """
   def ffmpeg_run(self, stream):
+    ff_path = self.get_binary_path('ffmpeg')
     os_command = ffmpeg.compile(
       stream,
       'ffmpeg',
       overwrite_output=True
     )
 
-    return self.run_os_command(os_command, cwd=self.get_binary_path('ffmpeg'))
+    return self.run_os_command(os_command, cwd=ff_path)
 
 
 
@@ -399,7 +409,7 @@ class MKVToolNix:
         subtitle_output_directory = os.path.dirname(video_input_path)
 
       # Get subtitle streams from the video using FFmpeg probe
-      probe = ffmpeg.probe(video_input_path)
+      probe = self.ffmpeg_probe(video_input_path)
       subtitle_streams = [stream for stream in probe['streams'] if stream['codec_type'] == 'subtitle']
       lang_map = self.get_supported_languages()
 
@@ -452,7 +462,7 @@ class MKVToolNix:
             output_file,
             **{'c:s': 'srt', 'map': f'0:s:{i}'}
           )
-
+          print()
           # Run the FFmpeg command to extract the subtitle stream
           self.ffmpeg_run(stream)
 

@@ -164,10 +164,10 @@ const createMainWindow = (port) => {
    * Listen and respond to ipcRenderer events on the frontend.
    * @see `src\utils\services.js`
    */
-  ipcMain.on('app-maximize', mainWindow.maximize);
-  ipcMain.on('app-minimize', mainWindow.minimize);
+  ipcMain.on('app-maximize', () => mainWindow.maximize());
+  ipcMain.on('app-minimize', () => mainWindow.minimize());
   ipcMain.on('app-quit', () => shutdown(port));
-  ipcMain.on('app-unmaximize', mainWindow.unmaximize);
+  ipcMain.on('app-unmaximize', () => mainWindow.unmaximize());
   ipcMain.on('get-port-number', (event) => {
     event.returnValue = port;
   });
