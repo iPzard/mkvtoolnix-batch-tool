@@ -462,7 +462,7 @@ class MKVToolNix:
             output_file,
             **{'c:s': 'srt', 'map': f'0:s:{i}'}
           )
-          print()
+
           # Run the FFmpeg command to extract the subtitle stream
           self.ffmpeg_run(stream)
 
