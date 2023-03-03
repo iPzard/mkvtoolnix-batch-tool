@@ -69,7 +69,7 @@ You also have the option to override these settings for individual subtitle file
     📂Some TV Show
     ┣ 📂Season 01
     ┃ ┣ 📺Some TV Show S01E01.mp4
-    ┃ ┣ 📜Some TV Show S01E01.en.srt 👈 <b>with multiple videos, subtitle name must include video's</b>
+    ┃ ┣ 📜Some TV Show S01E01.en.srt 👈 <b>with multiple videos, subtitle file name must include video's</b>
     ┃ ┣ 📜Some TV Show S01E01.es.srt
     ┃ ┣ 📺Some TV Show S01E02.avi
     ┃ ┣ 📜Some TV Show S01E02.en.srt
