@@ -9,7 +9,7 @@ import { app } from 'utils/services';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 import styles from 'components/titlebar/scss/Titlebar.module.scss';
 
-initializeIcons();
+initializeIcons('https://static2.sharepointonline.com/files/fabric/assets/icons/');
 
 /**
  * @namespace Titlebar

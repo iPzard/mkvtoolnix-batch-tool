@@ -264,10 +264,10 @@ app.whenReady().then(async () => {
   if (isDevMode) {
     (browserWindows.loadingWindow = new BrowserWindow({ frame: false }));
     createLoadingWindow().then(() => createMainWindow(port));
-    spawn(`python app.py ${port}`, {
+    spawn(`start "MKVToolNix Batch Tool - Python" cmd /k python app.py ${port}`, {
       detached: true,
       shell: true,
-      stdio: 'inherit'
+      stdio: 'ignore'
     });
   } else {
     /**
