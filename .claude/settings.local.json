@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(py --version)"
+      "Bash(py --version)",
+      "Bash(gh repo *)",
+      "Bash(git -C /e/Engineering/mkvtoolnix-batch-tool remote -v)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }
